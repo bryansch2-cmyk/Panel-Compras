@@ -26,7 +26,7 @@ const state = {
   requestPending: false,
 };
 
-let countdownTimer = null;
+let unlockExpiryTimer = null;
 
 function formatMoney(value) {
   return new Intl.NumberFormat("es-PE", {
@@ -127,14 +127,43 @@ function isSensitiveUnlocked(deviceId) {
   return Number(state.sensitiveUnlockedUntilByDevice[deviceId] || 0) > Date.now();
 }
 
-function getSensitiveCountdown(deviceId) {
-  const until = Number(state.sensitiveUnlockedUntilByDevice[deviceId] || 0);
-  return Math.max(0, Math.ceil((until - Date.now()) / 1000));
+function scheduleUnlockExpiryCheck() {
+  if (unlockExpiryTimer) {
+    clearTimeout(unlockExpiryTimer);
+    unlockExpiryTimer = null;
+  }
+
+  const entries = Object.entries(state.sensitiveUnlockedUntilByDevice)
+    .map(([deviceId, until]) => [deviceId, Number(until || 0)])
+    .filter(([, until]) => until > Date.now())
+    .sort((left, right) => left[1] - right[1]);
+
+  if (!entries.length) {
+    return;
+  }
+
+  const [, nextUntil] = entries[0];
+  unlockExpiryTimer = setTimeout(() => {
+    const now = Date.now();
+    let changed = false;
+    Object.keys(state.sensitiveUnlockedUntilByDevice).forEach((deviceId) => {
+      if (Number(state.sensitiveUnlockedUntilByDevice[deviceId] || 0) <= now) {
+        delete state.sensitiveUnlockedUntilByDevice[deviceId];
+        changed = true;
+      }
+    });
+
+    scheduleUnlockExpiryCheck();
+    if (changed && state.selectedTab === "control") {
+      render();
+    }
+  }, Math.max(0, nextUntil - Date.now()) + 40);
 }
 
 function unlockSensitive(deviceId) {
   state.sensitiveUnlockedUntilByDevice[deviceId] = Date.now() + SENSITIVE_UNLOCK_MS;
   closeModal();
+  scheduleUnlockExpiryCheck();
   render();
 }
 
@@ -402,12 +431,12 @@ function renderHistoryLaunchers(device) {
       <div class="section-row">
         <div>
           <h3>Historiales</h3>
-          <p class="panel-head-sub">Solo se abren al hacer clic, como en la app.</p>
+          <p class="panel-head-sub">Se abren en una ventana, como en la app.</p>
         </div>
         <div class="history-icon-row">
-          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="recharges" title="Recargas">↻</button>
-          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="purchases" title="Compras">🛒</button>
-          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="replacements" title="Reemplazos">⇄</button>
+          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="recharges" title="Recargas">&#8635;</button>
+          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="purchases" title="Compras">&#128722;</button>
+          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="replacements" title="Reemplazos">&#8646;</button>
         </div>
       </div>
     </section>
@@ -423,7 +452,7 @@ function renderActiveCardDetail(device) {
   const sensitiveVisible = isSensitiveUnlocked(device.id);
   const numberText = sensitiveVisible ? String(activeCard.number || "") : maskCardNumber(activeCard.number);
   const cvvText = sensitiveVisible ? String(activeCard.cvv || "--") : "***";
-  const unlockLabel = sensitiveVisible ? `Ocultar en ${getSensitiveCountdown(device.id)}s` : "Desbloquear";
+  const unlockLabel = sensitiveVisible ? "Ocultar datos" : "Desbloquear";
   const cooldownLabel = getCooldownLabel(activeCard);
 
   const productCards = PRODUCT_ORDER.map((productKey) => {
@@ -431,6 +460,7 @@ function renderActiveCardDetail(device) {
     if (!rule) {
       return "";
     }
+
     const count = getCardDisplayedCount(activeCard, productKey);
     const isBlocked = productKey === "epic" && isCooldownActive(activeCard);
     return `
@@ -559,7 +589,7 @@ function renderControlTab() {
       </div>
     </div>
 
-    <section class="actions-grid">
+    <section class="actions-grid control-actions-grid">
       <form class="action-card compact-action-card" data-action="recharge" data-device-id="${escapeHtml(device.id)}">
         <h3>Agregar saldo</h3>
         <div class="compact-action-row">
@@ -568,17 +598,10 @@ function renderControlTab() {
         </div>
       </form>
 
-      <form class="action-card compact-action-card" data-action="pending-used" data-device-id="${escapeHtml(device.id)}">
+      <section class="action-card compact-action-card used-summary-card">
         <h3>Saldo usado</h3>
-        <div class="compact-action-row">
-          <input name="amount" type="number" min="0" step="0.01" placeholder="Monto usado" required>
-          <button type="submit">Sumar usado</button>
-        </div>
-      </form>
-
-      <section class="action-card compact-action-card deduct-card">
-        <h3>Descuento final</h3>
-        <p>Descarga el saldo usado y lo manda al historial de compras.</p>
+        <strong class="used-summary-amount">${escapeHtml(formatMoney(device.pendingUsed))}</strong>
+        <p>Este monto se descuenta y pasa al historial de compras.</p>
         <button type="button" data-action="deduct-pending" data-device-id="${escapeHtml(device.id)}">Restar saldo usado</button>
       </section>
     </section>
@@ -650,7 +673,7 @@ function renderModal() {
               <h3>${escapeHtml(titleMap[modal.historyType] || "Historial")}</h3>
               <p>${escapeHtml(device?.title || "")}</p>
             </div>
-            <button class="modal-close" type="button" data-action="close-modal">✕</button>
+            <button class="modal-close" type="button" data-action="close-modal">&times;</button>
           </div>
           <div class="modal-history-content">
             ${entries.length ? entries.map((entry) => `
@@ -679,7 +702,7 @@ function renderModal() {
               <h3>${escapeHtml(modal.needsCreate ? "Crear PIN sensible" : "Desbloquear datos sensibles")}</h3>
               <p>${escapeHtml(modal.needsCreate ? "Crea un PIN local de 6 digitos para este navegador." : "Ingresa tu PIN de 6 digitos para ver numero y CVV por 30 segundos.")}</p>
             </div>
-            <button class="modal-close" type="button" data-action="close-modal">✕</button>
+            <button class="modal-close" type="button" data-action="close-modal">&times;</button>
           </div>
           <form class="modal-form" data-action="submit-pin" data-device-id="${escapeHtml(modal.deviceId)}">
             <input name="pin" type="password" inputmode="numeric" maxlength="6" placeholder="PIN de 6 digitos" required>
@@ -705,7 +728,7 @@ function renderModal() {
               <h3>${escapeHtml(modal.title)}</h3>
               <p>Actualiza los datos clave de la tarjeta.</p>
             </div>
-            <button class="modal-close" type="button" data-action="close-modal">✕</button>
+            <button class="modal-close" type="button" data-action="close-modal">&times;</button>
           </div>
           <form class="modal-form" data-action="${escapeHtml(modal.type)}" data-device-id="${escapeHtml(modal.deviceId)}" data-card-id="${escapeHtml(modal.cardId)}">
             <input name="number" type="text" placeholder="Numero de tarjeta" value="${escapeHtml(modal.values.number)}" required>
@@ -733,7 +756,7 @@ function renderModal() {
               <h3>${escapeHtml(modal.title)}</h3>
               <p>Guarda observaciones internas para la tarjeta activa.</p>
             </div>
-            <button class="modal-close" type="button" data-action="close-modal">✕</button>
+            <button class="modal-close" type="button" data-action="close-modal">&times;</button>
           </div>
           <form class="modal-form" data-action="save-notes" data-device-id="${escapeHtml(modal.deviceId)}" data-card-id="${escapeHtml(modal.cardId)}">
             <textarea name="notes" placeholder="Escribe aqui tus notas">${escapeHtml(modal.values.notes)}</textarea>
@@ -750,7 +773,14 @@ function renderModal() {
 }
 
 function render() {
-  renderDeviceList();
+  document.body.classList.toggle("speeches-mode", state.selectedTab === "speeches");
+
+  if (state.selectedTab === "speeches") {
+    deviceList.innerHTML = "";
+  } else {
+    renderDeviceList();
+  }
+
   tabControl.classList.toggle("active", state.selectedTab === "control");
   tabSpeeches.classList.toggle("active", state.selectedTab === "speeches");
 
@@ -761,27 +791,6 @@ function render() {
   }
 
   renderModal();
-}
-
-function startCountdownTicker() {
-  if (countdownTimer) {
-    clearInterval(countdownTimer);
-  }
-
-  countdownTimer = setInterval(() => {
-    const now = Date.now();
-    let changed = false;
-    Object.keys(state.sensitiveUnlockedUntilByDevice).forEach((deviceId) => {
-      if (Number(state.sensitiveUnlockedUntilByDevice[deviceId]) <= now) {
-        delete state.sensitiveUnlockedUntilByDevice[deviceId];
-        changed = true;
-      }
-    });
-
-    if (changed || Object.keys(state.sensitiveUnlockedUntilByDevice).length) {
-      render();
-    }
-  }, 1000);
 }
 
 function serializeForm(form) {
@@ -829,6 +838,7 @@ document.addEventListener("click", async (event) => {
     const deviceId = button.dataset.deviceId;
     if (isSensitiveUnlocked(deviceId)) {
       delete state.sensitiveUnlockedUntilByDevice[deviceId];
+      scheduleUnlockExpiryCheck();
       render();
       return;
     }
@@ -906,7 +916,7 @@ document.addEventListener("submit", async (event) => {
     return;
   }
 
-  if (action === "pending-used" || action === "custom-amount") {
+  if (action === "custom-amount") {
     await sendMutation(`/api/devices/${form.dataset.deviceId}/pending-used`, {
       amount: Number(values.amount || 0),
     });
@@ -988,5 +998,5 @@ themeToggle.addEventListener("click", toggleTheme);
 reloadButton.addEventListener("click", loadState);
 
 initTheme();
-startCountdownTicker();
+scheduleUnlockExpiryCheck();
 loadState();

@@ -220,6 +220,14 @@ button:focus-visible {
   align-items: start;
 }
 
+body.speeches-mode .layout {
+  grid-template-columns: 1fr;
+}
+
+body.speeches-mode .sidebar {
+  display: none;
+}
+
 .panel {
   padding: 18px;
 }
@@ -311,6 +319,10 @@ button:focus-visible {
   align-items: stretch;
 }
 
+.control-actions-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .action-card {
   display: grid;
   gap: 12px;
@@ -340,6 +352,17 @@ button:focus-visible {
 .compact-action-row button,
 .deduct-card button {
   min-width: 148px;
+}
+
+.used-summary-card {
+  align-content: start;
+}
+
+.used-summary-amount {
+  display: block;
+  font-size: 1.85rem;
+  line-height: 1;
+  letter-spacing: 0.01em;
 }
 
 .action-card p {
