@@ -1,0 +1,6 @@
+logs/
+backend/data/*.tmp
+backend/data/*.bak
+backend/data/*.old
+.DS_Store
+Thumbs.db

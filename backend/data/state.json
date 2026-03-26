@@ -1,0 +1,1788 @@
+{
+  "meta": {
+    "updatedAt": "2026-03-26T11:19:11.098Z",
+    "revision": 51
+  },
+  "devices": [
+    {
+      "id": "16vt88e5",
+      "title": "IPHONE 12 PRO FREDDY - HADI",
+      "note": "",
+      "createdAt": "2025-12-12",
+      "availableBalance": 1910.1,
+      "pendingUsed": 237,
+      "extraUsed": 0,
+      "lastCustomAmount": 0,
+      "lastDeducted": 89.9,
+      "carryoverBalance": 0,
+      "balanceLimitCurrent": 750,
+      "limitCycleMonth": "2026-03",
+      "activeCardOrder": 3,
+      "lastRechargeAt": "2026-03-26",
+      "lastRechargeAmount": 2000,
+      "rechargeHistory": [
+        {
+          "id": "oq0hvvr3",
+          "amount": 2000,
+          "date": "2026-03-26",
+          "balanceAfter": 2000,
+          "limitAfter": 750
+        }
+      ],
+      "purchaseHistory": [
+        {
+          "id": "g9mwd69t",
+          "at": "2026-03-26T09:05:50.264Z",
+          "productKey": "crunchy",
+          "productName": "Crunchyroll",
+          "amount": 89.9,
+          "note": "+25"
+        }
+      ],
+      "pendingLedger": [],
+      "cards": [
+        {
+          "id": "wzoopcac",
+          "order": 2,
+          "orderLabel": "Tarjeta 2",
+          "number": "533330521111",
+          "createdAt": "2026-03-21",
+          "expiry": "05/22",
+          "cvv": "004",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "cotmu7cj",
+          "order": 3,
+          "orderLabel": "Tarjeta 3",
+          "number": "533330215454545",
+          "createdAt": "2026-03-20",
+          "expiry": "22/06",
+          "cvv": "123",
+          "archived": true,
+          "resetAt": "220693",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 1
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": "tarjeta vinculada a cuenta xxxxx@gmail.com"
+        },
+        {
+          "id": "d0v20lee",
+          "order": 1,
+          "orderLabel": "Tarjeta 1",
+          "number": "53330502454545",
+          "createdAt": "2026-03-21",
+          "expiry": "55/55",
+          "cvv": "111",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "card-dwmxe21n-1774523656956",
+          "order": 3,
+          "orderLabel": "Tarjeta 3",
+          "number": "1234567812345678",
+          "createdAt": "220693",
+          "expiry": "2206",
+          "cvv": "123",
+          "archived": true,
+          "resetAt": "220693",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "card-u1ifyoqz-1774523674398",
+          "order": 3,
+          "orderLabel": "Tarjeta 3",
+          "number": "1234567887654321",
+          "createdAt": "220693",
+          "expiry": "2206",
+          "cvv": "123",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 3,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "mx73g1gs",
+      "title": "SAMSUNG FREDDY - HADI",
+      "note": "",
+      "createdAt": "2026-01-22",
+      "availableBalance": 1556.1,
+      "pendingUsed": 0,
+      "extraUsed": 0,
+      "lastCustomAmount": 0,
+      "lastDeducted": 250,
+      "carryoverBalance": 0,
+      "balanceLimitCurrent": 1193.9,
+      "limitCycleMonth": "2026-03",
+      "activeCardOrder": 1,
+      "lastRechargeAt": "2026-03-20",
+      "lastRechargeAmount": 2000,
+      "rechargeHistory": [
+        {
+          "id": "95imymfz",
+          "amount": 2000,
+          "date": "2026-03-20",
+          "balanceAfter": 2000,
+          "limitAfter": 750
+        },
+        {
+          "id": "dsmqrj04",
+          "amount": 300,
+          "date": "2026-03-20",
+          "balanceAfter": 300,
+          "limitAfter": 44.5
+        },
+        {
+          "id": "vwy61dcp",
+          "amount": 100,
+          "date": "2026-03-20",
+          "balanceAfter": 2405.5,
+          "limitAfter": 344.5
+        },
+        {
+          "id": "is30rv1u",
+          "amount": 2300,
+          "date": "2026-03-20",
+          "balanceAfter": 2305.5,
+          "limitAfter": 444.5
+        },
+        {
+          "id": "590mltnf",
+          "amount": 255,
+          "date": "2026-03-20",
+          "balanceAfter": 5.5,
+          "limitAfter": 2744.5
+        }
+      ],
+      "purchaseHistory": [
+        {
+          "id": "gpdh73mf",
+          "at": "2026-03-25T23:24:39.042Z",
+          "productKey": "custom",
+          "productName": "Otro monto",
+          "amount": 250,
+          "note": "Monto libre"
+        },
+        {
+          "id": "mgrl25fz",
+          "at": "2026-03-25T23:24:19.210Z",
+          "productKey": "crunchy",
+          "productName": "Crunchyroll",
+          "amount": 89.9,
+          "note": "+25"
+        },
+        {
+          "id": "5piipwl7",
+          "at": "2026-03-25T23:24:19.210Z",
+          "productKey": "custom",
+          "productName": "Otro monto",
+          "amount": 25,
+          "note": "Monto libre"
+        },
+        {
+          "id": "5e5oirq0",
+          "at": "2026-03-25T23:23:55.796Z",
+          "productKey": "epic",
+          "productName": "Crew Fortnite",
+          "amount": 79,
+          "note": "Tarjeta 1"
+        },
+        {
+          "id": "56mru4q0",
+          "at": "2026-03-20T23:14:12.807Z",
+          "productKey": "epic",
+          "productName": "Crew Fortnite",
+          "amount": 79,
+          "note": "Tarjeta 1"
+        },
+        {
+          "id": "cf8ovakk",
+          "at": "2026-03-20T23:14:12.807Z",
+          "productKey": "custom",
+          "productName": "Otro monto",
+          "amount": 2300,
+          "note": "Monto libre"
+        }
+      ],
+      "pendingLedger": [],
+      "cards": [
+        {
+          "id": "4g0srpp8",
+          "order": 1,
+          "orderLabel": "Tarjeta 1",
+          "number": "5383990288961210",
+          "createdAt": "2026-02-22",
+          "expiry": "20/10",
+          "cvv": "555",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 1,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 1
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "iby16ehw",
+          "order": 2,
+          "orderLabel": "Tarjeta 2",
+          "number": "5383990279685281",
+          "createdAt": "2026-03-01",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "2026-03-20T02:44:21.795Z",
+          "notes": ""
+        },
+        {
+          "id": "19m3shuz",
+          "order": 3,
+          "orderLabel": "Tarjeta 3",
+          "number": "5383990249332378",
+          "createdAt": "2026-01-31",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "cl6gh7yz",
+      "title": "SAMSUNG FREDDY - HADI ISLAND",
+      "note": "",
+      "createdAt": "2026-01-02",
+      "availableBalance": 515.08,
+      "pendingUsed": 0,
+      "extraUsed": 0,
+      "lastCustomAmount": 0,
+      "lastDeducted": 0,
+      "carryoverBalance": 0,
+      "balanceLimitCurrent": 2234.92,
+      "limitCycleMonth": "2026-03",
+      "activeCardOrder": 1,
+      "lastRechargeAt": "2026-03-14",
+      "lastRechargeAmount": 1000,
+      "rechargeHistory": [
+        {
+          "id": "g5f5uq4e",
+          "amount": 1000,
+          "date": "2026-03-14",
+          "balanceAfter": 515.08,
+          "limitAfter": 2234.92
+        }
+      ],
+      "purchaseHistory": [],
+      "pendingLedger": [],
+      "cards": [
+        {
+          "id": "i0v8p93h",
+          "order": 1,
+          "orderLabel": "Tarjeta 1",
+          "number": "5383990205683400",
+          "createdAt": "2026-02-04",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "11jaw99b",
+          "order": 2,
+          "orderLabel": "Tarjeta 2",
+          "number": "5383990225387347",
+          "createdAt": "2026-02-15",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "3sixoqiw",
+          "order": 3,
+          "orderLabel": "Tarjeta 3",
+          "number": "5383990237829435",
+          "createdAt": "2026-03-12",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "a9slvtnf",
+      "title": "XIAOMI DIEGO - HADI",
+      "note": "",
+      "createdAt": "2026-01-02",
+      "availableBalance": 588.13,
+      "pendingUsed": 0,
+      "extraUsed": 0,
+      "lastCustomAmount": 0,
+      "lastDeducted": 0,
+      "carryoverBalance": 0,
+      "balanceLimitCurrent": 2161.87,
+      "limitCycleMonth": "2026-03",
+      "activeCardOrder": 1,
+      "lastRechargeAt": "2026-03-14",
+      "lastRechargeAmount": 500,
+      "rechargeHistory": [
+        {
+          "id": "tn3rbjxx",
+          "amount": 500,
+          "date": "2026-03-14",
+          "balanceAfter": 588.13,
+          "limitAfter": 2161.87
+        }
+      ],
+      "purchaseHistory": [],
+      "pendingLedger": [],
+      "cards": [
+        {
+          "id": "9e2l6545",
+          "order": 1,
+          "orderLabel": "Tarjeta 1",
+          "number": "5383990258359411",
+          "createdAt": "2026-02-16",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "70bs9mh4",
+          "order": 2,
+          "orderLabel": "Tarjeta 2",
+          "number": "5383990272929165",
+          "createdAt": "2026-02-25",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "ra1w8far",
+          "order": 3,
+          "orderLabel": "Tarjeta 3",
+          "number": "5383990254963232",
+          "createdAt": "2026-01-09",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "ghfxhq93",
+      "title": "XIAOMI DIEGO - HADI ISLAND",
+      "note": "",
+      "createdAt": "2026-01-02",
+      "availableBalance": 406.13,
+      "pendingUsed": 0,
+      "extraUsed": 0,
+      "lastCustomAmount": 0,
+      "lastDeducted": 0,
+      "carryoverBalance": 0,
+      "balanceLimitCurrent": 2343.87,
+      "limitCycleMonth": "2026-03",
+      "activeCardOrder": 1,
+      "lastRechargeAt": "2026-03-14",
+      "lastRechargeAmount": 500,
+      "rechargeHistory": [
+        {
+          "id": "hckqbxs8",
+          "amount": 500,
+          "date": "2026-03-14",
+          "balanceAfter": 406.13,
+          "limitAfter": 2343.87
+        }
+      ],
+      "purchaseHistory": [],
+      "pendingLedger": [],
+      "cards": [
+        {
+          "id": "s9nr6z8h",
+          "order": 1,
+          "orderLabel": "Tarjeta 1",
+          "number": "5383990236060800",
+          "createdAt": "2026-02-02",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "ezh7r52e",
+          "order": 2,
+          "orderLabel": "Tarjeta 2",
+          "number": "5383990256538909",
+          "createdAt": "2026-02-06",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "65a5re2o",
+          "order": 3,
+          "orderLabel": "Tarjeta 3",
+          "number": "5383990273193571",
+          "createdAt": "2026-02-16",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "rtdurar5",
+      "title": "XIAOMI PAPA - HADI",
+      "note": "",
+      "createdAt": "2026-01-02",
+      "availableBalance": 529.12,
+      "pendingUsed": 0,
+      "extraUsed": 0,
+      "lastCustomAmount": 0,
+      "lastDeducted": 0,
+      "carryoverBalance": 0,
+      "balanceLimitCurrent": 2220.88,
+      "limitCycleMonth": "2026-03",
+      "activeCardOrder": 1,
+      "lastRechargeAt": "2026-03-17",
+      "lastRechargeAmount": 500,
+      "rechargeHistory": [
+        {
+          "id": "ryv61ul1",
+          "amount": 500,
+          "date": "2026-03-17",
+          "balanceAfter": 529.12,
+          "limitAfter": 2220.88
+        }
+      ],
+      "purchaseHistory": [],
+      "pendingLedger": [],
+      "cards": [
+        {
+          "id": "p2zo41lt",
+          "order": 1,
+          "orderLabel": "Tarjeta 1",
+          "number": "5383990246326589",
+          "createdAt": "2026-03-09",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "haajyzbt",
+          "order": 2,
+          "orderLabel": "Tarjeta 2",
+          "number": "5383990280583467",
+          "createdAt": "2026-02-06",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "pvy251j9",
+          "order": 3,
+          "orderLabel": "Tarjeta 3",
+          "number": "5383990250806096",
+          "createdAt": "2026-02-19",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "b6pqtsrh",
+      "title": "XIAOMI PAPA - HADI ISLAND",
+      "note": "",
+      "createdAt": "2026-01-10",
+      "availableBalance": 534.12,
+      "pendingUsed": 0,
+      "extraUsed": 0,
+      "lastCustomAmount": 0,
+      "lastDeducted": 0,
+      "carryoverBalance": 0,
+      "balanceLimitCurrent": 2215.88,
+      "limitCycleMonth": "2026-03",
+      "activeCardOrder": 1,
+      "lastRechargeAt": "2026-03-17",
+      "lastRechargeAmount": 500,
+      "rechargeHistory": [
+        {
+          "id": "6baa55tc",
+          "amount": 500,
+          "date": "2026-03-17",
+          "balanceAfter": 534.12,
+          "limitAfter": 2215.88
+        }
+      ],
+      "purchaseHistory": [],
+      "pendingLedger": [],
+      "cards": [
+        {
+          "id": "lojoq8ff",
+          "order": 1,
+          "orderLabel": "Tarjeta 1",
+          "number": "5383990216681112",
+          "createdAt": "2026-03-17",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "r9ig87pe",
+          "order": 2,
+          "orderLabel": "Tarjeta 2",
+          "number": "5383990203757503",
+          "createdAt": "2026-02-19",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "ci8p4svq",
+          "order": 3,
+          "orderLabel": "Tarjeta 3",
+          "number": "5383990244405153",
+          "createdAt": "2026-02-26",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "ztrnvo25",
+      "title": "HUAWEI - HADI",
+      "note": "",
+      "createdAt": "2025-12-29",
+      "availableBalance": 77,
+      "pendingUsed": 0,
+      "extraUsed": 0,
+      "lastCustomAmount": 0,
+      "lastDeducted": 0,
+      "carryoverBalance": 0,
+      "balanceLimitCurrent": 2673,
+      "limitCycleMonth": "2026-03",
+      "activeCardOrder": 1,
+      "lastRechargeAt": "2026-01-31",
+      "lastRechargeAmount": 1500,
+      "rechargeHistory": [
+        {
+          "id": "n51xcxpo",
+          "amount": 1500,
+          "date": "2026-01-31",
+          "balanceAfter": 77,
+          "limitAfter": 2673
+        }
+      ],
+      "purchaseHistory": [],
+      "pendingLedger": [],
+      "cards": [
+        {
+          "id": "yczn4ctg",
+          "order": 1,
+          "orderLabel": "Tarjeta 1",
+          "number": "5383990246544702",
+          "createdAt": "2026-01-30",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "6a2xsdkt",
+          "order": 2,
+          "orderLabel": "Tarjeta 2",
+          "number": "5383990298341569",
+          "createdAt": "2026-02-03",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "4ycowdz9",
+          "order": 3,
+          "orderLabel": "Tarjeta 3",
+          "number": "5383990215249598",
+          "createdAt": "2026-02-06",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "n44zrsnq",
+      "title": "HUAWEI - HADI ISLAND",
+      "note": "",
+      "createdAt": "2026-01-10",
+      "availableBalance": 42.07,
+      "pendingUsed": 0,
+      "extraUsed": 0,
+      "lastCustomAmount": 0,
+      "lastDeducted": 0,
+      "carryoverBalance": 0,
+      "balanceLimitCurrent": 2707.93,
+      "limitCycleMonth": "2026-03",
+      "activeCardOrder": 1,
+      "lastRechargeAt": "2026-02-04",
+      "lastRechargeAmount": 1500,
+      "rechargeHistory": [
+        {
+          "id": "65eay86v",
+          "amount": 1500,
+          "date": "2026-02-04",
+          "balanceAfter": 42.07,
+          "limitAfter": 2707.93
+        }
+      ],
+      "purchaseHistory": [],
+      "pendingLedger": [],
+      "cards": [
+        {
+          "id": "u06uy9pm",
+          "order": 1,
+          "orderLabel": "Tarjeta 1",
+          "number": "5383990208792596",
+          "createdAt": "2026-02-10",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "s28tos7v",
+          "order": 2,
+          "orderLabel": "Tarjeta 2",
+          "number": "538399******2422",
+          "createdAt": "2026-01-15",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "fdfs9y5w",
+          "order": 3,
+          "orderLabel": "Tarjeta 3",
+          "number": "5383990237127376",
+          "createdAt": "2026-01-21",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "rr18xofj",
+      "title": "XIAOMI MAMA - HADI",
+      "note": "",
+      "createdAt": "2026-01-10",
+      "availableBalance": 279.08,
+      "pendingUsed": 0,
+      "extraUsed": 0,
+      "lastCustomAmount": 0,
+      "lastDeducted": 0,
+      "carryoverBalance": 0,
+      "balanceLimitCurrent": 2470.92,
+      "limitCycleMonth": "2026-03",
+      "activeCardOrder": 1,
+      "lastRechargeAt": "2026-03-17",
+      "lastRechargeAmount": 500,
+      "rechargeHistory": [
+        {
+          "id": "2mbb6njz",
+          "amount": 500,
+          "date": "2026-03-17",
+          "balanceAfter": 279.08,
+          "limitAfter": 2470.92
+        }
+      ],
+      "purchaseHistory": [],
+      "pendingLedger": [],
+      "cards": [
+        {
+          "id": "dnypul62",
+          "order": 1,
+          "orderLabel": "Tarjeta 1",
+          "number": "5383990200789640",
+          "createdAt": "2026-03-17",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "nshsuhnv",
+          "order": 2,
+          "orderLabel": "Tarjeta 2",
+          "number": "5383990264912021",
+          "createdAt": "2026-02-16",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "hbtq04q5",
+          "order": 3,
+          "orderLabel": "Tarjeta 3",
+          "number": "5383990243267596",
+          "createdAt": "2026-02-26",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "36z673dx",
+      "title": "XIAOMI MAMA - HADI ISLAND",
+      "note": "",
+      "createdAt": "2026-01-10",
+      "availableBalance": 285.15,
+      "pendingUsed": 0,
+      "extraUsed": 0,
+      "lastCustomAmount": 0,
+      "lastDeducted": 0,
+      "carryoverBalance": 0,
+      "balanceLimitCurrent": 2464.85,
+      "limitCycleMonth": "2026-03",
+      "activeCardOrder": 1,
+      "lastRechargeAt": "2026-03-17",
+      "lastRechargeAmount": 500,
+      "rechargeHistory": [
+        {
+          "id": "g40tht6u",
+          "amount": 500,
+          "date": "2026-03-17",
+          "balanceAfter": 285.15,
+          "limitAfter": 2464.85
+        }
+      ],
+      "purchaseHistory": [],
+      "pendingLedger": [],
+      "cards": [
+        {
+          "id": "0ibk4mzc",
+          "order": 1,
+          "orderLabel": "Tarjeta 1",
+          "number": "5383990279970568",
+          "createdAt": "2026-03-17",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "fxaaxkgi",
+          "order": 2,
+          "orderLabel": "Tarjeta 2",
+          "number": "5383990207917467",
+          "createdAt": "2026-02-17",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "t5ro0waf",
+          "order": 3,
+          "orderLabel": "Tarjeta 3",
+          "number": "5383990269880280",
+          "createdAt": "2026-02-26",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "4a30g806",
+      "title": "HONOR MAMA - HADI",
+      "note": "",
+      "createdAt": "2026-01-22",
+      "availableBalance": 51,
+      "pendingUsed": 0,
+      "extraUsed": 0,
+      "lastCustomAmount": 0,
+      "lastDeducted": 0,
+      "carryoverBalance": 0,
+      "balanceLimitCurrent": 2699,
+      "limitCycleMonth": "2026-03",
+      "activeCardOrder": 1,
+      "lastRechargeAt": "2026-02-15",
+      "lastRechargeAmount": 1000,
+      "rechargeHistory": [
+        {
+          "id": "lfo05t1j",
+          "amount": 1000,
+          "date": "2026-02-15",
+          "balanceAfter": 51,
+          "limitAfter": 2699
+        }
+      ],
+      "purchaseHistory": [],
+      "pendingLedger": [],
+      "cards": [
+        {
+          "id": "i8a6ryb8",
+          "order": 1,
+          "orderLabel": "Tarjeta 1",
+          "number": "5383990287614042",
+          "createdAt": "2026-02-22",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "fj8wgnc1",
+          "order": 2,
+          "orderLabel": "Tarjeta 2",
+          "number": "5383990254191255",
+          "createdAt": "2026-03-13",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "f88fo7jt",
+          "order": 3,
+          "orderLabel": "Tarjeta 3",
+          "number": "5383990296661588",
+          "createdAt": "2026-02-15",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "gsktx6dx",
+      "title": "HONOR MAMA - HADI ISLAND",
+      "note": "",
+      "createdAt": "2026-01-22",
+      "availableBalance": 78.01,
+      "pendingUsed": 0,
+      "extraUsed": 0,
+      "lastCustomAmount": 0,
+      "lastDeducted": 0,
+      "carryoverBalance": 0,
+      "balanceLimitCurrent": 2671.99,
+      "limitCycleMonth": "2026-03",
+      "activeCardOrder": 1,
+      "lastRechargeAt": "2026-02-22",
+      "lastRechargeAmount": 500,
+      "rechargeHistory": [
+        {
+          "id": "7qvqmevz",
+          "amount": 500,
+          "date": "2026-02-22",
+          "balanceAfter": 78.01,
+          "limitAfter": 2671.99
+        }
+      ],
+      "purchaseHistory": [],
+      "pendingLedger": [],
+      "cards": [
+        {
+          "id": "2nmkgf6e",
+          "order": 1,
+          "orderLabel": "Tarjeta 1",
+          "number": "5383990253806648",
+          "createdAt": "2026-02-22",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "vgbkwtlr",
+          "order": 2,
+          "orderLabel": "Tarjeta 2",
+          "number": "5383990270947664",
+          "createdAt": "2026-03-12",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "d4d2kuhg",
+          "order": 3,
+          "orderLabel": "Tarjeta 3",
+          "number": "5383990217693181",
+          "createdAt": "2026-02-03",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "jekhm6mu",
+      "title": "IPHONE 12 PRO BRYAN",
+      "note": "",
+      "createdAt": "2025-12-15",
+      "availableBalance": 56,
+      "pendingUsed": 0,
+      "extraUsed": 0,
+      "lastCustomAmount": 0,
+      "lastDeducted": 0,
+      "carryoverBalance": 0,
+      "balanceLimitCurrent": 2694,
+      "limitCycleMonth": "2026-03",
+      "activeCardOrder": 1,
+      "lastRechargeAt": "2026-01-29",
+      "lastRechargeAmount": 1500,
+      "rechargeHistory": [
+        {
+          "id": "jaf6vwld",
+          "amount": 1500,
+          "date": "2026-01-29",
+          "balanceAfter": 56,
+          "limitAfter": 2694
+        }
+      ],
+      "purchaseHistory": [],
+      "pendingLedger": [],
+      "cards": [
+        {
+          "id": "0alyc8sm",
+          "order": 1,
+          "orderLabel": "Tarjeta 1",
+          "number": "5383990242299897",
+          "createdAt": "2026-01-31",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "arwz9u0w",
+          "order": 2,
+          "orderLabel": "Tarjeta 2",
+          "number": "5383990259692729",
+          "createdAt": "2026-02-03",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
+          "id": "pw1kl58k",
+          "order": 3,
+          "orderLabel": "Tarjeta 3",
+          "number": "5383990269764278",
+          "createdAt": "2026-02-06",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "speeches": {
+    "fortnite": {
+      "primary": "🎮 *¡Club de Fortnite disponible!*\n━━━━━━━━━━━━━━━━━━\n🖥️ Vía Epic Games (PC/PS/XBOX/Nintendo/Android) cambiando solo la región 🌍 (no afecta el juego).\n\n📌 *REQUISITOS:*\n1️⃣ No haber cambiado de región en los últimos 6 meses.\n2️⃣ Correo activo. 📧\n3️⃣ Si compraste el Club vía Xbox, debes tener acceso a esa cuenta por si se requiere. 🔐\n\n💸 *PRECIOS VÍA EPIC GAMES*\n💰 Usuarios SIN código → *S/23.90*\n🔥 Usando código de creador: Kidme → *S/19.90*\n━━━━━━━━━━━━━━━━━━\n🎮 *¡Club de Fortnite disponible!*\n🎮 Vía Xbox (PC/PS/XBOX/Nintendo/Android)\n\n📌 *REQUISITOS:*\n1️⃣ Cuenta no vinculada a Xbox (o disponible para nueva vinculación).\n2️⃣ Acceso al correo principal de Epic Games. 📧\n\n💸 *PRECIOS VÍA XBOX*\n🔥 *Usando código:* Kidme\n*1 mes → *S/14.90*\n*3 meses → *S/29.90*\n*6 meses → *S/49.90*\n💰 *SIN código:*\n*1 mes → *S/17.90*\n*3 meses → *S/34.90*\n*6 meses → *S/64.90*",
+      "secondary": ""
+    },
+    "cuentas": {
+      "primary": "",
+      "secondary": ""
+    },
+    "discord": {
+      "primary": "",
+      "secondary": ""
+    },
+    "roblox": {
+      "primary": "",
+      "secondary": ""
+    },
+    "wildrift": {
+      "primary": "",
+      "secondary": ""
+    },
+    "tft": {
+      "primary": "",
+      "secondary": ""
+    },
+    "chill-vibes": {
+      "primary": "",
+      "secondary": ""
+    },
+    "saldo-xbox": {
+      "primary": "🎮 *¡Club de Fortnite disponible!*\n━━━━━━━━━━━━━━━━━━\n🖥️ Vía Epic Games (PC/PS/XBOX/Nintendo/Android) cambiando solo la región 🌍 (no afecta el juego).\n\n📌 *REQUISITOS:*\n1️⃣ No haber cambiado de región en los últimos 6 meses.\n2️⃣ Correo activo. 📧\n3️⃣ Si compraste el Club vía Xbox, debes tener acceso a esa cuenta por si se requiere. 🔐\n\n💸 *PRECIOS VÍA EPIC GAMES*\n💰 Usuarios SIN código → *S/23.90*\n🔥 Usando código de creador: Kidme → *S/19.90*\n━━━━━━━━━━━━━━━━━━\n🎮 *¡Club de Fortnite disponible!*\n🎮 Vía Xbox (PC/PS/XBOX/Nintendo/Android)\n\n📌 *REQUISITOS:*\n1️⃣ Cuenta no vinculada a Xbox (o disponible para nueva vinculación).\n2️⃣ Acceso al correo principal de Epic Games. 📧\n\n💸 *PRECIOS VÍA XBOX*\n🔥 *Usando código:* Kidme\n*1 mes → *S/14.90*\n*3 meses → *S/29.90*\n*6 meses → *S/49.90*\n💰 *SIN código:*\n*1 mes → *S/17.90*\n*3 meses → *S/34.90*\n*6 meses → *S/64.90*",
+      "secondary": ""
+    },
+    "marvel-rivals": {
+      "primary": "",
+      "secondary": ""
+    },
+    "rocket-league": {
+      "primary": "",
+      "secondary": ""
+    }
+  }
+}

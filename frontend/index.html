@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Panel Compras Web</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero">
+        <div>
+          <p class="kicker">VERSION WEB</p>
+          <h1>Panel Compras</h1>
+          <p class="copy">Base nueva para migrar la logica de tarjetas a navegador.</p>
+        </div>
+        <div class="actions">
+          <button id="themeToggle" type="button">Tema claro</button>
+          <span id="connectionBadge" class="badge">Sin conectar</span>
+          <button id="reloadButton" type="button">Recargar</button>
+        </div>
+      </header>
+
+      <nav class="top-tabs">
+        <button id="tabControl" class="top-tab active" type="button">Control</button>
+        <button id="tabSpeeches" class="top-tab" type="button">Speeches</button>
+      </nav>
+
+      <section class="layout">
+        <aside class="panel sidebar">
+          <div class="panel-head">
+            <h2 id="sidebarTitle">Dispositivos</h2>
+          </div>
+          <div id="deviceList" class="device-list"></div>
+        </aside>
+
+        <section class="panel detail">
+          <div id="detailView" class="detail-view"></div>
+        </section>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
