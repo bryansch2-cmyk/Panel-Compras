@@ -1,4 +1,5 @@
 logs/
+backend/*.log
 backend/data/*.tmp
 backend/data/*.bak
 backend/data/*.old
