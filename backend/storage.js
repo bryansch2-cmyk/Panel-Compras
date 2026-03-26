@@ -1,10 +1,12 @@
 const fs = require("fs");
 const path = require("path");
 
+const LOCAL_DATA_DIR = path.join(__dirname, "data");
 const DATA_DIR = process.env.DATA_DIR
   ? path.resolve(process.env.DATA_DIR)
-  : path.join(__dirname, "data");
+  : LOCAL_DATA_DIR;
 const STATE_PATH = path.join(DATA_DIR, "state.json");
+const BUNDLED_STATE_PATH = path.join(LOCAL_DATA_DIR, "state.json");
 const DEVICE_BALANCE_CAP = 2750;
 const PRODUCT_RULES = [
   { key: "epic", label: "Epic", amount: 79, maxCount: 6 },
@@ -107,10 +109,37 @@ function createSeedState() {
   };
 }
 
+function isSeedLikeState(state) {
+  const devices = Array.isArray(state?.devices) ? state.devices : [];
+  if (devices.length !== 1) {
+    return false;
+  }
+
+  const firstDevice = devices[0];
+  return firstDevice?.id === "iphone-12-pro-bryan";
+}
+
+function loadBundledState() {
+  try {
+    if (!fs.existsSync(BUNDLED_STATE_PATH)) {
+      return null;
+    }
+    const raw = JSON.parse(fs.readFileSync(BUNDLED_STATE_PATH, "utf8"));
+    const normalized = normalizeState(raw);
+    return Array.isArray(normalized.devices) && normalized.devices.length ? normalized : null;
+  } catch (error) {
+    return null;
+  }
+}
+
 async function ensureStateFile() {
   await fs.promises.mkdir(DATA_DIR, { recursive: true });
   if (!fs.existsSync(STATE_PATH)) {
-    await fs.promises.writeFile(STATE_PATH, JSON.stringify(createSeedState(), null, 2), "utf8");
+    const initialState =
+      DATA_DIR !== LOCAL_DATA_DIR
+        ? (loadBundledState() || createSeedState())
+        : createSeedState();
+    await fs.promises.writeFile(STATE_PATH, JSON.stringify(initialState, null, 2), "utf8");
   }
 }
 
@@ -303,6 +332,17 @@ async function loadState() {
   await ensureStateFile();
   const raw = await fs.promises.readFile(STATE_PATH, "utf8");
   const normalized = normalizeState(JSON.parse(raw));
+  if (DATA_DIR !== LOCAL_DATA_DIR) {
+    const bundled = loadBundledState();
+    if (
+      bundled &&
+      bundled.devices.length > 1 &&
+      isSeedLikeState(normalized) &&
+      Number(normalized.meta?.revision || 0) === 0
+    ) {
+      return writeState(bundled);
+    }
+  }
   if (refreshAutomaticCardStates(normalized)) {
     return writeState(normalized);
   }
