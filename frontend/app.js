@@ -1,831 +1,992 @@
-const deviceList = document.querySelector("#deviceList");
-const detailView = document.querySelector("#detailView");
-const reloadButton = document.querySelector("#reloadButton");
-const connectionBadge = document.querySelector("#connectionBadge");
 const themeToggle = document.querySelector("#themeToggle");
+const connectionBadge = document.querySelector("#connectionBadge");
+const reloadButton = document.querySelector("#reloadButton");
 const tabControl = document.querySelector("#tabControl");
 const tabSpeeches = document.querySelector("#tabSpeeches");
-const sidebarTitle = document.querySelector("#sidebarTitle");
+const deviceList = document.querySelector("#deviceList");
+const detailView = document.querySelector("#detailView");
+const modalRoot = document.querySelector("#modalRoot");
+
+const PRODUCT_ORDER = ["epic", "xbox", "nitro", "nitroYear", "crunchy"];
+const SENSITIVE_PIN_KEY = "panel-compras-web-sensitive-pin";
+const SENSITIVE_UNLOCK_MS = 30_000;
+const THEME_KEY = "panel-compras-web-theme";
 
 const state = {
-  devices: [],
-  speeches: {},
+  data: null,
   constants: {
     deviceBalanceCap: 2750,
     productRules: [],
   },
-  currentView: "control",
-  selectedSpeechKey: "",
+  selectedTab: "control",
   selectedDeviceId: "",
-  selectedCardIdByDevice: {},
-  editingCardIdByDevice: {},
-  replacingCardIdByDevice: {},
-  notesCardIdByDevice: {},
-  openedHistoryByDevice: {},
+  selectedHistoryTypeByDevice: {},
+  sensitiveUnlockedUntilByDevice: {},
+  modal: null,
+  requestPending: false,
 };
 
-const THEME_STORAGE_KEY = "panel-compras-web-theme";
+let countdownTimer = null;
 
-const fallbackProductRules = [
-  { key: "epic", label: "Epic", amount: 79, maxCount: 6 },
-  { key: "xbox", label: "Xbox", amount: 79, maxCount: 2 },
-  { key: "nitro", label: "Nitro", amount: 104.99, maxCount: 3 },
-  { key: "nitroYear", label: "Nitro 1 ano", amount: 1049.99, maxCount: 2 },
-  { key: "crunchy", label: "Crunchy", amount: 89.9, maxCount: 0 },
-];
-const CARD_CYCLE_ORDERS = [1, 2, 3];
-
-const currencyFormatter = new Intl.NumberFormat("tr-TR", {
-  style: "currency",
-  currency: "TRY",
-  minimumFractionDigits: 2,
-});
-
-function getProductRules() {
-  return Array.isArray(state.constants.productRules) && state.constants.productRules.length
-    ? state.constants.productRules
-    : fallbackProductRules;
-}
-
-function formatCurrency(value) {
-  return currencyFormatter.format(Number(value || 0));
+function formatMoney(value) {
+  return new Intl.NumberFormat("es-PE", {
+    style: "currency",
+    currency: "PEN",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(Number(value || 0));
 }
 
 function formatDate(value) {
   if (!value) {
     return "--";
   }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return String(value);
+  }
+
   return new Intl.DateTimeFormat("es-PE", {
-    day: "2-digit",
-    month: "2-digit",
     year: "numeric",
-  }).format(new Date(value));
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date);
 }
 
 function formatDateTime(value) {
   if (!value) {
     return "--";
   }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return String(value);
+  }
+
   return new Intl.DateTimeFormat("es-PE", {
-    day: "2-digit",
-    month: "2-digit",
     year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
     hour: "2-digit",
     minute: "2-digit",
-    hour12: false,
-  }).format(new Date(value));
-}
-
-function maskCardNumber(value) {
-  const digits = String(value || "").replace(/\D/g, "");
-  if (!digits) {
-    return "****";
-  }
-  return `**** **** **** ${digits.slice(-4)}`;
+  }).format(date);
 }
 
 function getStoredTheme() {
-  try {
-    const stored = localStorage.getItem(THEME_STORAGE_KEY);
-    return stored === "light" ? "light" : "dark";
-  } catch (error) {
-    return "dark";
-  }
+  return localStorage.getItem(THEME_KEY) || "dark";
 }
 
 function applyTheme(theme) {
-  document.documentElement.setAttribute("data-theme", theme);
-  if (themeToggle) {
-    themeToggle.textContent = theme === "light" ? "Tema oscuro" : "Tema claro";
-  }
+  document.documentElement.dataset.theme = theme === "light" ? "light" : "dark";
+  themeToggle.textContent = theme === "light" ? "Tema oscuro" : "Tema claro";
+}
+
+function initTheme() {
+  applyTheme(getStoredTheme());
 }
 
 function toggleTheme() {
-  const nextTheme = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
-  try {
-    localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
-  } catch (error) {
-    // ignore storage failures
-  }
+  const nextTheme = document.documentElement.dataset.theme === "light" ? "dark" : "light";
+  localStorage.setItem(THEME_KEY, nextTheme);
   applyTheme(nextTheme);
 }
 
 function escapeHtml(value) {
-  return String(value || "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
-function findDevice(deviceId) {
-  return state.devices.find((device) => device.id === deviceId);
-}
-
-function getCards(device) {
-  return Array.isArray(device?.cards) ? device.cards.filter((card) => !card.archived) : [];
-}
-
-function getCycleCards(device) {
-  const activeOrder = CARD_CYCLE_ORDERS.includes(Number(device?.activeCardOrder))
-    ? Number(device.activeCardOrder)
-    : CARD_CYCLE_ORDERS[0];
-  const activeIndex = CARD_CYCLE_ORDERS.indexOf(activeOrder);
-
-  return getCards(device)
-    .filter((card) => CARD_CYCLE_ORDERS.includes(Number(card.order)))
-    .sort((left, right) => {
-      const leftIndex = CARD_CYCLE_ORDERS.indexOf(Number(left.order));
-      const rightIndex = CARD_CYCLE_ORDERS.indexOf(Number(right.order));
-      const shiftedLeft = (leftIndex - activeIndex + CARD_CYCLE_ORDERS.length) % CARD_CYCLE_ORDERS.length;
-      const shiftedRight = (rightIndex - activeIndex + CARD_CYCLE_ORDERS.length) % CARD_CYCLE_ORDERS.length;
-      return shiftedLeft - shiftedRight;
-    });
-}
-
-function getActiveCard(device) {
-  const activeOrder = CARD_CYCLE_ORDERS.includes(Number(device?.activeCardOrder))
-    ? Number(device.activeCardOrder)
-    : CARD_CYCLE_ORDERS[0];
-  return getCards(device).find((card) => Number(card.order) === activeOrder) || getCycleCards(device)[0] || null;
-}
-
-function getArchivedCards(device) {
-  return Array.isArray(device?.cards)
-    ? device.cards.filter((card) => card.archived).sort((a, b) => String(b.resetAt || "").localeCompare(String(a.resetAt || "")))
-    : [];
-}
-
-function getDisplayedCount(card, productKey) {
-  return Number(card?.baseCounts?.[productKey] || 0) + Number(card?.counts?.[productKey] || 0);
-}
-
-function isCardCooldownActive(card) {
-  return Boolean(card?.cooldownUntil) && new Date(card.cooldownUntil).getTime() > Date.now();
-}
-
-function formatCardStatus(card) {
-  const parts = [];
-  if (card?.rejectedAt) {
-    parts.push("Rechazada");
-  }
-  if (isCardCooldownActive(card)) {
-    parts.push(`24h hasta ${formatDateTime(card.cooldownUntil)}`);
-  }
-  return parts.join(" / ") || "Sin estado";
-}
-
-function getHistoryView(device) {
-  return state.openedHistoryByDevice[device.id] || "recharges";
-}
-
-async function request(pathname, payload) {
-  const options = payload
-    ? {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      }
-    : undefined;
-
-  const response = await fetch(pathname, options);
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data?.error || "request-failed");
-  }
-  return data;
-}
-
-async function loadState() {
-  connectionBadge.textContent = "Cargando...";
-  const data = await request("/api/state");
-  state.devices = Array.isArray(data.devices) ? data.devices : [];
-  state.speeches = data.speeches && typeof data.speeches === "object" ? data.speeches : {};
-  state.constants = data.constants || state.constants;
-
-  if (!findDevice(state.selectedDeviceId)) {
-    state.selectedDeviceId = state.devices[0]?.id || "";
+function maskCardNumber(number) {
+  const digits = String(number || "").replace(/\D/g, "");
+  if (!digits) {
+    return "**** **** **** ****";
   }
 
-  state.devices.forEach((device) => {
-    if (!state.selectedCardIdByDevice[device.id]) {
-      state.selectedCardIdByDevice[device.id] = getCards(device)[0]?.id || "";
-    }
-    if (!state.openedHistoryByDevice[device.id]) {
-      state.openedHistoryByDevice[device.id] = "none";
-    }
-  });
+  return `**** **** **** ${digits.slice(-4)}`;
+}
 
-  connectionBadge.textContent = "Backend activo";
+function last4(number) {
+  const digits = String(number || "").replace(/\D/g, "");
+  return digits ? digits.slice(-4) : "----";
+}
+
+function getStoredSensitivePin() {
+  return localStorage.getItem(SENSITIVE_PIN_KEY) || "";
+}
+
+function saveSensitivePin(pin) {
+  localStorage.setItem(SENSITIVE_PIN_KEY, pin);
+}
+
+function isSensitiveUnlocked(deviceId) {
+  return Number(state.sensitiveUnlockedUntilByDevice[deviceId] || 0) > Date.now();
+}
+
+function getSensitiveCountdown(deviceId) {
+  const until = Number(state.sensitiveUnlockedUntilByDevice[deviceId] || 0);
+  return Math.max(0, Math.ceil((until - Date.now()) / 1000));
+}
+
+function unlockSensitive(deviceId) {
+  state.sensitiveUnlockedUntilByDevice[deviceId] = Date.now() + SENSITIVE_UNLOCK_MS;
+  closeModal();
   render();
 }
 
-function getSpeechKeys() {
-  return Object.keys(state.speeches || {});
+function getDevices() {
+  return Array.isArray(state.data?.devices) ? state.data.devices : [];
 }
 
-function getSelectedSpeechKey() {
-  const keys = getSpeechKeys();
-  if (!keys.length) {
+function getSelectedDevice() {
+  const devices = getDevices();
+  if (!devices.length) {
+    return null;
+  }
+
+  if (!state.selectedDeviceId) {
+    return devices[0];
+  }
+
+  return devices.find((device) => device.id === state.selectedDeviceId) || devices[0];
+}
+
+function getVisibleCards(device) {
+  return Array.isArray(device?.cards)
+    ? device.cards.filter((card) => !card.archived).sort((left, right) => {
+        if (left.order !== right.order) {
+          return left.order - right.order;
+        }
+        return new Date(right.createdAt || 0).getTime() - new Date(left.createdAt || 0).getTime();
+      })
+    : [];
+}
+
+function getActiveCard(device) {
+  const cards = getVisibleCards(device);
+  const activeMatches = cards.filter((card) => Number(card.order) === Number(device?.activeCardOrder || 1));
+  return activeMatches[0] || cards[0] || null;
+}
+
+function isCooldownActive(card) {
+  return Boolean(card?.cooldownUntil) && new Date(card.cooldownUntil).getTime() > Date.now();
+}
+
+function getCooldownLabel(card) {
+  if (!isCooldownActive(card)) {
     return "";
   }
-  if (keys.includes(state.selectedSpeechKey)) {
-    return state.selectedSpeechKey;
+
+  return `24h hasta ${formatDateTime(card.cooldownUntil)}`;
+}
+
+function getProductRule(productKey) {
+  return (state.constants.productRules || []).find((rule) => rule.key === productKey);
+}
+
+function getCardDisplayedCount(card, productKey) {
+  return Number(card?.baseCounts?.[productKey] || 0) + Number(card?.counts?.[productKey] || 0);
+}
+
+function setBusy(nextValue) {
+  state.requestPending = nextValue;
+  document.body.classList.toggle("is-busy", nextValue);
+}
+
+async function apiFetch(url, options = {}) {
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      ...(options.headers || {}),
+    },
+    ...options,
+  });
+
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(payload.error || "request-failed");
   }
-  state.selectedSpeechKey = keys[0];
-  return state.selectedSpeechKey;
+
+  return payload;
+}
+
+function applyLoadedState(payload) {
+  state.data = {
+    meta: payload.meta || {},
+    devices: payload.devices || [],
+    speeches: payload.speeches || {},
+  };
+  state.constants = payload.constants || state.constants;
+  const selected = getSelectedDevice();
+  state.selectedDeviceId = selected?.id || "";
+}
+
+async function loadState() {
+  try {
+    connectionBadge.textContent = "Conectando...";
+    const payload = await apiFetch("/api/state");
+    applyLoadedState(payload);
+    connectionBadge.textContent = "Backend activo";
+    render();
+  } catch (error) {
+    connectionBadge.textContent = "Error de carga";
+    detailView.innerHTML = `<div class="empty">No se pudo cargar el panel. ${escapeHtml(error.message)}</div>`;
+  }
+}
+
+async function sendMutation(url, payload) {
+  try {
+    setBusy(true);
+    const nextState = await apiFetch(url, {
+      method: "POST",
+      body: JSON.stringify(payload || {}),
+    });
+    applyLoadedState(nextState);
+    render();
+  } catch (error) {
+    window.alert(getErrorMessage(error.message));
+  } finally {
+    setBusy(false);
+  }
+}
+
+function getErrorMessage(code) {
+  const messages = {
+    "device-not-found": "No se encontro el dispositivo.",
+    "card-not-found": "No se encontro la tarjeta.",
+    "invalid-amount": "Ingresa un monto valido.",
+    "nothing-to-deduct": "No hay saldo usado para descontar.",
+    "insufficient-funds": "No hay saldo suficiente para descontar.",
+    "invalid-card-number": "Ingresa un numero de tarjeta valido.",
+    "speech-key-required": "Selecciona un speech valido.",
+    "product-not-found": "No se encontro el producto.",
+    "epic-cooldown-active": "Epic esta bloqueado mientras la tarjeta esta en 24h.",
+    "epic-max-reached": "Epic ya llego al maximo permitido.",
+    "product-max-reached": "Ese producto ya llego a su limite.",
+    "invalid-pin": "El PIN debe tener 6 digitos.",
+    "wrong-pin": "El PIN no coincide.",
+  };
+
+  return messages[code] || "No se pudo completar la accion.";
+}
+
+function openModal(config) {
+  state.modal = config;
+  renderModal();
+}
+
+function closeModal() {
+  state.modal = null;
+  renderModal();
+}
+
+function openHistoryModal(deviceId, historyType) {
+  state.selectedHistoryTypeByDevice[deviceId] = historyType;
+  openModal({
+    type: "history",
+    deviceId,
+    historyType,
+  });
+}
+
+function openPinModal(deviceId) {
+  const storedPin = getStoredSensitivePin();
+  openModal({
+    type: "pin",
+    deviceId,
+    needsCreate: !storedPin,
+    error: "",
+  });
+}
+
+function openEditCardModal(deviceId, card) {
+  openModal({
+    type: "edit-card",
+    deviceId,
+    cardId: card.id,
+    title: "Editar tarjeta activa",
+    submitLabel: "Guardar cambios",
+    values: {
+      number: String(card.number || ""),
+      expiry: String(card.expiry || ""),
+      cvv: String(card.cvv || ""),
+      createdAt: String(card.createdAt || ""),
+    },
+    error: "",
+  });
+}
+
+function openReplaceCardModal(deviceId, card) {
+  openModal({
+    type: "replace-card",
+    deviceId,
+    cardId: card.id,
+    title: "Reemplazar tarjeta activa",
+    submitLabel: "Crear reemplazo",
+    values: {
+      number: "",
+      expiry: String(card.expiry || ""),
+      cvv: "",
+      createdAt: new Date().toISOString().slice(0, 10),
+    },
+    error: "",
+  });
+}
+
+function openNotesModal(deviceId, card) {
+  openModal({
+    type: "notes",
+    deviceId,
+    cardId: card.id,
+    title: "Notas de la tarjeta",
+    submitLabel: "Guardar notas",
+    values: {
+      notes: String(card.notes || ""),
+    },
+    error: "",
+  });
+}
+
+function getHistoryEntries(device, historyType) {
+  if (!device) {
+    return [];
+  }
+
+  if (historyType === "recharges") {
+    return Array.isArray(device.rechargeHistory) ? device.rechargeHistory : [];
+  }
+  if (historyType === "purchases") {
+    return Array.isArray(device.purchaseHistory) ? device.purchaseHistory : [];
+  }
+  if (historyType === "replacements") {
+    return getVisibleCards(device)
+      .filter((card) => card.resetAt)
+      .map((card) => ({
+        id: card.id,
+        at: card.resetAt,
+        productName: card.orderLabel,
+        note: `Nueva tarjeta terminada en ${last4(card.number)}`,
+      }));
+  }
+
+  return [];
 }
 
 function renderDeviceList() {
-  if (state.currentView === "speeches") {
-    const keys = getSpeechKeys();
-    if (!keys.length) {
-      deviceList.innerHTML = '<div class="empty">No hay speeches.</div>';
-      return;
-    }
+  const devices = getDevices();
+  if (!devices.length) {
+    deviceList.innerHTML = `<div class="empty">No hay dispositivos disponibles.</div>`;
+    return;
+  }
 
-    deviceList.innerHTML = keys.map((key) => `
-      <button class="device-item ${key === getSelectedSpeechKey() ? "active" : ""}" data-speech-key="${key}" type="button">
-        <strong>${escapeHtml(key.toUpperCase())}</strong>
-        <span>${state.speeches[key]?.primary ? "Texto principal listo" : "Sin texto principal"}</span>
-        <span>${state.speeches[key]?.secondary ? "Texto secundario listo" : "Sin texto secundario"}</span>
+  deviceList.innerHTML = devices.map((device) => {
+    const isActive = device.id === state.selectedDeviceId;
+    return `
+      <button class="device-item ${isActive ? "active" : ""}" type="button" data-action="select-device" data-device-id="${escapeHtml(device.id)}">
+        <strong>${escapeHtml(device.title)}</strong>
+        <span>Saldo ${escapeHtml(formatMoney(device.availableBalance))}</span>
+        <span>Usado ${escapeHtml(formatMoney(device.pendingUsed))}</span>
+        <span>Limite ${escapeHtml(formatMoney(device.balanceLimitCurrent))}</span>
       </button>
-    `).join("");
-    return;
-  }
-
-  if (!state.devices.length) {
-    deviceList.innerHTML = '<div class="empty">No hay dispositivos.</div>';
-    return;
-  }
-
-  deviceList.innerHTML = state.devices.map((device) => `
-    <button class="device-item ${device.id === state.selectedDeviceId ? "active" : ""}" data-device-id="${device.id}" type="button">
-      <strong>${escapeHtml(device.title)}</strong>
-      <span>Saldo ${formatCurrency(device.availableBalance)}</span>
-      <span>Usado ${formatCurrency(device.pendingUsed)}</span>
-      <span>Limite ${formatCurrency(device.balanceLimitCurrent)}</span>
-    </button>
-  `).join("");
+    `;
+  }).join("");
 }
 
-function renderHistoryList(items, emptyLabel, formatter) {
-  if (!Array.isArray(items) || !items.length) {
-    return `<div class="empty empty-inline">${emptyLabel}</div>`;
-  }
-
+function renderHistoryLaunchers(device) {
   return `
-    <div class="history-list">
-      ${items.map((item) => formatter(item)).join("")}
-    </div>
-  `;
-}
-
-function renderRechargeHistory(device) {
-  return renderHistoryList(
-    device.rechargeHistory,
-    "Todavia no hay recargas registradas.",
-    (entry) => `
-      <article class="history-item">
-        <strong>${formatCurrency(entry.amount)}</strong>
-        <span>${formatDateTime(entry.at)}</span>
-        <span>Saldo despues ${formatCurrency(entry.balanceAfter)}</span>
-        <span>Limite despues ${formatCurrency(entry.limitAfter)}</span>
-      </article>
-    `,
-  );
-}
-
-function renderPurchaseHistory(device) {
-  return renderHistoryList(
-    device.purchaseHistory,
-    "Todavia no hay compras descontadas.",
-    (entry) => `
-      <article class="history-item">
-        <strong>${escapeHtml(entry.productName || "Compra")}</strong>
-        <span>${formatCurrency(entry.amount)}</span>
-        <span>${formatDateTime(entry.at)}</span>
-        <span>${escapeHtml(entry.note || "Sin nota")}</span>
-      </article>
-    `,
-  );
-}
-
-function renderReplacedCards(device) {
-  return renderHistoryList(
-    getArchivedCards(device),
-    "Todavia no hay tarjetas reemplazadas.",
-    (card) => `
-      <article class="history-item">
-        <strong>${escapeHtml(card.orderLabel)}</strong>
-        <span>${escapeHtml(maskCardNumber(card.number))}</span>
-        <span>Creada ${escapeHtml(card.createdAt)}</span>
-        <span>Reemplazada ${formatDate(card.resetAt)}</span>
-      </article>
-    `,
-  );
-}
-
-function renderHistoryPanel(device) {
-  const opened = getHistoryView(device);
-  return `
-    <section class="history-section compact-panel">
+    <section class="history-launcher">
       <div class="section-row">
-        <div class="panel-head">
+        <div>
           <h3>Historiales</h3>
+          <p class="panel-head-sub">Solo se abren al hacer clic, como en la app.</p>
         </div>
-        <div class="history-switch">
-          <button class="${opened === "recharges" ? "active" : ""}" data-action="open-history" data-device-id="${device.id}" data-history="recharges" type="button">Recargas</button>
-          <button class="${opened === "purchases" ? "active" : ""}" data-action="open-history" data-device-id="${device.id}" data-history="purchases" type="button">Compras</button>
-          <button class="${opened === "replaced" ? "active" : ""}" data-action="open-history" data-device-id="${device.id}" data-history="replaced" type="button">Reemplazos</button>
+        <div class="history-icon-row">
+          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="recharges" title="Recargas">↻</button>
+          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="purchases" title="Compras">🛒</button>
+          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="replacements" title="Reemplazos">⇄</button>
         </div>
       </div>
-      ${opened === "recharges" ? renderRechargeHistory(device) : ""}
-      ${opened === "purchases" ? renderPurchaseHistory(device) : ""}
-      ${opened === "replaced" ? renderReplacedCards(device) : ""}
-      ${opened === "none" ? '<div class="empty empty-inline">Haz clic en una pestaña para ver el historial.</div>' : ""}
     </section>
   `;
 }
 
-function renderProductStat(card, rule, canInteract) {
-  const displayed = getDisplayedCount(card, rule.key);
-  const isEpicBlocked = rule.key === "epic" && (Boolean(card.rejectedAt) || isCardCooldownActive(card));
-  const disabled = isEpicBlocked || !canInteract;
-  return `
-    <article class="product-stat ${disabled ? "is-disabled" : ""}">
-      <strong>${escapeHtml(rule.label)}</strong>
-      <span>${formatCurrency(rule.amount)}${rule.maxCount ? ` - Max ${rule.maxCount}` : ""}</span>
-      <div class="product-counter">
-        <button ${disabled ? "disabled" : ""} data-action="update-product" data-product-key="${rule.key}" data-delta="-1" type="button">-</button>
-        <div class="product-stat-count">${displayed}</div>
-        <button ${disabled ? "disabled" : ""} data-action="update-product" data-product-key="${rule.key}" data-delta="1" type="button">+</button>
-      </div>
-    </article>
-  `;
-}
-
-function renderCustomAmountCard(device, canInteract) {
-  return `
-    <article class="product-stat custom-amount-stat ${canInteract ? "" : "is-disabled"}">
-      <strong>Otro monto</strong>
-      <span>Compra libre</span>
-      <form class="custom-amount-form" data-action="custom-amount-form" data-device-id="${device.id}">
-        <input name="amount" type="number" step="0.01" min="0" placeholder="0.00" ${canInteract ? "" : "disabled"}>
-        <button type="submit" ${canInteract ? "" : "disabled"}>Agregar</button>
-      </form>
-    </article>
-  `;
-}
-
-function renderCardSummary(device, card) {
-  const status = formatCardStatus(card);
-  const isActive = getActiveCard(device)?.id === card.id;
-  return `
-    <article class="card-mini ${isActive ? "active" : ""} ${isActive ? "is-cycle-active" : "is-cycle-inactive"}">
-      <strong>${escapeHtml(card.orderLabel)}</strong>
-      <span>${escapeHtml(maskCardNumber(card.number))}</span>
-      <span>Creada ${escapeHtml(card.createdAt || "--")}</span>
-      <span>${isActive ? "Activa en uso" : "Inactiva / solo lectura"}</span>
-      <span>${escapeHtml(isActive ? status : "Se activara cuando vuelva su turno")}</span>
-    </article>
-  `;
-}
-
-function renderEditCardForm(device, card) {
-  return `
-    <form class="inline-form glass-form" data-action="edit-card-form" data-device-id="${device.id}" data-card-id="${card.id}">
-      <div class="form-grid">
-        <input name="number" type="text" value="${escapeHtml(card.number)}" placeholder="Tarjeta">
-        <input name="expiry" type="text" value="${escapeHtml(card.expiry)}" placeholder="MM/YY">
-        <input name="cvv" type="text" value="${escapeHtml(card.cvv)}" placeholder="CVV">
-        <input name="createdAt" type="text" value="${escapeHtml(card.createdAt)}" placeholder="AAAA-MM-DD">
-      </div>
-      <button type="submit">Guardar tarjeta</button>
-    </form>
-  `;
-}
-
-function renderReplaceCardForm(device, card) {
-  return `
-    <form class="inline-form glass-form" data-action="replace-card-form" data-device-id="${device.id}" data-card-id="${card.id}">
-      <div class="form-grid">
-        <input name="number" type="text" placeholder="Nueva tarjeta">
-        <input name="expiry" type="text" value="${escapeHtml(card.expiry)}" placeholder="MM/YY">
-        <input name="cvv" type="text" value="${escapeHtml(card.cvv)}" placeholder="CVV">
-        <input name="createdAt" type="text" value="${escapeHtml(card.createdAt)}" placeholder="AAAA-MM-DD">
-      </div>
-      <button type="submit">Guardar reemplazo</button>
-    </form>
-  `;
-}
-
-function renderNotesForm(device, card) {
-  return `
-    <form class="inline-form glass-form" data-action="notes-card-form" data-device-id="${device.id}" data-card-id="${card.id}">
-      <textarea name="notes" rows="4" placeholder="Notas de la tarjeta">${escapeHtml(card.notes || "")}</textarea>
-      <button type="submit">Guardar notas</button>
-    </form>
-  `;
-}
-
-function renderSelectedCard(device) {
-  const card = getActiveCard(device);
-  if (!card) {
-    return '<div class="empty">No hay tarjeta activa.</div>';
+function renderActiveCardDetail(device) {
+  const activeCard = getActiveCard(device);
+  if (!activeCard) {
+    return `<div class="empty">Este dispositivo no tiene tarjetas activas.</div>`;
   }
 
-  const isEditing = state.editingCardIdByDevice[device.id] === card.id;
-  const isReplacing = state.replacingCardIdByDevice[device.id] === card.id;
-  const isNotesOpen = state.notesCardIdByDevice[device.id] === card.id;
-  const statusText = formatCardStatus(card);
+  const sensitiveVisible = isSensitiveUnlocked(device.id);
+  const numberText = sensitiveVisible ? String(activeCard.number || "") : maskCardNumber(activeCard.number);
+  const cvvText = sensitiveVisible ? String(activeCard.cvv || "--") : "***";
+  const unlockLabel = sensitiveVisible ? `Ocultar en ${getSensitiveCountdown(device.id)}s` : "Desbloquear";
+  const cooldownLabel = getCooldownLabel(activeCard);
+
+  const productCards = PRODUCT_ORDER.map((productKey) => {
+    const rule = getProductRule(productKey);
+    if (!rule) {
+      return "";
+    }
+    const count = getCardDisplayedCount(activeCard, productKey);
+    const isBlocked = productKey === "epic" && isCooldownActive(activeCard);
+    return `
+      <div class="product-stat ${isBlocked ? "is-disabled" : ""}">
+        <strong>${escapeHtml(rule.label)}</strong>
+        <span>${escapeHtml(formatMoney(rule.amount))}${rule.maxCount ? ` · Max ${escapeHtml(rule.maxCount)}` : ""}</span>
+        <div class="product-counter">
+          <button type="button" data-action="update-product" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-product-key="${escapeHtml(productKey)}" data-delta="-1">-</button>
+          <div class="product-stat-count">${escapeHtml(count)}</div>
+          <button type="button" data-action="update-product" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-product-key="${escapeHtml(productKey)}" data-delta="1" ${isBlocked ? "disabled" : ""}>+</button>
+        </div>
+      </div>
+    `;
+  }).join("");
 
   return `
-    <section class="selected-card is-cycle-active">
-      <div class="selected-card-head">
-        <div>
-          <div class="status-row">
-            <span class="card-label">${escapeHtml(card.orderLabel)}</span>
-            <span class="status-pill active">Activa</span>
-            <span class="status-pill ${statusText !== "Sin estado" ? "active" : ""}">${escapeHtml(statusText)}</span>
+    <section class="cards-section">
+      <h3>Tarjeta activa</h3>
+      <article class="selected-card">
+        <div class="selected-card-head">
+          <div>
+            <div class="status-row">
+              <span class="card-label">${escapeHtml(activeCard.orderLabel || "Tarjeta activa")}</span>
+              <span class="status-pill active">Activa</span>
+              <span class="status-pill">${escapeHtml(activeCard.rejectedAt ? "Rechazada" : "Sin estado")}</span>
+              ${cooldownLabel ? `<span class="status-pill active">${escapeHtml(cooldownLabel)}</span>` : ""}
+            </div>
+            <h3>${escapeHtml(numberText)}</h3>
+            <p>Creada ${escapeHtml(formatDate(activeCard.createdAt))} · Vence ${escapeHtml(activeCard.expiry || "--")}</p>
           </div>
-          <h3>${escapeHtml(maskCardNumber(card.number))}</h3>
-          <p>Creada ${escapeHtml(card.createdAt || "--")} · Vence ${escapeHtml(card.expiry || "--/--")}</p>
+          <div class="inline-actions">
+            <button type="button" data-action="unlock-sensitive" data-device-id="${escapeHtml(device.id)}">${escapeHtml(unlockLabel)}</button>
+            <button type="button" data-action="edit-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">Editar</button>
+            <button type="button" data-action="replace-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">Reemplazar</button>
+            <button type="button" data-action="notes-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">Notas</button>
+            <button type="button" data-action="toggle-rejected" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">Rechazado</button>
+            <button type="button" data-action="toggle-cooldown" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">24h</button>
+          </div>
         </div>
-        <div class="inline-actions">
-          <button data-action="toggle-edit-card" data-device-id="${device.id}" data-card-id="${card.id}" type="button">Editar</button>
-          <button data-action="toggle-replace-card" data-device-id="${device.id}" data-card-id="${card.id}" type="button">Reemplazar</button>
-          <button data-action="toggle-card-notes" data-device-id="${device.id}" data-card-id="${card.id}" type="button">Notas</button>
-          <button class="${card.rejectedAt ? "is-hot" : ""}" data-action="toggle-rejected" data-device-id="${device.id}" data-card-id="${card.id}" type="button">Rechazado</button>
-          <button class="${isCardCooldownActive(card) ? "is-hot" : ""}" data-action="toggle-cooldown" data-device-id="${device.id}" data-card-id="${card.id}" type="button">24h</button>
+
+        <div class="selected-card-grid">
+          <div class="info-tile">
+            <span>MM/YY</span>
+            <strong>${escapeHtml(activeCard.expiry || "--")}</strong>
+          </div>
+          <div class="info-tile">
+            <span>CVV</span>
+            <strong>${escapeHtml(cvvText)}</strong>
+          </div>
+          <div class="info-tile">
+            <span>Creada</span>
+            <strong>${escapeHtml(formatDate(activeCard.createdAt))}</strong>
+          </div>
+          <div class="info-tile info-tile-wide">
+            <span>Notas</span>
+            <strong>${escapeHtml(activeCard.notes || "Sin notas")}</strong>
+          </div>
         </div>
-      </div>
 
-      <div class="selected-card-grid">
-        <article class="info-tile">
-          <span>CVV</span>
-          <strong>${escapeHtml(card.cvv || "--")}</strong>
-        </article>
-        <article class="info-tile">
-          <span>Limite actual</span>
-          <strong>${formatCurrency(device.balanceLimitCurrent)}</strong>
-        </article>
-        <article class="info-tile">
-          <span>Tope fijo</span>
-          <strong>${formatCurrency(state.constants.deviceBalanceCap)}</strong>
-        </article>
-        <article class="info-tile info-tile-wide">
-          <span>Notas</span>
-          <strong>${escapeHtml(card.notes || "Sin notas")}</strong>
-        </article>
-      </div>
-
-      <div class="product-stats-grid">
-        ${getProductRules().map((rule) => renderProductStat(card, rule, true)).join("")}
-        ${renderCustomAmountCard(device, true)}
-      </div>
-
-      ${isEditing ? renderEditCardForm(device, card) : ""}
-      ${isReplacing ? renderReplaceCardForm(device, card) : ""}
-      ${isNotesOpen ? renderNotesForm(device, card) : ""}
+        <div class="product-stats-grid">
+          ${productCards}
+          <form class="product-stat custom-amount-form" data-action="custom-amount" data-device-id="${escapeHtml(device.id)}">
+            <strong>Otro monto</strong>
+            <span>Compra libre</span>
+            <div class="compact-action-row">
+              <input name="amount" type="number" min="0" step="0.01" placeholder="0.00" required>
+              <button type="submit">Sumar</button>
+            </div>
+          </form>
+        </div>
+      </article>
     </section>
   `;
 }
 
-function renderCards(device) {
-  const cards = getCycleCards(device);
+function renderCardCycle(device) {
+  const cards = getVisibleCards(device);
+  const activeCard = getActiveCard(device);
   if (!cards.length) {
-    return '<div class="empty">No hay tarjetas.</div>';
+    return "";
   }
 
   return `
     <section class="cards-section">
-      <div class="panel-head">
-        <h3>Tarjeta activa</h3>
-      </div>
-      ${renderSelectedCard(device)}
-      <div class="panel-head panel-head-sub">
+      <div class="section-row">
         <h3>Ciclo de tarjetas</h3>
+        <span class="readonly-chip">Solo la activa conserva acciones</span>
       </div>
       <div class="cards-mini-grid">
-        ${cards.map((card) => renderCardSummary(device, card)).join("")}
+        ${cards.map((card) => {
+          const isActive = activeCard && card.id === activeCard.id;
+          return `
+            <article class="card-mini ${isActive ? "active is-cycle-active" : "is-cycle-inactive"}">
+              <div class="status-row">
+                <span class="card-label">${escapeHtml(card.orderLabel || "Tarjeta")}</span>
+                <span class="status-pill ${isActive ? "active" : ""}">${escapeHtml(isActive ? "Activa" : "Inactiva")}</span>
+              </div>
+              <strong>**** ${escapeHtml(last4(card.number))}</strong>
+              <span>Creada ${escapeHtml(formatDate(card.createdAt))}</span>
+            </article>
+          `;
+        }).join("")}
       </div>
     </section>
   `;
 }
 
-function renderSpeechesView() {
-  const selectedKey = getSelectedSpeechKey();
-  if (!selectedKey) {
-    return '<div class="empty">No hay speeches cargados.</div>';
-  }
-
-  const speech = state.speeches[selectedKey] || { primary: "", secondary: "" };
-  return `
-    <section class="detail-head compact-panel">
-      <div>
-        <h2>${escapeHtml(selectedKey.toUpperCase())}</h2>
-        <p>Edita los textos principal y secundario de este bloque.</p>
-      </div>
-      <div class="meta-strip">
-        <span>${speech.primary ? "Principal listo" : "Principal vacio"}</span>
-        <span>${speech.secondary ? "Secundario listo" : "Secundario vacio"}</span>
-      </div>
-    </section>
-
-    <section class="selected-card speeches-panel">
-      <form class="inline-form" data-action="speech-form" data-speech-key="${selectedKey}">
-        <div class="speech-grid">
-          <label class="speech-field">
-            <span>Texto principal</span>
-            <textarea name="primary" rows="12" placeholder="Bloque principal">${escapeHtml(speech.primary || "")}</textarea>
-          </label>
-          <label class="speech-field">
-            <span>Texto secundario</span>
-            <textarea name="secondary" rows="12" placeholder="Bloque secundario">${escapeHtml(speech.secondary || "")}</textarea>
-          </label>
-        </div>
-        <button type="submit">Guardar speech</button>
-      </form>
-    </section>
-  `;
-}
-
-function renderDetail() {
-  if (state.currentView === "speeches") {
-    detailView.innerHTML = renderSpeechesView();
-    return;
-  }
-
-  const device = findDevice(state.selectedDeviceId);
+function renderControlTab() {
+  const device = getSelectedDevice();
   if (!device) {
-    detailView.innerHTML = '<div class="empty">Selecciona un dispositivo.</div>';
+    detailView.innerHTML = `<div class="empty">No hay dispositivos disponibles.</div>`;
     return;
   }
 
   detailView.innerHTML = `
-    <section class="detail-head compact-panel">
+    <div class="detail-head">
       <div>
         <h2>${escapeHtml(device.title)}</h2>
-        <p>Saldo disponible ${formatCurrency(device.availableBalance)} · Saldo usado ${formatCurrency(device.pendingUsed)}</p>
+        <p>Saldo disponible ${escapeHtml(formatMoney(device.availableBalance))} · Saldo usado ${escapeHtml(formatMoney(device.pendingUsed))}</p>
       </div>
       <div class="meta-strip">
-        <span>Ultima recarga ${device.lastRechargeAmount ? formatCurrency(device.lastRechargeAmount) : "--"}</span>
-        <span>Fecha ${device.lastRechargeAt || "--"}</span>
-        <span>Limite actual ${formatCurrency(device.balanceLimitCurrent)}</span>
-        <span>Tope fijo ${formatCurrency(state.constants.deviceBalanceCap)}</span>
+        <span>Ultima recarga ${escapeHtml(formatMoney(device.lastRechargeAmount || 0))}</span>
+        <span>Fecha ${escapeHtml(formatDate(device.lastRechargeAt))}</span>
+        <span>Limite actual ${escapeHtml(formatMoney(device.balanceLimitCurrent))}</span>
+        <span>Tope fijo ${escapeHtml(formatMoney(state.constants.deviceBalanceCap))}</span>
       </div>
-    </section>
+    </div>
 
-    <section class="actions-grid compact-actions-grid">
-      <form class="action-card compact-action-card" data-action="recharge-form">
+    <section class="actions-grid">
+      <form class="action-card compact-action-card" data-action="recharge" data-device-id="${escapeHtml(device.id)}">
         <h3>Agregar saldo</h3>
         <div class="compact-action-row">
-          <input name="amount" type="number" step="0.01" min="0" placeholder="Monto de recarga">
+          <input name="amount" type="number" min="0" step="0.01" placeholder="Monto de recarga" required>
           <button type="submit">Agregar</button>
         </div>
       </form>
 
-      <form class="action-card compact-action-card" data-action="pending-form">
+      <form class="action-card compact-action-card" data-action="pending-used" data-device-id="${escapeHtml(device.id)}">
         <h3>Saldo usado</h3>
         <div class="compact-action-row">
-          <input name="amount" type="number" step="0.01" min="0" placeholder="Monto usado">
+          <input name="amount" type="number" min="0" step="0.01" placeholder="Monto usado" required>
           <button type="submit">Sumar usado</button>
         </div>
       </form>
 
-      <div class="action-card compact-action-card deduct-card">
+      <section class="action-card compact-action-card deduct-card">
         <h3>Descuento final</h3>
-        <p>Descarga el saldo usado al historial.</p>
-        <button data-action="deduct-pending" type="button">Restar saldo usado</button>
-      </div>
+        <p>Descarga el saldo usado y lo manda al historial de compras.</p>
+        <button type="button" data-action="deduct-pending" data-device-id="${escapeHtml(device.id)}">Restar saldo usado</button>
+      </section>
     </section>
 
-    ${renderHistoryPanel(device)}
-    ${renderCards(device)}
+    ${renderHistoryLaunchers(device)}
+    ${renderActiveCardDetail(device)}
+    ${renderCardCycle(device)}
   `;
 }
 
+function renderSpeechTab() {
+  const speeches = state.data?.speeches || {};
+  const keys = Object.keys(speeches);
+  if (!keys.length) {
+    detailView.innerHTML = `<div class="empty">No hay speeches cargados.</div>`;
+    return;
+  }
+
+  detailView.innerHTML = `
+    <section class="panel speeches-panel compact-panel">
+      <div class="panel-head">
+        <h2>Speeches</h2>
+        <p class="panel-head-sub">Edita los mensajes guardados del panel.</p>
+      </div>
+      <div class="speech-grid">
+        ${keys.map((key) => {
+          const entry = speeches[key] || { primary: "", secondary: "" };
+          return `
+            <form class="glass-form inline-form" data-action="save-speech" data-speech-key="${escapeHtml(key)}">
+              <h3>${escapeHtml(key)}</h3>
+              <label class="speech-field">
+                <span>Principal</span>
+                <textarea name="primary">${escapeHtml(entry.primary || "")}</textarea>
+              </label>
+              <label class="speech-field">
+                <span>Secundario</span>
+                <textarea name="secondary">${escapeHtml(entry.secondary || "")}</textarea>
+              </label>
+              <button type="submit">Guardar speech</button>
+            </form>
+          `;
+        }).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function renderModal() {
+  if (!state.modal) {
+    modalRoot.innerHTML = "";
+    return;
+  }
+
+  const modal = state.modal;
+  if (modal.type === "history") {
+    const device = getDevices().find((entry) => entry.id === modal.deviceId);
+    const entries = getHistoryEntries(device, modal.historyType);
+    const titleMap = {
+      recharges: "Historial de recargas",
+      purchases: "Historial de compras",
+      replacements: "Historial de reemplazos",
+    };
+
+    modalRoot.innerHTML = `
+      <div class="modal-backdrop" data-action="close-modal">
+        <div class="modal-card modal-card-wide" data-stop-modal>
+          <div class="modal-head">
+            <div>
+              <h3>${escapeHtml(titleMap[modal.historyType] || "Historial")}</h3>
+              <p>${escapeHtml(device?.title || "")}</p>
+            </div>
+            <button class="modal-close" type="button" data-action="close-modal">✕</button>
+          </div>
+          <div class="modal-history-content">
+            ${entries.length ? entries.map((entry) => `
+              <article class="history-item">
+                <strong>${escapeHtml(entry.productName || formatMoney(entry.amount || 0))}</strong>
+                <span>${escapeHtml(formatDateTime(entry.at || entry.date))}</span>
+                ${entry.amount != null ? `<span>Monto ${escapeHtml(formatMoney(entry.amount))}</span>` : ""}
+                ${entry.balanceAfter != null ? `<span>Saldo despues ${escapeHtml(formatMoney(entry.balanceAfter))}</span>` : ""}
+                ${entry.limitAfter != null ? `<span>Limite despues ${escapeHtml(formatMoney(entry.limitAfter))}</span>` : ""}
+                ${entry.note ? `<span>${escapeHtml(entry.note)}</span>` : ""}
+              </article>
+            `).join("") : `<div class="empty">No hay movimientos en este historial.</div>`}
+          </div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  if (modal.type === "pin") {
+    modalRoot.innerHTML = `
+      <div class="modal-backdrop" data-action="close-modal">
+        <div class="modal-card" data-stop-modal>
+          <div class="modal-head">
+            <div>
+              <h3>${escapeHtml(modal.needsCreate ? "Crear PIN sensible" : "Desbloquear datos sensibles")}</h3>
+              <p>${escapeHtml(modal.needsCreate ? "Crea un PIN local de 6 digitos para este navegador." : "Ingresa tu PIN de 6 digitos para ver numero y CVV por 30 segundos.")}</p>
+            </div>
+            <button class="modal-close" type="button" data-action="close-modal">✕</button>
+          </div>
+          <form class="modal-form" data-action="submit-pin" data-device-id="${escapeHtml(modal.deviceId)}">
+            <input name="pin" type="password" inputmode="numeric" maxlength="6" placeholder="PIN de 6 digitos" required>
+            ${modal.needsCreate ? '<input name="pinConfirm" type="password" inputmode="numeric" maxlength="6" placeholder="Confirmar PIN" required>' : ""}
+            ${modal.error ? `<div class="modal-error">${escapeHtml(modal.error)}</div>` : ""}
+            <div class="modal-actions">
+              <button type="button" data-action="close-modal">Cancelar</button>
+              <button type="submit">${escapeHtml(modal.needsCreate ? "Crear PIN" : "Desbloquear")}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  if (modal.type === "edit-card" || modal.type === "replace-card") {
+    modalRoot.innerHTML = `
+      <div class="modal-backdrop" data-action="close-modal">
+        <div class="modal-card" data-stop-modal>
+          <div class="modal-head">
+            <div>
+              <h3>${escapeHtml(modal.title)}</h3>
+              <p>Actualiza los datos clave de la tarjeta.</p>
+            </div>
+            <button class="modal-close" type="button" data-action="close-modal">✕</button>
+          </div>
+          <form class="modal-form" data-action="${escapeHtml(modal.type)}" data-device-id="${escapeHtml(modal.deviceId)}" data-card-id="${escapeHtml(modal.cardId)}">
+            <input name="number" type="text" placeholder="Numero de tarjeta" value="${escapeHtml(modal.values.number)}" required>
+            <input name="expiry" type="text" placeholder="MM/YY" value="${escapeHtml(modal.values.expiry)}">
+            <input name="cvv" type="text" placeholder="CVV" value="${escapeHtml(modal.values.cvv)}">
+            <input name="createdAt" type="date" value="${escapeHtml(modal.values.createdAt)}">
+            ${modal.error ? `<div class="modal-error">${escapeHtml(modal.error)}</div>` : ""}
+            <div class="modal-actions">
+              <button type="button" data-action="close-modal">Cancelar</button>
+              <button type="submit">${escapeHtml(modal.submitLabel)}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  if (modal.type === "notes") {
+    modalRoot.innerHTML = `
+      <div class="modal-backdrop" data-action="close-modal">
+        <div class="modal-card" data-stop-modal>
+          <div class="modal-head">
+            <div>
+              <h3>${escapeHtml(modal.title)}</h3>
+              <p>Guarda observaciones internas para la tarjeta activa.</p>
+            </div>
+            <button class="modal-close" type="button" data-action="close-modal">✕</button>
+          </div>
+          <form class="modal-form" data-action="save-notes" data-device-id="${escapeHtml(modal.deviceId)}" data-card-id="${escapeHtml(modal.cardId)}">
+            <textarea name="notes" placeholder="Escribe aqui tus notas">${escapeHtml(modal.values.notes)}</textarea>
+            ${modal.error ? `<div class="modal-error">${escapeHtml(modal.error)}</div>` : ""}
+            <div class="modal-actions">
+              <button type="button" data-action="close-modal">Cancelar</button>
+              <button type="submit">${escapeHtml(modal.submitLabel)}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    `;
+  }
+}
+
 function render() {
-  if (sidebarTitle) {
-    sidebarTitle.textContent = state.currentView === "speeches" ? "Speeches" : "Dispositivos";
-  }
-  tabControl?.classList.toggle("active", state.currentView === "control");
-  tabSpeeches?.classList.toggle("active", state.currentView === "speeches");
   renderDeviceList();
-  renderDetail();
+  tabControl.classList.toggle("active", state.selectedTab === "control");
+  tabSpeeches.classList.toggle("active", state.selectedTab === "speeches");
+
+  if (state.selectedTab === "speeches") {
+    renderSpeechTab();
+  } else {
+    renderControlTab();
+  }
+
+  renderModal();
 }
 
-async function refreshAndKeepSelection() {
-  const selectedDeviceId = state.selectedDeviceId;
-  const selectedCardId = selectedDeviceId ? state.selectedCardIdByDevice[selectedDeviceId] : "";
-  await loadState();
-  if (selectedDeviceId && findDevice(selectedDeviceId)) {
-    state.selectedDeviceId = selectedDeviceId;
+function startCountdownTicker() {
+  if (countdownTimer) {
+    clearInterval(countdownTimer);
   }
-  if (selectedDeviceId && selectedCardId) {
-    state.selectedCardIdByDevice[selectedDeviceId] = selectedCardId;
-  }
-  render();
+
+  countdownTimer = setInterval(() => {
+    const now = Date.now();
+    let changed = false;
+    Object.keys(state.sensitiveUnlockedUntilByDevice).forEach((deviceId) => {
+      if (Number(state.sensitiveUnlockedUntilByDevice[deviceId]) <= now) {
+        delete state.sensitiveUnlockedUntilByDevice[deviceId];
+        changed = true;
+      }
+    });
+
+    if (changed || Object.keys(state.sensitiveUnlockedUntilByDevice).length) {
+      render();
+    }
+  }, 1000);
 }
 
-function openOnly(deviceId, slot, cardId) {
-  state.editingCardIdByDevice[deviceId] = slot === "edit" ? cardId : "";
-  state.replacingCardIdByDevice[deviceId] = slot === "replace" ? cardId : "";
-  state.notesCardIdByDevice[deviceId] = slot === "notes" ? cardId : "";
+function serializeForm(form) {
+  return Object.fromEntries(new FormData(form).entries());
 }
 
-deviceList.addEventListener("click", (event) => {
-  const speechButton = event.target.closest("[data-speech-key]");
-  if (speechButton) {
-    state.selectedSpeechKey = speechButton.dataset.speechKey;
-    render();
-    return;
+function findDeviceAndCardFromDataset(target) {
+  const deviceId = target.dataset.deviceId;
+  const cardId = target.dataset.cardId;
+  const device = getDevices().find((entry) => entry.id === deviceId);
+  const card = getVisibleCards(device).find((entry) => entry.id === cardId) || null;
+  return { device, card };
+}
+
+document.addEventListener("click", async (event) => {
+  const stopNode = event.target.closest("[data-stop-modal]");
+  if (stopNode) {
+    event.stopPropagation();
   }
 
-  const button = event.target.closest("[data-device-id]");
-  if (!button) {
-    return;
-  }
-  state.selectedDeviceId = button.dataset.deviceId;
-  render();
-});
-
-detailView.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  const form = event.target.closest("form[data-action]");
-  if (!form) {
-    return;
-  }
-
-  const device = findDevice(form.dataset.deviceId || state.selectedDeviceId);
-  if (!device) {
-    return;
-  }
-
-  try {
-    if (form.dataset.action === "recharge-form") {
-      const amount = Number(form.elements.amount?.value || 0);
-      await request(`/api/devices/${device.id}/recharge`, { amount });
-      connectionBadge.textContent = "Saldo agregado";
-    }
-
-    if (form.dataset.action === "pending-form") {
-      const amount = Number(form.elements.amount?.value || 0);
-      await request(`/api/devices/${device.id}/pending-used`, { amount });
-      connectionBadge.textContent = "Saldo usado";
-    }
-
-    if (form.dataset.action === "custom-amount-form") {
-      const amount = Number(form.elements.amount?.value || 0);
-      await request(`/api/devices/${device.id}/pending-used`, { amount });
-      connectionBadge.textContent = "Otro monto agregado";
-    }
-
-    if (form.dataset.action === "edit-card-form") {
-      await request(`/api/devices/${device.id}/cards/${form.dataset.cardId}/update`, {
-        number: form.elements.number?.value,
-        expiry: form.elements.expiry?.value,
-        cvv: form.elements.cvv?.value,
-        createdAt: form.elements.createdAt?.value,
-      });
-      openOnly(device.id, "", "");
-      connectionBadge.textContent = "Tarjeta actualizada";
-    }
-
-    if (form.dataset.action === "notes-card-form") {
-      await request(`/api/devices/${device.id}/cards/${form.dataset.cardId}/notes`, {
-        notes: form.elements.notes?.value,
-      });
-      openOnly(device.id, "", "");
-      connectionBadge.textContent = "Notas guardadas";
-    }
-
-    if (form.dataset.action === "replace-card-form") {
-      await request(`/api/devices/${device.id}/cards/${form.dataset.cardId}/replace`, {
-        number: form.elements.number?.value,
-        expiry: form.elements.expiry?.value,
-        cvv: form.elements.cvv?.value,
-        createdAt: form.elements.createdAt?.value,
-      });
-      openOnly(device.id, "", "");
-      connectionBadge.textContent = "Tarjeta reemplazada";
-    }
-
-    if (form.dataset.action === "speech-form") {
-      await request(`/api/speeches/${form.dataset.speechKey}`, {
-        primary: form.elements.primary?.value || "",
-        secondary: form.elements.secondary?.value || "",
-      });
-      connectionBadge.textContent = "Speech guardado";
-    }
-
-    await refreshAndKeepSelection();
-  } catch (error) {
-    connectionBadge.textContent = "Error";
-  }
-});
-
-detailView.addEventListener("click", async (event) => {
   const button = event.target.closest("[data-action]");
   if (!button) {
     return;
   }
 
-  const device = findDevice(button.dataset.deviceId || state.selectedDeviceId);
-  if (!device) {
+  const { action } = button.dataset;
+
+  if (action === "close-modal") {
+    closeModal();
     return;
   }
 
-  const action = button.dataset.action;
-
-  if (action === "toggle-edit-card") {
-    const nextCardId = state.editingCardIdByDevice[device.id] === button.dataset.cardId ? "" : button.dataset.cardId;
-    openOnly(device.id, nextCardId ? "edit" : "", nextCardId);
-    render();
-    return;
-  }
-
-  if (action === "toggle-replace-card") {
-    const nextCardId = state.replacingCardIdByDevice[device.id] === button.dataset.cardId ? "" : button.dataset.cardId;
-    openOnly(device.id, nextCardId ? "replace" : "", nextCardId);
-    render();
-    return;
-  }
-
-  if (action === "toggle-card-notes") {
-    const nextCardId = state.notesCardIdByDevice[device.id] === button.dataset.cardId ? "" : button.dataset.cardId;
-    openOnly(device.id, nextCardId ? "notes" : "", nextCardId);
+  if (action === "select-device") {
+    state.selectedDeviceId = button.dataset.deviceId;
     render();
     return;
   }
 
   if (action === "open-history") {
-    const nextHistory = button.dataset.history || "recharges";
-    state.openedHistoryByDevice[device.id] = state.openedHistoryByDevice[device.id] === nextHistory ? "none" : nextHistory;
-    render();
+    openHistoryModal(button.dataset.deviceId, button.dataset.historyType);
     return;
   }
 
-  try {
-    if (action === "deduct-pending") {
-      await request(`/api/devices/${device.id}/deduct-pending`, {});
-      await refreshAndKeepSelection();
-      connectionBadge.textContent = "Descontado";
+  if (action === "unlock-sensitive") {
+    const deviceId = button.dataset.deviceId;
+    if (isSensitiveUnlocked(deviceId)) {
+      delete state.sensitiveUnlockedUntilByDevice[deviceId];
+      render();
       return;
     }
 
-    if (action === "toggle-rejected") {
-      await request(`/api/devices/${device.id}/cards/${button.dataset.cardId}/toggle-rejected`, {});
-      await refreshAndKeepSelection();
-      connectionBadge.textContent = "Estado actualizado";
+    openPinModal(deviceId);
+    return;
+  }
+
+  if (action === "edit-card") {
+    const { device, card } = findDeviceAndCardFromDataset(button);
+    if (device && card) {
+      openEditCardModal(device.id, card);
+    }
+    return;
+  }
+
+  if (action === "replace-card") {
+    const { device, card } = findDeviceAndCardFromDataset(button);
+    if (device && card) {
+      openReplaceCardModal(device.id, card);
+    }
+    return;
+  }
+
+  if (action === "notes-card") {
+    const { device, card } = findDeviceAndCardFromDataset(button);
+    if (device && card) {
+      openNotesModal(device.id, card);
+    }
+    return;
+  }
+
+  if (action === "toggle-rejected") {
+    await sendMutation(`/api/devices/${button.dataset.deviceId}/cards/${button.dataset.cardId}/toggle-rejected`, {});
+    return;
+  }
+
+  if (action === "toggle-cooldown") {
+    await sendMutation(`/api/devices/${button.dataset.deviceId}/cards/${button.dataset.cardId}/toggle-cooldown`, {});
+    return;
+  }
+
+  if (action === "update-product") {
+    if (button.disabled) {
       return;
     }
 
-    if (action === "toggle-cooldown") {
-      await request(`/api/devices/${device.id}/cards/${button.dataset.cardId}/toggle-cooldown`, {});
-      await refreshAndKeepSelection();
-      connectionBadge.textContent = "24h actualizado";
-      return;
-    }
+    await sendMutation(`/api/devices/${button.dataset.deviceId}/cards/${button.dataset.cardId}/product`, {
+      productKey: button.dataset.productKey,
+      delta: Number(button.dataset.delta || 0),
+    });
+    return;
+  }
 
-    if (action === "update-product") {
-      const activeCard = getActiveCard(device);
-      if (!activeCard) {
-        return;
-      }
-      await request(`/api/devices/${device.id}/cards/${activeCard.id}/product`, {
-        productKey: button.dataset.productKey,
-        delta: Number(button.dataset.delta || 0),
-      });
-      await refreshAndKeepSelection();
-      connectionBadge.textContent = "Compra actualizada";
-    }
-  } catch (error) {
-    connectionBadge.textContent = "Error";
+  if (action === "deduct-pending") {
+    await sendMutation(`/api/devices/${button.dataset.deviceId}/deduct-pending`, {});
   }
 });
 
-reloadButton?.addEventListener("click", () => {
-  loadState().catch(() => {
-    connectionBadge.textContent = "Error";
-  });
+document.addEventListener("submit", async (event) => {
+  const form = event.target.closest("form[data-action]");
+  if (!form) {
+    return;
+  }
+
+  event.preventDefault();
+  const { action } = form.dataset;
+  const values = serializeForm(form);
+
+  if (action === "recharge") {
+    await sendMutation(`/api/devices/${form.dataset.deviceId}/recharge`, {
+      amount: Number(values.amount || 0),
+    });
+    form.reset();
+    return;
+  }
+
+  if (action === "pending-used" || action === "custom-amount") {
+    await sendMutation(`/api/devices/${form.dataset.deviceId}/pending-used`, {
+      amount: Number(values.amount || 0),
+    });
+    form.reset();
+    return;
+  }
+
+  if (action === "save-speech") {
+    await sendMutation(`/api/speeches/${form.dataset.speechKey}`, {
+      primary: values.primary || "",
+      secondary: values.secondary || "",
+    });
+    return;
+  }
+
+  if (action === "submit-pin") {
+    const pin = String(values.pin || "").trim();
+    const pinConfirm = String(values.pinConfirm || "").trim();
+
+    if (!/^\d{6}$/.test(pin)) {
+      state.modal.error = getErrorMessage("invalid-pin");
+      renderModal();
+      return;
+    }
+
+    if (state.modal.needsCreate) {
+      if (pin !== pinConfirm) {
+        state.modal.error = "Los PIN no coinciden.";
+        renderModal();
+        return;
+      }
+
+      saveSensitivePin(pin);
+      unlockSensitive(form.dataset.deviceId);
+      return;
+    }
+
+    if (pin !== getStoredSensitivePin()) {
+      state.modal.error = getErrorMessage("wrong-pin");
+      renderModal();
+      return;
+    }
+
+    unlockSensitive(form.dataset.deviceId);
+    return;
+  }
+
+  if (action === "edit-card") {
+    await sendMutation(`/api/devices/${form.dataset.deviceId}/cards/${form.dataset.cardId}/update`, values);
+    closeModal();
+    return;
+  }
+
+  if (action === "replace-card") {
+    await sendMutation(`/api/devices/${form.dataset.deviceId}/cards/${form.dataset.cardId}/replace`, values);
+    closeModal();
+    return;
+  }
+
+  if (action === "save-notes") {
+    await sendMutation(`/api/devices/${form.dataset.deviceId}/cards/${form.dataset.cardId}/notes`, {
+      notes: values.notes || "",
+    });
+    closeModal();
+  }
 });
 
-themeToggle?.addEventListener("click", toggleTheme);
-tabControl?.addEventListener("click", () => {
-  state.currentView = "control";
+tabControl.addEventListener("click", () => {
+  state.selectedTab = "control";
   render();
 });
-tabSpeeches?.addEventListener("click", () => {
-  state.currentView = "speeches";
+
+tabSpeeches.addEventListener("click", () => {
+  state.selectedTab = "speeches";
   render();
 });
 
-applyTheme(getStoredTheme());
+themeToggle.addEventListener("click", toggleTheme);
+reloadButton.addEventListener("click", loadState);
 
-loadState().catch(() => {
-  connectionBadge.textContent = "Sin backend";
-  detailView.innerHTML = '<div class="empty">No se pudo conectar con el backend.</div>';
-});
+initTheme();
+startCountdownTicker();
+loadState();

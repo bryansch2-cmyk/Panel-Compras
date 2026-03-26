@@ -376,6 +376,32 @@ button:focus-visible {
   color: var(--accent);
 }
 
+.history-launcher {
+  display: grid;
+  gap: 12px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.history-icon-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.history-icon-button {
+  min-width: 46px;
+  min-height: 46px;
+  padding: 0;
+  border-radius: 14px;
+  font-size: 1.05rem;
+  display: inline-grid;
+  place-items: center;
+}
+
 .history-list {
   display: grid;
   gap: 10px;
@@ -629,6 +655,84 @@ button:focus-visible {
   opacity: 0.86;
 }
 
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(5, 9, 15, 0.58);
+  backdrop-filter: blur(10px);
+  animation: fade-up 180ms ease;
+}
+
+.modal-card {
+  width: min(100%, 520px);
+  max-height: calc(100vh - 36px);
+  overflow: auto;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.modal-card-wide {
+  width: min(100%, 860px);
+}
+
+.modal-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.modal-head p {
+  margin-top: 6px;
+  color: var(--muted);
+}
+
+.modal-close {
+  min-width: 38px;
+  min-height: 38px;
+  padding: 0;
+}
+
+.modal-form {
+  display: grid;
+  gap: 12px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.modal-error {
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 133, 143, 0.28);
+  border-radius: 14px;
+  background: rgba(255, 133, 143, 0.1);
+  color: #ffd5d9;
+  font-size: 0.92rem;
+}
+
+.modal-history-content {
+  display: grid;
+  gap: 10px;
+}
+
+body.is-busy button,
+body.is-busy input,
+body.is-busy textarea {
+  pointer-events: none;
+}
+
 .glass-form {
   padding: 14px;
   border: 1px solid rgba(127, 193, 255, 0.14);
@@ -713,7 +817,8 @@ button:focus-visible {
 
   .hero,
   .selected-card-head,
-  .section-row {
+  .section-row,
+  .modal-head {
     grid-template-columns: 1fr;
     flex-direction: column;
     align-items: flex-start;
@@ -738,5 +843,10 @@ button:focus-visible {
 
   .inline-actions {
     justify-content: flex-start;
+  }
+
+  .modal-card,
+  .modal-card-wide {
+    width: 100%;
   }
 }

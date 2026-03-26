@@ -334,12 +334,7 @@ async function loadState() {
   const normalized = normalizeState(JSON.parse(raw));
   if (DATA_DIR !== LOCAL_DATA_DIR) {
     const bundled = loadBundledState();
-    if (
-      bundled &&
-      bundled.devices.length > 1 &&
-      isSeedLikeState(normalized) &&
-      Number(normalized.meta?.revision || 0) === 0
-    ) {
+    if (bundled && bundled.devices.length > 1 && isSeedLikeState(normalized)) {
       return writeState(bundled);
     }
   }
