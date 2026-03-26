@@ -119,6 +119,23 @@ function isSeedLikeState(state) {
   return firstDevice?.id === "iphone-12-pro-bryan";
 }
 
+function shouldPromoteBundledState(currentState, bundledState) {
+  if (!bundledState || !Array.isArray(bundledState.devices) || !bundledState.devices.length) {
+    return false;
+  }
+
+  const currentDevices = Array.isArray(currentState?.devices) ? currentState.devices : [];
+  if (!currentDevices.length) {
+    return true;
+  }
+
+  if (isSeedLikeState(currentState)) {
+    return true;
+  }
+
+  return currentDevices.length < bundledState.devices.length;
+}
+
 function loadBundledState() {
   try {
     if (!fs.existsSync(BUNDLED_STATE_PATH)) {
@@ -334,7 +351,7 @@ async function loadState() {
   const normalized = normalizeState(JSON.parse(raw));
   if (DATA_DIR !== LOCAL_DATA_DIR) {
     const bundled = loadBundledState();
-    if (bundled && bundled.devices.length > 1 && isSeedLikeState(normalized)) {
+    if (bundled && bundled.devices.length > 1 && shouldPromoteBundledState(normalized, bundled)) {
       return writeState(bundled);
     }
   }

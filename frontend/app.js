@@ -12,6 +12,27 @@ const SENSITIVE_PIN_KEY = "panel-compras-web-sensitive-pin";
 const SENSITIVE_UNLOCK_MS = 30_000;
 const THEME_KEY = "panel-compras-web-theme";
 
+const moneyFormatter = new Intl.NumberFormat("es-PE", {
+  style: "currency",
+  currency: "PEN",
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
+const dateFormatter = new Intl.DateTimeFormat("es-PE", {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+const dateTimeFormatter = new Intl.DateTimeFormat("es-PE", {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+});
+
 const state = {
   data: null,
   constants: {
@@ -20,7 +41,6 @@ const state = {
   },
   selectedTab: "control",
   selectedDeviceId: "",
-  selectedHistoryTypeByDevice: {},
   sensitiveUnlockedUntilByDevice: {},
   modal: null,
   requestPending: false,
@@ -29,12 +49,7 @@ const state = {
 let unlockExpiryTimer = null;
 
 function formatMoney(value) {
-  return new Intl.NumberFormat("es-PE", {
-    style: "currency",
-    currency: "PEN",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(Number(value || 0));
+  return moneyFormatter.format(Number(value || 0));
 }
 
 function formatDate(value) {
@@ -47,11 +62,7 @@ function formatDate(value) {
     return String(value);
   }
 
-  return new Intl.DateTimeFormat("es-PE", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(date);
+  return dateFormatter.format(date);
 }
 
 function formatDateTime(value) {
@@ -64,13 +75,16 @@ function formatDateTime(value) {
     return String(value);
   }
 
-  return new Intl.DateTimeFormat("es-PE", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(date);
+  return dateTimeFormatter.format(date);
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 function getStoredTheme() {
@@ -78,8 +92,9 @@ function getStoredTheme() {
 }
 
 function applyTheme(theme) {
-  document.documentElement.dataset.theme = theme === "light" ? "light" : "dark";
-  themeToggle.textContent = theme === "light" ? "Tema oscuro" : "Tema claro";
+  const nextTheme = theme === "light" ? "light" : "dark";
+  document.documentElement.dataset.theme = nextTheme;
+  themeToggle.textContent = nextTheme === "light" ? "Tema oscuro" : "Tema claro";
 }
 
 function initTheme() {
@@ -90,15 +105,6 @@ function toggleTheme() {
   const nextTheme = document.documentElement.dataset.theme === "light" ? "dark" : "light";
   localStorage.setItem(THEME_KEY, nextTheme);
   applyTheme(nextTheme);
-}
-
-function escapeHtml(value) {
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
 }
 
 function maskCardNumber(number) {
@@ -133,19 +139,19 @@ function scheduleUnlockExpiryCheck() {
     unlockExpiryTimer = null;
   }
 
-  const entries = Object.entries(state.sensitiveUnlockedUntilByDevice)
+  const nextUnlock = Object.entries(state.sensitiveUnlockedUntilByDevice)
     .map(([deviceId, until]) => [deviceId, Number(until || 0)])
     .filter(([, until]) => until > Date.now())
-    .sort((left, right) => left[1] - right[1]);
+    .sort((left, right) => left[1] - right[1])[0];
 
-  if (!entries.length) {
+  if (!nextUnlock) {
     return;
   }
 
-  const [, nextUntil] = entries[0];
   unlockExpiryTimer = setTimeout(() => {
     const now = Date.now();
     let changed = false;
+
     Object.keys(state.sensitiveUnlockedUntilByDevice).forEach((deviceId) => {
       if (Number(state.sensitiveUnlockedUntilByDevice[deviceId] || 0) <= now) {
         delete state.sensitiveUnlockedUntilByDevice[deviceId];
@@ -157,7 +163,7 @@ function scheduleUnlockExpiryCheck() {
     if (changed && state.selectedTab === "control") {
       render();
     }
-  }, Math.max(0, nextUntil - Date.now()) + 40);
+  }, Math.max(0, nextUnlock[1] - Date.now()) + 40);
 }
 
 function unlockSensitive(deviceId) {
@@ -186,19 +192,35 @@ function getSelectedDevice() {
 
 function getVisibleCards(device) {
   return Array.isArray(device?.cards)
-    ? device.cards.filter((card) => !card.archived).sort((left, right) => {
-        if (left.order !== right.order) {
-          return left.order - right.order;
-        }
-        return new Date(right.createdAt || 0).getTime() - new Date(left.createdAt || 0).getTime();
-      })
+    ? device.cards
+        .filter((card) => !card.archived)
+        .sort((left, right) => {
+          if (left.order !== right.order) {
+            return left.order - right.order;
+          }
+          return new Date(right.createdAt || 0).getTime() - new Date(left.createdAt || 0).getTime();
+        })
     : [];
+}
+
+function getAllCards(device) {
+  return Array.isArray(device?.cards) ? device.cards : [];
 }
 
 function getActiveCard(device) {
   const cards = getVisibleCards(device);
-  const activeMatches = cards.filter((card) => Number(card.order) === Number(device?.activeCardOrder || 1));
-  return activeMatches[0] || cards[0] || null;
+  const activeOrder = Number(device?.activeCardOrder || 1);
+  return cards.find((card) => Number(card.order) === activeOrder) || cards[0] || null;
+}
+
+function getCycleCards(device) {
+  const cards = getVisibleCards(device);
+  const activeCard = getActiveCard(device);
+  if (!activeCard) {
+    return cards;
+  }
+
+  return [activeCard, ...cards.filter((card) => card.id !== activeCard.id)];
 }
 
 function isCooldownActive(card) {
@@ -314,7 +336,6 @@ function closeModal() {
 }
 
 function openHistoryModal(deviceId, historyType) {
-  state.selectedHistoryTypeByDevice[deviceId] = historyType;
   openModal({
     type: "history",
     deviceId,
@@ -388,11 +409,13 @@ function getHistoryEntries(device, historyType) {
   if (historyType === "recharges") {
     return Array.isArray(device.rechargeHistory) ? device.rechargeHistory : [];
   }
+
   if (historyType === "purchases") {
     return Array.isArray(device.purchaseHistory) ? device.purchaseHistory : [];
   }
+
   if (historyType === "replacements") {
-    return getVisibleCards(device)
+    return getAllCards(device)
       .filter((card) => card.resetAt)
       .map((card) => ({
         id: card.id,
@@ -431,16 +454,26 @@ function renderHistoryLaunchers(device) {
       <div class="section-row">
         <div>
           <h3>Historiales</h3>
-          <p class="panel-head-sub">Se abren en una ventana, como en la app.</p>
+          <p class="panel-head-sub">Se abren en ventana flotante, igual que en la app.</p>
         </div>
         <div class="history-icon-row">
-          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="recharges" title="Recargas">&#8635;</button>
-          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="purchases" title="Compras">&#128722;</button>
-          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="replacements" title="Reemplazos">&#8646;</button>
+          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="recharges" title="Recargas">↻</button>
+          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="purchases" title="Compras">🛒</button>
+          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="replacements" title="Reemplazos">⇆</button>
         </div>
       </div>
     </section>
   `;
+}
+
+function renderActiveCardCounts(card) {
+  return PRODUCT_ORDER.map((productKey) => {
+    const rule = getProductRule(productKey);
+    if (!rule) {
+      return "";
+    }
+    return `${rule.label}: ${getCardDisplayedCount(card, productKey)}`;
+  }).filter(Boolean).join(" / ");
 }
 
 function renderActiveCardDetail(device) {
@@ -454,6 +487,7 @@ function renderActiveCardDetail(device) {
   const cvvText = sensitiveVisible ? String(activeCard.cvv || "--") : "***";
   const unlockLabel = sensitiveVisible ? "Ocultar datos" : "Desbloquear";
   const cooldownLabel = getCooldownLabel(activeCard);
+  const purchaseSummary = renderActiveCardCounts(activeCard);
 
   const productCards = PRODUCT_ORDER.map((productKey) => {
     const rule = getProductRule(productKey);
@@ -462,15 +496,17 @@ function renderActiveCardDetail(device) {
     }
 
     const count = getCardDisplayedCount(activeCard, productKey);
-    const isBlocked = productKey === "epic" && isCooldownActive(activeCard);
+    const isEpicBlocked = productKey === "epic" && isCooldownActive(activeCard);
+
     return `
-      <div class="product-stat ${isBlocked ? "is-disabled" : ""}">
+      <div class="product-stat ${isEpicBlocked ? "is-disabled" : ""}">
         <strong>${escapeHtml(rule.label)}</strong>
         <span>${escapeHtml(formatMoney(rule.amount))}${rule.maxCount ? ` · Max ${escapeHtml(rule.maxCount)}` : ""}</span>
+        ${isEpicBlocked ? '<span class="product-lock">Bloqueado por 24h</span>' : ""}
         <div class="product-counter">
           <button type="button" data-action="update-product" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-product-key="${escapeHtml(productKey)}" data-delta="-1">-</button>
           <div class="product-stat-count">${escapeHtml(count)}</div>
-          <button type="button" data-action="update-product" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-product-key="${escapeHtml(productKey)}" data-delta="1" ${isBlocked ? "disabled" : ""}>+</button>
+          <button type="button" data-action="update-product" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-product-key="${escapeHtml(productKey)}" data-delta="1" ${isEpicBlocked ? "disabled" : ""}>+</button>
         </div>
       </div>
     `;
@@ -486,19 +522,25 @@ function renderActiveCardDetail(device) {
               <span class="card-label">${escapeHtml(activeCard.orderLabel || "Tarjeta activa")}</span>
               <span class="status-pill active">Activa</span>
               <span class="status-pill">${escapeHtml(activeCard.rejectedAt ? "Rechazada" : "Sin estado")}</span>
-              ${cooldownLabel ? `<span class="status-pill active">${escapeHtml(cooldownLabel)}</span>` : ""}
             </div>
-            <h3>${escapeHtml(numberText)}</h3>
+            <h3 class="card-number">${escapeHtml(numberText)}</h3>
             <p>Creada ${escapeHtml(formatDate(activeCard.createdAt))} · Vence ${escapeHtml(activeCard.expiry || "--")}</p>
           </div>
-          <div class="inline-actions">
-            <button type="button" data-action="unlock-sensitive" data-device-id="${escapeHtml(device.id)}">${escapeHtml(unlockLabel)}</button>
-            <button type="button" data-action="edit-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">Editar</button>
-            <button type="button" data-action="replace-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">Reemplazar</button>
-            <button type="button" data-action="notes-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">Notas</button>
-            <button type="button" data-action="toggle-rejected" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">Rechazado</button>
-            <button type="button" data-action="toggle-cooldown" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">24h</button>
+          <div class="selected-card-topside">
+            <p class="purchase-summary">${escapeHtml(purchaseSummary)}</p>
+            <div class="inline-actions">
+              <button type="button" data-action="unlock-sensitive" data-device-id="${escapeHtml(device.id)}">${escapeHtml(unlockLabel)}</button>
+              <button type="button" data-action="edit-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Editar">✎</button>
+              <button type="button" data-action="replace-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Reemplazar">⇆</button>
+              <button type="button" data-action="notes-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Notas">📝</button>
+              <button type="button" data-action="toggle-rejected" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">Rechazado</button>
+              <button type="button" data-action="toggle-cooldown" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">24h</button>
+            </div>
           </div>
+        </div>
+
+        <div class="status-row">
+          ${cooldownLabel ? `<span class="status-pill active">${escapeHtml(cooldownLabel)}</span>` : ""}
         </div>
 
         <div class="selected-card-grid">
@@ -537,7 +579,7 @@ function renderActiveCardDetail(device) {
 }
 
 function renderCardCycle(device) {
-  const cards = getVisibleCards(device);
+  const cards = getCycleCards(device);
   const activeCard = getActiveCard(device);
   if (!cards.length) {
     return "";
@@ -550,16 +592,17 @@ function renderCardCycle(device) {
         <span class="readonly-chip">Solo la activa conserva acciones</span>
       </div>
       <div class="cards-mini-grid">
-        ${cards.map((card) => {
+        ${cards.map((card, index) => {
           const isActive = activeCard && card.id === activeCard.id;
           return `
-            <article class="card-mini ${isActive ? "active is-cycle-active" : "is-cycle-inactive"}">
+            <article class="card-mini ${isActive ? "active is-cycle-active" : "is-cycle-inactive"}" style="animation-delay:${index * 70}ms">
               <div class="status-row">
                 <span class="card-label">${escapeHtml(card.orderLabel || "Tarjeta")}</span>
                 <span class="status-pill ${isActive ? "active" : ""}">${escapeHtml(isActive ? "Activa" : "Inactiva")}</span>
               </div>
-              <strong>**** ${escapeHtml(last4(card.number))}</strong>
-              <span>Creada ${escapeHtml(formatDate(card.createdAt))}</span>
+              <strong>${escapeHtml(maskCardNumber(card.number))}</strong>
+              <span>${isActive ? `Creada ${escapeHtml(formatDate(card.createdAt))}` : `${escapeHtml(formatDate(card.createdAt))} · Solo lectura`}</span>
+              ${isActive ? '<span>Lista para operar ahora.</span>' : '<span>Se activara cuando el ciclo vuelva a esta tarjeta.</span>'}
             </article>
           `;
         }).join("")}
@@ -591,7 +634,10 @@ function renderControlTab() {
 
     <section class="actions-grid control-actions-grid">
       <form class="action-card compact-action-card" data-action="recharge" data-device-id="${escapeHtml(device.id)}">
-        <h3>Agregar saldo</h3>
+        <div class="card-header-row">
+          <h3>Agregar saldo</h3>
+          <strong class="balance-highlight">Disponible ${escapeHtml(formatMoney(device.availableBalance))}</strong>
+        </div>
         <div class="compact-action-row">
           <input name="amount" type="number" min="0" step="0.01" placeholder="Monto de recarga" required>
           <button type="submit">Agregar</button>
@@ -656,6 +702,7 @@ function renderModal() {
   }
 
   const modal = state.modal;
+
   if (modal.type === "history") {
     const device = getDevices().find((entry) => entry.id === modal.deviceId);
     const entries = getHistoryEntries(device, modal.historyType);
@@ -980,6 +1027,12 @@ document.addEventListener("submit", async (event) => {
     await sendMutation(`/api/devices/${form.dataset.deviceId}/cards/${form.dataset.cardId}/notes`, {
       notes: values.notes || "",
     });
+    closeModal();
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && state.modal) {
     closeModal();
   }
 });
