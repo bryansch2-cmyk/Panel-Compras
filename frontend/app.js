@@ -12,9 +12,9 @@ const SENSITIVE_PIN_KEY = "panel-compras-web-sensitive-pin";
 const SENSITIVE_UNLOCK_MS = 30_000;
 const THEME_KEY = "panel-compras-web-theme";
 
-const moneyFormatter = new Intl.NumberFormat("es-PE", {
+const moneyFormatter = new Intl.NumberFormat("tr-TR", {
   style: "currency",
-  currency: "PEN",
+  currency: "TRY",
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
 });
