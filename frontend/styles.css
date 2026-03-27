@@ -58,10 +58,11 @@ body {
 
 .brand-mark {
   font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
-  font-size: clamp(3rem, 5vw, 4.8rem);
-  line-height: 0.9;
-  letter-spacing: 0.04em;
+  font-size: clamp(3.2rem, 5.6vw, 5.4rem);
+  line-height: 0.86;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
 }
 
 .app-shell {
@@ -90,6 +91,24 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -20% auto auto -10%;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(127, 193, 255, 0.18), transparent 62%);
+  pointer-events: none;
+}
+
+.hero > * {
+  position: relative;
+  z-index: 1;
 }
 
 .top-tabs {
@@ -131,7 +150,9 @@ p {
 .copy {
   margin-top: 8px;
   color: var(--muted);
-  max-width: 56ch;
+  max-width: 52ch;
+  font-size: 1rem;
+  line-height: 1.55;
 }
 
 .actions {
@@ -139,6 +160,7 @@ p {
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .badge {
@@ -172,7 +194,7 @@ button {
   padding: 0 16px;
   border: 1px solid var(--line);
   border-radius: 14px;
-  background: var(--panel-soft);
+  background: color-mix(in srgb, var(--panel-soft) 86%, transparent);
   color: var(--text);
   cursor: pointer;
 }
@@ -270,6 +292,7 @@ body.speeches-mode .sidebar {
   width: 100%;
   padding: 16px;
   text-align: left;
+  background: color-mix(in srgb, var(--surface-soft) 82%, transparent);
 }
 
 .device-item strong {
@@ -279,8 +302,8 @@ body.speeches-mode .sidebar {
 
 .device-item.active {
   border-color: rgba(118, 208, 174, 0.44);
-  background: rgba(118, 208, 174, 0.08);
-  box-shadow: 0 0 0 1px rgba(118, 208, 174, 0.18);
+  background: linear-gradient(180deg, rgba(118, 208, 174, 0.14), rgba(127, 193, 255, 0.04));
+  box-shadow: 0 0 0 1px rgba(118, 208, 174, 0.18), 0 14px 24px rgba(0, 0, 0, 0.08);
 }
 
 .device-item span {
@@ -433,7 +456,7 @@ body.speeches-mode .sidebar {
   padding: 16px 18px;
   border: 1px solid var(--line);
   border-radius: 24px;
-  background: var(--surface);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
   box-shadow: var(--shadow);
 }
 
@@ -480,9 +503,12 @@ body.speeches-mode .sidebar {
 .selected-card {
   display: grid;
   gap: 14px;
-  padding: 16px;
+  padding: 18px;
   background: var(--panel-tint);
   border-color: var(--line-hot);
+  box-shadow:
+    0 18px 36px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .selected-card.is-cycle-inactive {
@@ -491,8 +517,8 @@ body.speeches-mode .sidebar {
 }
 
 .selected-card h3 {
-  font-size: 1.45rem;
-  letter-spacing: 0.01em;
+  font-size: 1.7rem;
+  letter-spacing: 0.02em;
 }
 
 .card-number {
@@ -544,6 +570,7 @@ body.speeches-mode .sidebar {
 .card-label {
   background: rgba(255, 213, 115, 0.12);
   color: #ffd573;
+  letter-spacing: 0.04em;
 }
 
 .status-pill {
@@ -567,6 +594,7 @@ body.speeches-mode .sidebar {
   min-height: 34px;
   padding: 0 11px;
   font-size: 0.84rem;
+  backdrop-filter: blur(8px);
 }
 
 .inline-actions button[title] {
@@ -598,7 +626,7 @@ body.speeches-mode .sidebar {
   padding: 12px;
   border: 1px solid var(--line);
   border-radius: 18px;
-  background: var(--surface-soft);
+  background: color-mix(in srgb, var(--surface-soft) 86%, transparent);
 }
 
 .info-tile span {
@@ -627,14 +655,15 @@ body.speeches-mode .sidebar {
   padding: 12px;
   border: 1px solid var(--line);
   border-radius: 18px;
-  background: var(--surface-soft);
+  background: color-mix(in srgb, var(--surface-soft) 88%, transparent);
 }
 
 .product-stat:hover,
 .card-mini:hover,
 .history-item:hover {
   border-color: rgba(127, 193, 255, 0.24);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 22px rgba(0, 0, 0, 0.08);
 }
 
 .product-stat span,
@@ -727,7 +756,7 @@ body.speeches-mode .sidebar {
 .card-mini {
   text-align: left;
   width: 100%;
-  min-height: 104px;
+  min-height: 118px;
   animation: cascade-in 260ms ease both;
 }
 
@@ -738,12 +767,13 @@ body.speeches-mode .sidebar {
 
 .card-mini.is-cycle-active {
   border-color: rgba(118, 208, 174, 0.34);
-  background: linear-gradient(180deg, rgba(118, 208, 174, 0.12), var(--surface-soft));
+  background: linear-gradient(180deg, rgba(118, 208, 174, 0.15), color-mix(in srgb, var(--surface-soft) 92%, transparent));
 }
 
 .card-mini.is-cycle-inactive {
-  opacity: 0.62;
-  filter: saturate(0.82);
+  opacity: 0.56;
+  filter: saturate(0.72);
+  transform: scale(0.99);
 }
 
 .card-mini.is-cycle-inactive strong,
@@ -758,8 +788,8 @@ body.speeches-mode .sidebar {
   display: grid;
   place-items: center;
   padding: 18px;
-  background: rgba(5, 9, 15, 0.34);
-  backdrop-filter: blur(10px);
+  background: rgba(5, 9, 15, 0.22);
+  backdrop-filter: blur(14px);
   animation: fade-up 180ms ease;
 }
 
@@ -770,7 +800,7 @@ body.speeches-mode .sidebar {
   padding: 18px;
   border: 1px solid var(--line);
   border-radius: 24px;
-  background: var(--surface);
+  background: color-mix(in srgb, var(--surface) 84%, transparent);
   box-shadow: var(--shadow);
 }
 
@@ -833,7 +863,7 @@ body.is-busy textarea {
   padding: 14px;
   border: 1px solid rgba(127, 193, 255, 0.14);
   border-radius: 20px;
-  background: var(--surface-frost);
+  background: color-mix(in srgb, var(--surface-frost) 90%, transparent);
   animation: fade-up 180ms ease;
 }
 
