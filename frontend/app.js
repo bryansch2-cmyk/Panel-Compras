@@ -511,7 +511,7 @@ function renderActiveCardDetail(device) {
     return `
       <div class="product-stat ${isEpicBlocked ? "is-disabled" : ""}">
         <strong>${escapeHtml(rule.label)}</strong>
-        <span>${escapeHtml(formatMoney(rule.amount))}${rule.maxCount ? ` · Max ${escapeHtml(rule.maxCount)}` : ""}</span>
+        <span>${escapeHtml(formatMoney(rule.amount))}${rule.maxCount ? ` - Max ${escapeHtml(rule.maxCount)}` : ""}</span>
         ${isEpicBlocked ? '<span class="product-lock">Bloqueado por 24h</span>' : ""}
         <div class="product-counter">
           <button type="button" data-action="update-product" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-product-key="${escapeHtml(productKey)}" data-delta="-1">-</button>
@@ -535,7 +535,7 @@ function renderActiveCardDetail(device) {
               ${cooldownLabel ? `<span class="status-pill active">${escapeHtml(cooldownLabel)}</span>` : ""}
             </div>
             <h3 class="card-number">${escapeHtml(numberText)}</h3>
-            <p>Creada ${escapeHtml(formatDate(activeCard.createdAt))} · Vence ${escapeHtml(activeCard.expiry || "--")}</p>
+            <p>Creada ${escapeHtml(formatDate(activeCard.createdAt))} - Vence ${escapeHtml(activeCard.expiry || "--")}</p>
           </div>
           <div class="selected-card-topside">
             <p class="purchase-summary">${escapeHtml(purchaseSummary)}</p>
@@ -575,8 +575,8 @@ function renderActiveCardDetail(device) {
             <strong>Otro monto</strong>
             <span>Compra libre</span>
             <div class="compact-action-row">
-              <input name="amount" type="number" min="0" step="0.01" placeholder="0.00" required>
-              <button type="submit">Sumar</button>
+              <input class="custom-amount-input" name="amount" type="number" min="0" step="0.01" placeholder="0.00" required>
+              <button class="compact-icon-button" type="button" data-action="revert-custom" data-device-id="${escapeHtml(device.id)}" title="Revertir ultimo monto" aria-label="Revertir ultimo monto">&#8630;</button>
             </div>
           </form>
         </div>
@@ -601,15 +601,23 @@ function renderCardCycle(device) {
       <div class="cards-mini-grid">
         ${cards.map((card, index) => {
           const isActive = activeCard && card.id === activeCard.id;
+          const last4 = String(card.number || "").replace(/\D/g, "").slice(-4) || "----";
           return `
             <article class="card-mini ${isActive ? "active is-cycle-active" : "is-cycle-inactive"}" style="animation-delay:${index * 70}ms">
-              <div class="status-row">
-                <span class="card-label">${escapeHtml(card.orderLabel || "Tarjeta")}</span>
-                <span class="status-pill ${isActive ? "active" : ""}">${escapeHtml(isActive ? "Activa" : "Inactiva")}</span>
+              <div class="card-mini-main">
+                <div class="status-row">
+                  <span class="card-label">${escapeHtml(card.orderLabel || "Tarjeta")}</span>
+                  <span class="status-pill ${isActive ? "active" : ""}">${escapeHtml(isActive ? "Activa" : "Inactiva")}</span>
+                </div>
+                <strong class="card-mini-digits">${escapeHtml(last4)}</strong>
+                <span class="card-mini-date">${isActive ? `Creada ${escapeHtml(formatDate(card.createdAt))}` : `${escapeHtml(formatDate(card.createdAt))} - Solo lectura`}</span>
               </div>
-              <strong>${escapeHtml(maskCardNumber(card.number))}</strong>
-              <span>${isActive ? `Creada ${escapeHtml(formatDate(card.createdAt))}` : `${escapeHtml(formatDate(card.createdAt))} · Solo lectura`}</span>
-              ${isActive ? '<span>Lista para operar ahora.</span>' : '<span>Se activara cuando el ciclo vuelva a esta tarjeta.</span><span>4 digitos y fecha visibles hasta su turno.</span>'}
+              <div class="card-mini-meta">
+                ${isActive ? "<span>Lista para operar ahora.</span>" : "<span>Se activara cuando el ciclo vuelva a esta tarjeta.</span>"}
+              </div>
+              <div class="card-mini-hint">
+                ${isActive ? "<span>Acciones habilitadas en esta tarjeta.</span>" : "<span>4 digitos y fecha visibles hasta su turno.</span>"}
+              </div>
             </article>
           `;
         }).join("")}
@@ -629,7 +637,7 @@ function renderControlTab() {
     <div class="detail-head">
       <div>
         <h2>${escapeHtml(device.title)}</h2>
-        <p>Saldo disponible ${escapeHtml(formatMoney(device.availableBalance))} · Saldo usado ${escapeHtml(formatMoney(device.pendingUsed))}</p>
+        <p>Saldo disponible ${escapeHtml(formatMoney(device.availableBalance))} - Saldo usado ${escapeHtml(formatMoney(device.pendingUsed))}</p>
       </div>
       <div class="meta-strip">
         <span>Ultima recarga ${escapeHtml(formatMoney(device.lastRechargeAmount || 0))}</span>
@@ -953,6 +961,11 @@ document.addEventListener("click", async (event) => {
 
   if (action === "toggle-cooldown") {
     await sendMutation(`/api/devices/${button.dataset.deviceId}/cards/${button.dataset.cardId}/toggle-cooldown`, {});
+    return;
+  }
+
+  if (action === "revert-custom") {
+    await sendMutation(`/api/devices/${button.dataset.deviceId}/revert-custom`, {});
     return;
   }
 

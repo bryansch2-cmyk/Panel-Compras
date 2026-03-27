@@ -754,8 +754,33 @@ body.speeches-mode .sidebar {
   gap: 8px;
 }
 
-.custom-amount-form button {
-  min-height: 36px;
+.custom-amount-form .compact-action-row {
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.custom-amount-input {
+  min-width: 0;
+  min-height: 40px;
+  border: 1px solid rgba(127, 193, 255, 0.26);
+  background: color-mix(in srgb, var(--surface-soft) 94%, white 6%);
+}
+
+.compact-icon-button {
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0;
+  border-radius: 12px;
+  font-size: 1rem;
+  border: 1px solid rgba(255, 133, 143, 0.26);
+  background: rgba(255, 133, 143, 0.08);
+}
+
+.compact-icon-button:hover,
+.compact-icon-button:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(255, 133, 143, 0.42);
+  background: rgba(255, 133, 143, 0.12);
 }
 
 .product-stat.is-disabled {
@@ -786,17 +811,18 @@ body.speeches-mode .sidebar {
   }
 
   .cards-mini-grid {
-    grid-template-columns: repeat(4, minmax(180px, 1fr));
+    grid-template-columns: 1fr;
   }
 }
 
 .card-mini {
   text-align: left;
   width: 100%;
-  min-height: 108px;
+  min-height: 118px;
   animation: cascade-in 260ms ease both;
-  grid-template-columns: 220px minmax(0, 1fr) minmax(180px, 240px);
+  grid-template-columns: minmax(220px, 260px) minmax(0, 1fr) minmax(190px, 240px);
   align-items: center;
+  gap: 14px;
 }
 
 .card-mini.active {
@@ -818,6 +844,49 @@ body.speeches-mode .sidebar {
 .card-mini.is-cycle-inactive strong,
 .card-mini.is-cycle-inactive span {
   color: var(--muted);
+}
+
+.card-mini-main,
+.card-mini-meta,
+.card-mini-hint {
+  display: grid;
+  gap: 6px;
+}
+
+.card-mini-main .status-row {
+  margin-bottom: 0;
+}
+
+.card-mini-digits {
+  font-size: 1.6rem;
+  line-height: 1;
+  letter-spacing: 0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.card-mini-date {
+  font-size: 0.9rem;
+}
+
+.card-mini-meta {
+  align-self: center;
+}
+
+.card-mini-hint {
+  align-self: center;
+  justify-items: end;
+  text-align: right;
+}
+
+@media (max-width: 1080px) {
+  .card-mini {
+    grid-template-columns: 1fr;
+  }
+
+  .card-mini-hint {
+    justify-items: start;
+    text-align: left;
+  }
 }
 
 .modal-backdrop {

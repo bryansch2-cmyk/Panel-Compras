@@ -501,6 +501,33 @@ async function deductPendingUsed(deviceId) {
   return writeState(state);
 }
 
+async function revertLastCustomAmount(deviceId) {
+  const state = await loadState();
+  const device = findDevice(state, deviceId);
+  if (!device) {
+    throw new Error("device-not-found");
+  }
+
+  const ledgerEntries = Array.isArray(device.pendingLedger) ? device.pendingLedger : [];
+  const lastCustomIndex = [...ledgerEntries]
+    .map((entry, index) => ({ entry, index }))
+    .reverse()
+    .find(({ entry }) => entry?.productName === "Otro monto");
+
+  if (!lastCustomIndex) {
+    throw new Error("nothing-to-deduct");
+  }
+
+  const amount = roundMoney(lastCustomIndex.entry.amount);
+  ledgerEntries.splice(lastCustomIndex.index, 1);
+  device.pendingLedger = ledgerEntries;
+  device.extraUsed = Math.max(0, roundMoney(Number(device.extraUsed || 0) - amount));
+  device.lastCustomAmount = 0;
+  device.pendingUsed = calculatePendingUsed(device);
+
+  return writeState(state);
+}
+
 async function updateCard(deviceId, cardId, payload) {
   const state = await loadState();
   const device = findDevice(state, deviceId);
@@ -709,6 +736,7 @@ module.exports = {
   applyRecharge,
   addPendingUsed,
   deductPendingUsed,
+  revertLastCustomAmount,
   updateCard,
   updateCardNotes,
   toggleCardRejected,

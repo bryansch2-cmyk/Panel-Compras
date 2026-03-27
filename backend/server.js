@@ -7,6 +7,7 @@ const {
   applyRecharge,
   addPendingUsed,
   deductPendingUsed,
+  revertLastCustomAmount,
   updateCard,
   updateCardNotes,
   toggleCardRejected,
@@ -139,6 +140,12 @@ async function handleApi(req, res) {
 
   if (req.method === "POST" && segments[0] === "api" && segments[1] === "devices" && segments[3] === "deduct-pending") {
     const state = await deductPendingUsed(segments[2]);
+    sendJson(res, 200, state);
+    return;
+  }
+
+  if (req.method === "POST" && segments[0] === "api" && segments[1] === "devices" && segments[3] === "revert-custom") {
+    const state = await revertLastCustomAmount(segments[2]);
     sendJson(res, 200, state);
     return;
   }
