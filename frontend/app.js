@@ -830,44 +830,44 @@ function renderModal() {
           </div>
           <form class="modal-form" data-action="${escapeHtml(modal.type)}" data-device-id="${escapeHtml(modal.deviceId)}" data-card-id="${escapeHtml(modal.cardId)}">
             <label class="modal-field">
-              <span>Numero de tarjeta</span>
-              <input name="number" type="text" placeholder="Numero de tarjeta" value="${escapeHtml(modal.values.number)}" required>
+              <span>Numero completo de la tarjeta</span>
+              <input name="number" type="text" placeholder="Ej. 5383990268502182" value="${escapeHtml(modal.values.number)}" required>
             </label>
             <div class="form-grid">
               <label class="modal-field">
                 <span>Vencimiento (MM/YY)</span>
-                <input name="expiry" type="text" placeholder="MM/YY" value="${escapeHtml(modal.values.expiry)}">
+                <input name="expiry" type="text" placeholder="Ej. 03/31" value="${escapeHtml(modal.values.expiry)}">
               </label>
               <label class="modal-field">
                 <span>CVV</span>
-                <input name="cvv" type="text" placeholder="CVV" value="${escapeHtml(modal.values.cvv)}">
+                <input name="cvv" type="text" placeholder="Ej. 609" value="${escapeHtml(modal.values.cvv)}">
               </label>
             </div>
             <label class="modal-field">
-              <span>Fecha de creacion</span>
-              <input name="createdAt" type="date" value="${escapeHtml(modal.values.createdAt)}">
+              <span>Fecha de creacion de esta tarjeta</span>
+              <input name="createdAt" type="text" inputmode="numeric" placeholder="DD/MM/AAAA o AAAA-MM-DD" value="${escapeHtml(modal.values.createdAt)}">
             </label>
             <div class="modal-section-title">Compras reales acumuladas</div>
             <div class="form-grid">
               <label class="modal-field">
-                <span>Compras Epic</span>
-                <input name="epic" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="${escapeHtml(modal.values.epic)}">
+                <span>Compras Epic realizadas</span>
+                <input name="epic" type="text" inputmode="numeric" placeholder="0" value="${escapeHtml(modal.values.epic)}">
               </label>
               <label class="modal-field">
-                <span>Compras Xbox</span>
-                <input name="xbox" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="${escapeHtml(modal.values.xbox)}">
+                <span>Compras Xbox realizadas</span>
+                <input name="xbox" type="text" inputmode="numeric" placeholder="0" value="${escapeHtml(modal.values.xbox)}">
               </label>
               <label class="modal-field">
-                <span>Compras Nitro</span>
-                <input name="nitro" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="${escapeHtml(modal.values.nitro)}">
+                <span>Compras Nitro realizadas</span>
+                <input name="nitro" type="text" inputmode="numeric" placeholder="0" value="${escapeHtml(modal.values.nitro)}">
               </label>
               <label class="modal-field">
-                <span>Compras Nitro 1 ano</span>
-                <input name="nitroYear" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="${escapeHtml(modal.values.nitroYear)}">
+                <span>Compras Nitro 1 ano realizadas</span>
+                <input name="nitroYear" type="text" inputmode="numeric" placeholder="0" value="${escapeHtml(modal.values.nitroYear)}">
               </label>
               <label class="modal-field">
-                <span>Compras Crunchy</span>
-                <input name="crunchy" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="${escapeHtml(modal.values.crunchy)}">
+                <span>Compras Crunchy realizadas</span>
+                <input name="crunchy" type="text" inputmode="numeric" placeholder="0" value="${escapeHtml(modal.values.crunchy)}">
               </label>
             </div>
             ${modal.error ? `<div class="modal-error">${escapeHtml(modal.error)}</div>` : ""}

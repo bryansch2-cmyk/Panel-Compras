@@ -990,9 +990,7 @@ body.speeches-mode .sidebar {
   gap: 10px;
 }
 
-body.is-busy button,
-body.is-busy input,
-body.is-busy textarea {
+body.is-busy button {
   pointer-events: none;
 }
 
