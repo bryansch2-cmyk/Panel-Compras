@@ -1,7 +1,7 @@
 {
   "meta": {
-    "updatedAt": "2026-03-26T11:19:11.098Z",
-    "revision": 51
+    "updatedAt": "2026-03-27T02:25:02.287Z",
+    "revision": 52
   },
   "devices": [
     {
@@ -1063,24 +1063,24 @@
       "title": "HUAWEI - HADI ISLAND",
       "note": "",
       "createdAt": "2026-01-10",
-      "availableBalance": 42.07,
+      "availableBalance": 305.07,
       "pendingUsed": 0,
       "extraUsed": 0,
       "lastCustomAmount": 0,
       "lastDeducted": 0,
       "carryoverBalance": 0,
-      "balanceLimitCurrent": 2707.93,
+      "balanceLimitCurrent": 2444.93,
       "limitCycleMonth": "2026-03",
-      "activeCardOrder": 1,
-      "lastRechargeAt": "2026-02-04",
-      "lastRechargeAmount": 1500,
+      "activeCardOrder": 2,
+      "lastRechargeAt": "2026-03-19",
+      "lastRechargeAmount": 500,
       "rechargeHistory": [
         {
           "id": "65eay86v",
-          "amount": 1500,
-          "date": "2026-02-04",
-          "balanceAfter": 42.07,
-          "limitAfter": 2707.93
+          "amount": 500,
+          "date": "2026-03-19",
+          "balanceAfter": 305.07,
+          "limitAfter": 2444.93
         }
       ],
       "purchaseHistory": [],
@@ -1118,10 +1118,10 @@
           "id": "s28tos7v",
           "order": 2,
           "orderLabel": "Tarjeta 2",
-          "number": "538399******2422",
-          "createdAt": "2026-01-15",
-          "expiry": "",
-          "cvv": "",
+          "number": "5383990228823561",
+          "createdAt": "2026-03-19",
+          "expiry": "03/31",
+          "cvv": "073",
           "archived": false,
           "resetAt": "",
           "counts": {
@@ -1177,24 +1177,24 @@
       "title": "XIAOMI MAMA - HADI",
       "note": "",
       "createdAt": "2026-01-10",
-      "availableBalance": 279.08,
+      "availableBalance": 542.08,
       "pendingUsed": 0,
       "extraUsed": 0,
       "lastCustomAmount": 0,
       "lastDeducted": 0,
       "carryoverBalance": 0,
-      "balanceLimitCurrent": 2470.92,
+      "balanceLimitCurrent": 2207.92,
       "limitCycleMonth": "2026-03",
       "activeCardOrder": 1,
-      "lastRechargeAt": "2026-03-17",
-      "lastRechargeAmount": 500,
+      "lastRechargeAt": "2026-03-19",
+      "lastRechargeAmount": 1000,
       "rechargeHistory": [
         {
           "id": "2mbb6njz",
-          "amount": 500,
-          "date": "2026-03-17",
-          "balanceAfter": 279.08,
-          "limitAfter": 2470.92
+          "amount": 1000,
+          "date": "2026-03-19",
+          "balanceAfter": 542.08,
+          "limitAfter": 2207.92
         }
       ],
       "purchaseHistory": [],
@@ -1206,8 +1206,8 @@
           "orderLabel": "Tarjeta 1",
           "number": "5383990200789640",
           "createdAt": "2026-03-17",
-          "expiry": "",
-          "cvv": "",
+          "expiry": "03/31",
+          "cvv": "437",
           "archived": false,
           "resetAt": "",
           "counts": {
@@ -1291,24 +1291,24 @@
       "title": "XIAOMI MAMA - HADI ISLAND",
       "note": "",
       "createdAt": "2026-01-10",
-      "availableBalance": 285.15,
+      "availableBalance": 285.16,
       "pendingUsed": 0,
       "extraUsed": 0,
       "lastCustomAmount": 0,
       "lastDeducted": 0,
       "carryoverBalance": 0,
-      "balanceLimitCurrent": 2464.85,
+      "balanceLimitCurrent": 2464.84,
       "limitCycleMonth": "2026-03",
       "activeCardOrder": 1,
-      "lastRechargeAt": "2026-03-17",
-      "lastRechargeAmount": 500,
+      "lastRechargeAt": "2026-03-19",
+      "lastRechargeAmount": 1000,
       "rechargeHistory": [
         {
           "id": "g40tht6u",
-          "amount": 500,
-          "date": "2026-03-17",
-          "balanceAfter": 285.15,
-          "limitAfter": 2464.85
+          "amount": 1000,
+          "date": "2026-03-19",
+          "balanceAfter": 285.16,
+          "limitAfter": 2464.84
         }
       ],
       "purchaseHistory": [],
@@ -1320,8 +1320,8 @@
           "orderLabel": "Tarjeta 1",
           "number": "5383990279970568",
           "createdAt": "2026-03-17",
-          "expiry": "",
-          "cvv": "",
+          "expiry": "03/31",
+          "cvv": "709",
           "archived": false,
           "resetAt": "",
           "counts": {
@@ -1413,7 +1413,7 @@
       "carryoverBalance": 0,
       "balanceLimitCurrent": 2699,
       "limitCycleMonth": "2026-03",
-      "activeCardOrder": 1,
+      "activeCardOrder": 2,
       "lastRechargeAt": "2026-02-15",
       "lastRechargeAmount": 1000,
       "rechargeHistory": [
@@ -1462,8 +1462,8 @@
           "orderLabel": "Tarjeta 2",
           "number": "5383990254191255",
           "createdAt": "2026-03-13",
-          "expiry": "",
-          "cvv": "",
+          "expiry": "03/31",
+          "cvv": "042",
           "archived": false,
           "resetAt": "",
           "counts": {
@@ -1519,24 +1519,24 @@
       "title": "HONOR MAMA - HADI ISLAND",
       "note": "",
       "createdAt": "2026-01-22",
-      "availableBalance": 78.01,
+      "availableBalance": 1028.02,
       "pendingUsed": 0,
       "extraUsed": 0,
       "lastCustomAmount": 0,
       "lastDeducted": 0,
       "carryoverBalance": 0,
-      "balanceLimitCurrent": 2671.99,
+      "balanceLimitCurrent": 1721.98,
       "limitCycleMonth": "2026-03",
-      "activeCardOrder": 1,
-      "lastRechargeAt": "2026-02-22",
-      "lastRechargeAmount": 500,
+      "activeCardOrder": 2,
+      "lastRechargeAt": "2026-03-24",
+      "lastRechargeAmount": 2000,
       "rechargeHistory": [
         {
           "id": "7qvqmevz",
-          "amount": 500,
-          "date": "2026-02-22",
-          "balanceAfter": 78.01,
-          "limitAfter": 2671.99
+          "amount": 2000,
+          "date": "2026-03-24",
+          "balanceAfter": 1028.02,
+          "limitAfter": 1721.98
         }
       ],
       "purchaseHistory": [],
@@ -1576,8 +1576,8 @@
           "orderLabel": "Tarjeta 2",
           "number": "5383990270947664",
           "createdAt": "2026-03-12",
-          "expiry": "",
-          "cvv": "",
+          "expiry": "03/31",
+          "cvv": "604",
           "archived": false,
           "resetAt": "",
           "counts": {
@@ -1633,24 +1633,24 @@
       "title": "IPHONE 12 PRO BRYAN",
       "note": "",
       "createdAt": "2025-12-15",
-      "availableBalance": 56,
+      "availableBalance": 507,
       "pendingUsed": 0,
       "extraUsed": 0,
       "lastCustomAmount": 0,
       "lastDeducted": 0,
       "carryoverBalance": 0,
-      "balanceLimitCurrent": 2694,
+      "balanceLimitCurrent": 2243,
       "limitCycleMonth": "2026-03",
       "activeCardOrder": 1,
-      "lastRechargeAt": "2026-01-29",
-      "lastRechargeAmount": 1500,
+      "lastRechargeAt": "2026-03-20",
+      "lastRechargeAmount": 1250,
       "rechargeHistory": [
         {
           "id": "jaf6vwld",
-          "amount": 1500,
-          "date": "2026-01-29",
-          "balanceAfter": 56,
-          "limitAfter": 2694
+          "amount": 1250,
+          "date": "2026-03-20",
+          "balanceAfter": 507,
+          "limitAfter": 2243
         }
       ],
       "purchaseHistory": [],
@@ -1661,9 +1661,9 @@
           "order": 1,
           "orderLabel": "Tarjeta 1",
           "number": "5383990242299897",
-          "createdAt": "2026-01-31",
-          "expiry": "",
-          "cvv": "",
+          "createdAt": "2026-03-20",
+          "expiry": "03/31",
+          "cvv": "448",
           "archived": false,
           "resetAt": "",
           "counts": {

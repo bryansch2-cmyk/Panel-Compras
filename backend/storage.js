@@ -125,7 +125,13 @@ function shouldPromoteBundledState(currentState, bundledState) {
   }
 
   const currentDevices = Array.isArray(currentState?.devices) ? currentState.devices : [];
+  const currentRevision = Number(currentState?.meta?.revision || 0);
+  const bundledRevision = Number(bundledState?.meta?.revision || 0);
   if (!currentDevices.length) {
+    return true;
+  }
+
+  if (bundledRevision > currentRevision) {
     return true;
   }
 
