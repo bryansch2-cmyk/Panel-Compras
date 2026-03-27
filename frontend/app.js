@@ -457,9 +457,9 @@ function renderHistoryLaunchers(device) {
           <p class="panel-head-sub">Se abren en ventana flotante, igual que en la app.</p>
         </div>
         <div class="history-icon-row">
-          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="recharges" title="Recargas">↻</button>
-          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="purchases" title="Compras">🛒</button>
-          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="replacements" title="Reemplazos">⇆</button>
+          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="recharges" title="Recargas" aria-label="Abrir historial de recargas">↻</button>
+          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="purchases" title="Compras" aria-label="Abrir historial de compras">🛒</button>
+          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="replacements" title="Reemplazos" aria-label="Abrir historial de reemplazos">⇆</button>
         </div>
       </div>
     </section>
@@ -530,9 +530,9 @@ function renderActiveCardDetail(device) {
             <p class="purchase-summary">${escapeHtml(purchaseSummary)}</p>
             <div class="inline-actions">
               <button type="button" data-action="unlock-sensitive" data-device-id="${escapeHtml(device.id)}">${escapeHtml(unlockLabel)}</button>
-              <button type="button" data-action="edit-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Editar">✎</button>
-              <button type="button" data-action="replace-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Reemplazar">⇆</button>
-              <button type="button" data-action="notes-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Notas">📝</button>
+              <button type="button" data-action="edit-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Editar" aria-label="Editar tarjeta">✎</button>
+              <button type="button" data-action="replace-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Reemplazar" aria-label="Reemplazar tarjeta">⇆</button>
+              <button type="button" data-action="notes-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Notas" aria-label="Editar notas">📝</button>
               <button type="button" data-action="toggle-rejected" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">Rechazado</button>
               <button type="button" data-action="toggle-cooldown" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">24h</button>
             </div>
@@ -830,6 +830,8 @@ function render() {
 
   tabControl.classList.toggle("active", state.selectedTab === "control");
   tabSpeeches.classList.toggle("active", state.selectedTab === "speeches");
+  tabControl.setAttribute("aria-selected", state.selectedTab === "control" ? "true" : "false");
+  tabSpeeches.setAttribute("aria-selected", state.selectedTab === "speeches" ? "true" : "false");
 
   if (state.selectedTab === "speeches") {
     renderSpeechTab();
@@ -850,6 +852,24 @@ function findDeviceAndCardFromDataset(target) {
   const device = getDevices().find((entry) => entry.id === deviceId);
   const card = getVisibleCards(device).find((entry) => entry.id === cardId) || null;
   return { device, card };
+}
+
+function isTypingTarget(target) {
+  return Boolean(target?.closest("input, textarea, [contenteditable='true']"));
+}
+
+function moveDeviceSelection(direction) {
+  const devices = getDevices();
+  if (!devices.length || state.selectedTab !== "control") {
+    return;
+  }
+
+  const currentIndex = Math.max(0, devices.findIndex((device) => device.id === state.selectedDeviceId));
+  const nextIndex = Math.min(devices.length - 1, Math.max(0, currentIndex + direction));
+  if (devices[nextIndex]) {
+    state.selectedDeviceId = devices[nextIndex].id;
+    render();
+  }
 }
 
 document.addEventListener("click", async (event) => {
@@ -1034,6 +1054,37 @@ document.addEventListener("submit", async (event) => {
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && state.modal) {
     closeModal();
+    return;
+  }
+
+  if (isTypingTarget(event.target)) {
+    return;
+  }
+
+  if (event.key === "1") {
+    state.selectedTab = "control";
+    render();
+    return;
+  }
+
+  if (event.key === "2") {
+    state.selectedTab = "speeches";
+    render();
+    return;
+  }
+
+  if (event.key.toLowerCase() === "r") {
+    loadState();
+    return;
+  }
+
+  if (event.key === "ArrowDown") {
+    moveDeviceSelection(1);
+    return;
+  }
+
+  if (event.key === "ArrowUp") {
+    moveDeviceSelection(-1);
   }
 });
 
