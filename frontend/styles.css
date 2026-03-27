@@ -901,6 +901,9 @@ body.speeches-mode .sidebar {
 }
 
 .modal-card {
+  position: relative;
+  z-index: 1201;
+  isolation: isolate;
   width: min(100%, 520px);
   max-height: calc(100vh - 36px);
   overflow: auto;
@@ -940,6 +943,13 @@ body.speeches-mode .sidebar {
 .modal-form {
   display: grid;
   gap: 12px;
+}
+
+.modal-form input,
+.modal-form textarea,
+.modal-form button {
+  position: relative;
+  z-index: 1;
 }
 
 .modal-card input,

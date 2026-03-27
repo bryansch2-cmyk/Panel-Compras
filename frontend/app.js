@@ -363,9 +363,6 @@ function openModal(config) {
     const firstField = modalRoot.querySelector("input, textarea, select");
     if (firstField instanceof HTMLElement) {
       firstField.focus();
-      if (typeof firstField.select === "function" && firstField.tagName === "INPUT") {
-        firstField.select();
-      }
     }
   }, 0);
 }
@@ -1224,6 +1221,26 @@ document.addEventListener("keydown", (event) => {
     pulseDetailView();
   }
 });
+
+modalRoot.addEventListener(
+  "mousedown",
+  (event) => {
+    if (!state.modal) {
+      return;
+    }
+
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) {
+      return;
+    }
+
+    const field = target.closest("input, textarea, select");
+    if (field instanceof HTMLElement) {
+      field.focus();
+    }
+  },
+  true,
+);
 
 tabControl.addEventListener("click", () => {
   state.selectedTab = "control";
