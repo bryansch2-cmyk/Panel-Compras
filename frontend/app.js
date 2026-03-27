@@ -52,13 +52,39 @@ function formatMoney(value) {
   return moneyFormatter.format(Number(value || 0));
 }
 
+function parseDateValue(value) {
+  if (!value) {
+    return null;
+  }
+
+  const raw = String(value).trim();
+  const isoMatch = raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (isoMatch) {
+    const [, year, month, day] = isoMatch;
+    return new Date(Number(year), Number(month) - 1, Number(day), 12, 0, 0);
+  }
+
+  const slashMatch = raw.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (slashMatch) {
+    const [, day, month, year] = slashMatch;
+    return new Date(Number(year), Number(month) - 1, Number(day), 12, 0, 0);
+  }
+
+  const parsed = new Date(raw);
+  if (Number.isNaN(parsed.getTime())) {
+    return null;
+  }
+
+  return parsed;
+}
+
 function formatDate(value) {
   if (!value) {
     return "--";
   }
 
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) {
+  const date = parseDateValue(value);
+  if (!date) {
     return String(value);
   }
 
@@ -70,8 +96,13 @@ function formatDateTime(value) {
     return "--";
   }
 
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) {
+  const raw = String(value).trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw) || /^\d{2}\/\d{2}\/\d{4}$/.test(raw)) {
+    return formatDate(raw);
+  }
+
+  const date = parseDateValue(raw);
+  if (!date) {
     return String(value);
   }
 
