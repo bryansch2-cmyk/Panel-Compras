@@ -476,6 +476,15 @@ function renderActiveCardCounts(card) {
   }).filter(Boolean).join(" / ");
 }
 
+function pulseDetailView() {
+  detailView.classList.remove("is-switching");
+  void detailView.offsetWidth;
+  detailView.classList.add("is-switching");
+  window.setTimeout(() => {
+    detailView.classList.remove("is-switching");
+  }, 220);
+}
+
 function renderActiveCardDetail(device) {
   const activeCard = getActiveCard(device);
   if (!activeCard) {
@@ -488,6 +497,7 @@ function renderActiveCardDetail(device) {
   const unlockLabel = sensitiveVisible ? "Ocultar datos" : "Desbloquear";
   const cooldownLabel = getCooldownLabel(activeCard);
   const purchaseSummary = renderActiveCardCounts(activeCard);
+  const stateLabel = activeCard.rejectedAt ? "Rechazada" : "Sin estado";
 
   const productCards = PRODUCT_ORDER.map((productKey) => {
     const rule = getProductRule(productKey);
@@ -517,11 +527,12 @@ function renderActiveCardDetail(device) {
       <h3>Tarjeta activa</h3>
       <article class="selected-card">
         <div class="selected-card-head">
-          <div>
+          <div class="selected-card-primary">
             <div class="status-row">
               <span class="card-label">${escapeHtml(activeCard.orderLabel || "Tarjeta activa")}</span>
               <span class="status-pill active">Activa</span>
-              <span class="status-pill">${escapeHtml(activeCard.rejectedAt ? "Rechazada" : "Sin estado")}</span>
+              <span class="status-pill">${escapeHtml(stateLabel)}</span>
+              ${cooldownLabel ? `<span class="status-pill active">${escapeHtml(cooldownLabel)}</span>` : ""}
             </div>
             <h3 class="card-number">${escapeHtml(numberText)}</h3>
             <p>Creada ${escapeHtml(formatDate(activeCard.createdAt))} · Vence ${escapeHtml(activeCard.expiry || "--")}</p>
@@ -530,17 +541,13 @@ function renderActiveCardDetail(device) {
             <p class="purchase-summary">${escapeHtml(purchaseSummary)}</p>
             <div class="inline-actions">
               <button type="button" data-action="unlock-sensitive" data-device-id="${escapeHtml(device.id)}">${escapeHtml(unlockLabel)}</button>
-              <button type="button" data-action="edit-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Editar" aria-label="Editar tarjeta">✎</button>
-              <button type="button" data-action="replace-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Reemplazar" aria-label="Reemplazar tarjeta">⇆</button>
-              <button type="button" data-action="notes-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Notas" aria-label="Editar notas">📝</button>
+              <button class="icon-action" type="button" data-action="edit-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Editar" aria-label="Editar tarjeta">✎</button>
+              <button class="icon-action" type="button" data-action="replace-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Reemplazar" aria-label="Reemplazar tarjeta">⇆</button>
+              <button class="icon-action" type="button" data-action="notes-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Notas" aria-label="Editar notas">📝</button>
               <button type="button" data-action="toggle-rejected" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">Rechazado</button>
               <button type="button" data-action="toggle-cooldown" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">24h</button>
             </div>
           </div>
-        </div>
-
-        <div class="status-row">
-          ${cooldownLabel ? `<span class="status-pill active">${escapeHtml(cooldownLabel)}</span>` : ""}
         </div>
 
         <div class="selected-card-grid">
@@ -602,7 +609,7 @@ function renderCardCycle(device) {
               </div>
               <strong>${escapeHtml(maskCardNumber(card.number))}</strong>
               <span>${isActive ? `Creada ${escapeHtml(formatDate(card.createdAt))}` : `${escapeHtml(formatDate(card.createdAt))} · Solo lectura`}</span>
-              ${isActive ? '<span>Lista para operar ahora.</span>' : '<span>Se activara cuando el ciclo vuelva a esta tarjeta.</span>'}
+              ${isActive ? '<span>Lista para operar ahora.</span>' : '<span>Se activara cuando el ciclo vuelva a esta tarjeta.</span><span>4 digitos y fecha visibles hasta su turno.</span>'}
             </article>
           `;
         }).join("")}
@@ -893,6 +900,7 @@ document.addEventListener("click", async (event) => {
   if (action === "select-device") {
     state.selectedDeviceId = button.dataset.deviceId;
     render();
+    pulseDetailView();
     return;
   }
 
@@ -1080,11 +1088,13 @@ document.addEventListener("keydown", (event) => {
 
   if (event.key === "ArrowDown") {
     moveDeviceSelection(1);
+    pulseDetailView();
     return;
   }
 
   if (event.key === "ArrowUp") {
     moveDeviceSelection(-1);
+    pulseDetailView();
   }
 });
 

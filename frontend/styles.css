@@ -337,6 +337,10 @@ body.speeches-mode .sidebar {
   animation: fade-up 220ms ease;
 }
 
+.detail-view.is-switching > * {
+  animation: panel-shift 220ms ease;
+}
+
 .detail-head {
   display: grid;
   gap: 12px;
@@ -547,6 +551,11 @@ body.speeches-mode .sidebar {
   font-variant-numeric: tabular-nums;
 }
 
+.selected-card-primary {
+  display: grid;
+  gap: 6px;
+}
+
 .selected-card-topside {
   display: grid;
   gap: 10px;
@@ -554,11 +563,15 @@ body.speeches-mode .sidebar {
 }
 
 .purchase-summary {
-  max-width: 420px;
+  max-width: 460px;
   color: var(--muted);
   text-align: right;
   line-height: 1.45;
   font-size: 0.95rem;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--surface-soft) 80%, transparent);
 }
 
 .selected-card-head {
@@ -619,9 +632,11 @@ body.speeches-mode .sidebar {
   backdrop-filter: blur(8px);
 }
 
-.inline-actions button[title] {
+.inline-actions .icon-action {
   min-width: 40px;
   padding: 0;
+  border-color: rgba(255, 133, 143, 0.28);
+  background: rgba(255, 133, 143, 0.08);
 }
 
 .readonly-chip {
@@ -749,8 +764,8 @@ body.speeches-mode .sidebar {
 
 .cards-mini-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
+  grid-template-columns: 1fr;
+  gap: 12px;
 }
 
 @media (min-width: 1440px) {
@@ -778,8 +793,10 @@ body.speeches-mode .sidebar {
 .card-mini {
   text-align: left;
   width: 100%;
-  min-height: 118px;
+  min-height: 108px;
   animation: cascade-in 260ms ease both;
+  grid-template-columns: 220px minmax(0, 1fr) minmax(180px, 240px);
+  align-items: center;
 }
 
 .card-mini.active {
@@ -962,6 +979,17 @@ body.is-busy textarea {
   }
 }
 
+@keyframes panel-shift {
+  from {
+    opacity: 0.72;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 1120px) {
   .actions-grid,
   .selected-card-grid,
@@ -1024,6 +1052,10 @@ body.is-busy textarea {
   .purchase-summary {
     justify-items: start;
     text-align: left;
+  }
+
+  .card-mini {
+    grid-template-columns: 1fr;
   }
 
   .modal-card,
