@@ -1005,6 +1005,10 @@ document.addEventListener("click", async (event) => {
     return;
   }
 
+  if (button.tagName === "FORM") {
+    return;
+  }
+
   const { action } = button.dataset;
 
   if (action === "close-modal") {
