@@ -77,6 +77,7 @@ function createSeedState() {
     meta: {
       updatedAt: "",
       revision: 0,
+      seedVersion: "seed-default-v1",
     },
     devices: [
       {
@@ -127,7 +128,13 @@ function shouldPromoteBundledState(currentState, bundledState) {
   const currentDevices = Array.isArray(currentState?.devices) ? currentState.devices : [];
   const currentRevision = Number(currentState?.meta?.revision || 0);
   const bundledRevision = Number(bundledState?.meta?.revision || 0);
+  const currentSeedVersion = String(currentState?.meta?.seedVersion || "");
+  const bundledSeedVersion = String(bundledState?.meta?.seedVersion || "");
   if (!currentDevices.length) {
+    return true;
+  }
+
+  if (bundledSeedVersion && bundledSeedVersion !== currentSeedVersion) {
     return true;
   }
 
@@ -269,6 +276,7 @@ function normalizeState(raw) {
     meta: {
       updatedAt: typeof raw.meta?.updatedAt === "string" ? raw.meta.updatedAt : "",
       revision: Number.isFinite(Number(raw.meta?.revision)) ? Number(raw.meta.revision) : 0,
+      seedVersion: typeof raw.meta?.seedVersion === "string" ? raw.meta.seedVersion : "",
     },
     devices: Array.isArray(raw.devices) ? raw.devices.map(normalizeDevice) : fallback.devices,
     speeches: raw.speeches && typeof raw.speeches === "object" ? raw.speeches : {},
@@ -342,6 +350,7 @@ async function writeState(state) {
     meta: {
       updatedAt: new Date().toISOString(),
       revision: normalized.meta.revision + 1,
+      seedVersion: normalized.meta.seedVersion || "",
     },
   };
 

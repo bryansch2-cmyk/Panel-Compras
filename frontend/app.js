@@ -798,18 +798,46 @@ function renderModal() {
             <button class="modal-close" type="button" data-action="close-modal">&times;</button>
           </div>
           <form class="modal-form" data-action="${escapeHtml(modal.type)}" data-device-id="${escapeHtml(modal.deviceId)}" data-card-id="${escapeHtml(modal.cardId)}">
-            <input name="number" type="text" placeholder="Numero de tarjeta" value="${escapeHtml(modal.values.number)}" required>
+            <label class="modal-field">
+              <span>Numero de tarjeta</span>
+              <input name="number" type="text" placeholder="Numero de tarjeta" value="${escapeHtml(modal.values.number)}" required>
+            </label>
             <div class="form-grid">
-              <input name="expiry" type="text" placeholder="MM/YY" value="${escapeHtml(modal.values.expiry)}">
-              <input name="cvv" type="text" placeholder="CVV" value="${escapeHtml(modal.values.cvv)}">
+              <label class="modal-field">
+                <span>Vencimiento (MM/YY)</span>
+                <input name="expiry" type="text" placeholder="MM/YY" value="${escapeHtml(modal.values.expiry)}">
+              </label>
+              <label class="modal-field">
+                <span>CVV</span>
+                <input name="cvv" type="text" placeholder="CVV" value="${escapeHtml(modal.values.cvv)}">
+              </label>
             </div>
-            <input name="createdAt" type="date" value="${escapeHtml(modal.values.createdAt)}">
+            <label class="modal-field">
+              <span>Fecha de creacion</span>
+              <input name="createdAt" type="date" value="${escapeHtml(modal.values.createdAt)}">
+            </label>
+            <div class="modal-section-title">Compras reales acumuladas</div>
             <div class="form-grid">
-              <input name="epic" type="number" min="0" step="1" placeholder="Epic" value="${escapeHtml(modal.values.epic)}">
-              <input name="xbox" type="number" min="0" step="1" placeholder="Xbox" value="${escapeHtml(modal.values.xbox)}">
-              <input name="nitro" type="number" min="0" step="1" placeholder="Nitro" value="${escapeHtml(modal.values.nitro)}">
-              <input name="nitroYear" type="number" min="0" step="1" placeholder="Nitro 1 ano" value="${escapeHtml(modal.values.nitroYear)}">
-              <input name="crunchy" type="number" min="0" step="1" placeholder="Crunchy" value="${escapeHtml(modal.values.crunchy)}">
+              <label class="modal-field">
+                <span>Compras Epic</span>
+                <input name="epic" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="${escapeHtml(modal.values.epic)}">
+              </label>
+              <label class="modal-field">
+                <span>Compras Xbox</span>
+                <input name="xbox" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="${escapeHtml(modal.values.xbox)}">
+              </label>
+              <label class="modal-field">
+                <span>Compras Nitro</span>
+                <input name="nitro" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="${escapeHtml(modal.values.nitro)}">
+              </label>
+              <label class="modal-field">
+                <span>Compras Nitro 1 ano</span>
+                <input name="nitroYear" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="${escapeHtml(modal.values.nitroYear)}">
+              </label>
+              <label class="modal-field">
+                <span>Compras Crunchy</span>
+                <input name="crunchy" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="${escapeHtml(modal.values.crunchy)}">
+              </label>
             </div>
             ${modal.error ? `<div class="modal-error">${escapeHtml(modal.error)}</div>` : ""}
             <div class="modal-actions">

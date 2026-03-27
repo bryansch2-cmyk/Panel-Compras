@@ -1,7 +1,8 @@
 {
   "meta": {
     "updatedAt": "2026-03-27T02:38:39.561Z",
-    "revision": 53
+    "revision": 53,
+    "seedVersion": "keep-import-2026-03-27-v2"
   },
   "devices": [
     {
@@ -42,6 +43,34 @@
       "pendingLedger": [],
       "cards": [
         {
+          "id": "d0v20lee",
+          "order": 1,
+          "orderLabel": "Tarjeta 1",
+          "number": "5383990214018705",
+          "createdAt": "2026-02-27",
+          "expiry": "",
+          "cvv": "",
+          "archived": false,
+          "resetAt": "",
+          "counts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "baseCounts": {
+            "epic": 0,
+            "xbox": 0,
+            "nitro": 0,
+            "nitroYear": 0,
+            "crunchy": 0
+          },
+          "cooldownUntil": "",
+          "rejectedAt": "",
+          "notes": ""
+        },
+        {
           "id": "wzoopcac",
           "order": 2,
           "orderLabel": "Tarjeta 2",
@@ -75,96 +104,12 @@
           "orderLabel": "Tarjeta 3",
           "number": "5383990274901204",
           "createdAt": "2026-02-04",
-          "expiry": "22/06",
-          "cvv": "123",
-          "archived": true,
-          "resetAt": "220693",
-          "counts": {
-            "epic": 0,
-            "xbox": 0,
-            "nitro": 0,
-            "nitroYear": 0,
-            "crunchy": 0
-          },
-          "baseCounts": {
-            "epic": 0,
-            "xbox": 0,
-            "nitro": 0,
-            "nitroYear": 0,
-            "crunchy": 1
-          },
-          "cooldownUntil": "",
-          "rejectedAt": "",
-          "notes": "tarjeta vinculada a cuenta xxxxx@gmail.com"
-        },
-        {
-          "id": "d0v20lee",
-          "order": 1,
-          "orderLabel": "Tarjeta 1",
-          "number": "5383990214018705",
-          "createdAt": "2026-02-27",
-          "expiry": "55/55",
-          "cvv": "111",
+          "expiry": "",
+          "cvv": "",
           "archived": false,
           "resetAt": "",
           "counts": {
             "epic": 0,
-            "xbox": 0,
-            "nitro": 0,
-            "nitroYear": 0,
-            "crunchy": 0
-          },
-          "baseCounts": {
-            "epic": 0,
-            "xbox": 0,
-            "nitro": 0,
-            "nitroYear": 0,
-            "crunchy": 0
-          },
-          "cooldownUntil": "",
-          "rejectedAt": "",
-          "notes": ""
-        },
-        {
-          "id": "card-dwmxe21n-1774523656956",
-          "order": 3,
-          "orderLabel": "Tarjeta 3",
-          "number": "1234567812345678",
-          "createdAt": "220693",
-          "expiry": "2206",
-          "cvv": "123",
-          "archived": true,
-          "resetAt": "220693",
-          "counts": {
-            "epic": 0,
-            "xbox": 0,
-            "nitro": 0,
-            "nitroYear": 0,
-            "crunchy": 0
-          },
-          "baseCounts": {
-            "epic": 0,
-            "xbox": 0,
-            "nitro": 0,
-            "nitroYear": 0,
-            "crunchy": 0
-          },
-          "cooldownUntil": "",
-          "rejectedAt": "",
-          "notes": ""
-        },
-        {
-          "id": "card-u1ifyoqz-1774523674398",
-          "order": 3,
-          "orderLabel": "Tarjeta 3",
-          "number": "1234567887654321",
-          "createdAt": "220693",
-          "expiry": "2206",
-          "cvv": "123",
-          "archived": false,
-          "resetAt": "",
-          "counts": {
-            "epic": 3,
             "xbox": 0,
             "nitro": 0,
             "nitroYear": 0,
