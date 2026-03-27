@@ -365,6 +365,11 @@ function openEditCardModal(deviceId, card) {
       expiry: String(card.expiry || ""),
       cvv: String(card.cvv || ""),
       createdAt: String(card.createdAt || ""),
+      epic: String(getCardDisplayedCount(card, "epic")),
+      xbox: String(getCardDisplayedCount(card, "xbox")),
+      nitro: String(getCardDisplayedCount(card, "nitro")),
+      nitroYear: String(getCardDisplayedCount(card, "nitroYear")),
+      crunchy: String(getCardDisplayedCount(card, "crunchy")),
     },
     error: "",
   });
@@ -781,7 +786,44 @@ function renderModal() {
     return;
   }
 
-  if (modal.type === "edit-card" || modal.type === "replace-card") {
+  if (modal.type === "edit-card") {
+    modalRoot.innerHTML = `
+      <div class="modal-backdrop" data-action="close-modal">
+        <div class="modal-card" data-stop-modal>
+          <div class="modal-head">
+            <div>
+              <h3>${escapeHtml(modal.title)}</h3>
+              <p>Ajusta los datos reales y el progreso acumulado de la tarjeta.</p>
+            </div>
+            <button class="modal-close" type="button" data-action="close-modal">&times;</button>
+          </div>
+          <form class="modal-form" data-action="${escapeHtml(modal.type)}" data-device-id="${escapeHtml(modal.deviceId)}" data-card-id="${escapeHtml(modal.cardId)}">
+            <input name="number" type="text" placeholder="Numero de tarjeta" value="${escapeHtml(modal.values.number)}" required>
+            <div class="form-grid">
+              <input name="expiry" type="text" placeholder="MM/YY" value="${escapeHtml(modal.values.expiry)}">
+              <input name="cvv" type="text" placeholder="CVV" value="${escapeHtml(modal.values.cvv)}">
+            </div>
+            <input name="createdAt" type="date" value="${escapeHtml(modal.values.createdAt)}">
+            <div class="form-grid">
+              <input name="epic" type="number" min="0" step="1" placeholder="Epic" value="${escapeHtml(modal.values.epic)}">
+              <input name="xbox" type="number" min="0" step="1" placeholder="Xbox" value="${escapeHtml(modal.values.xbox)}">
+              <input name="nitro" type="number" min="0" step="1" placeholder="Nitro" value="${escapeHtml(modal.values.nitro)}">
+              <input name="nitroYear" type="number" min="0" step="1" placeholder="Nitro 1 ano" value="${escapeHtml(modal.values.nitroYear)}">
+              <input name="crunchy" type="number" min="0" step="1" placeholder="Crunchy" value="${escapeHtml(modal.values.crunchy)}">
+            </div>
+            ${modal.error ? `<div class="modal-error">${escapeHtml(modal.error)}</div>` : ""}
+            <div class="modal-actions">
+              <button type="button" data-action="close-modal">Cancelar</button>
+              <button type="submit">${escapeHtml(modal.submitLabel)}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  if (modal.type === "replace-card") {
     modalRoot.innerHTML = `
       <div class="modal-backdrop" data-action="close-modal">
         <div class="modal-card" data-stop-modal>

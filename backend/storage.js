@@ -555,6 +555,15 @@ async function updateCard(deviceId, cardId, payload) {
   card.expiry = String(payload?.expiry || card.expiry || "").trim();
   card.cvv = String(payload?.cvv || card.cvv || "").trim();
   card.createdAt = String(payload?.createdAt || card.createdAt || "").trim();
+  card.baseCounts = normalizeCounts({
+    epic: payload?.epic,
+    xbox: payload?.xbox,
+    nitro: payload?.nitro,
+    nitroYear: payload?.nitroYear,
+    crunchy: payload?.crunchy,
+  });
+  card.counts = normalizeCounts({});
+  device.pendingUsed = calculatePendingUsed(device);
 
   return writeState(state);
 }
