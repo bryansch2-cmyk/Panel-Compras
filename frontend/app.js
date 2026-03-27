@@ -359,6 +359,15 @@ function getErrorMessage(code) {
 function openModal(config) {
   state.modal = config;
   renderModal();
+  window.setTimeout(() => {
+    const firstField = modalRoot.querySelector("input, textarea, select");
+    if (firstField instanceof HTMLElement) {
+      firstField.focus();
+      if (typeof firstField.select === "function" && firstField.tagName === "INPUT") {
+        firstField.select();
+      }
+    }
+  }, 0);
 }
 
 function closeModal() {
@@ -1176,6 +1185,10 @@ document.addEventListener("submit", async (event) => {
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && state.modal) {
     closeModal();
+    return;
+  }
+
+  if (state.modal) {
     return;
   }
 
