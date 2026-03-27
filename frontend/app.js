@@ -47,6 +47,7 @@ const state = {
 };
 
 let unlockExpiryTimer = null;
+let detailSwitchTimer = null;
 
 function formatMoney(value) {
   return moneyFormatter.format(Number(value || 0));
@@ -519,12 +520,16 @@ function renderActiveCardCounts(card) {
 }
 
 function pulseDetailView() {
-  detailView.classList.remove("is-switching");
-  void detailView.offsetWidth;
+  if (detailSwitchTimer) {
+    window.clearTimeout(detailSwitchTimer);
+    detailSwitchTimer = null;
+  }
+
   detailView.classList.add("is-switching");
-  window.setTimeout(() => {
+  detailSwitchTimer = window.setTimeout(() => {
     detailView.classList.remove("is-switching");
-  }, 220);
+    detailSwitchTimer = null;
+  }, 170);
 }
 
 function renderActiveCardDetail(device) {
