@@ -499,9 +499,9 @@ function renderHistoryLaunchers(device) {
           <p class="panel-head-sub">Se abren en ventana flotante, igual que en la app.</p>
         </div>
         <div class="history-icon-row">
-          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="recharges" title="Recargas" aria-label="Abrir historial de recargas">↻</button>
-          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="purchases" title="Compras" aria-label="Abrir historial de compras">🛒</button>
-          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="replacements" title="Reemplazos" aria-label="Abrir historial de reemplazos">⇆</button>
+          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="recharges" title="Recargas" aria-label="Abrir historial de recargas">&#8635;</button>
+          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="purchases" title="Compras" aria-label="Abrir historial de compras">&#128722;</button>
+          <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="replacements" title="Reemplazos" aria-label="Abrir historial de reemplazos">&#8646;</button>
         </div>
       </div>
     </section>
@@ -583,9 +583,9 @@ function renderActiveCardDetail(device) {
             <p class="purchase-summary">${escapeHtml(purchaseSummary)}</p>
             <div class="inline-actions">
               <button type="button" data-action="unlock-sensitive" data-device-id="${escapeHtml(device.id)}">${escapeHtml(unlockLabel)}</button>
-              <button class="icon-action" type="button" data-action="edit-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Editar" aria-label="Editar tarjeta">✎</button>
-              <button class="icon-action" type="button" data-action="replace-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Reemplazar" aria-label="Reemplazar tarjeta">⇆</button>
-              <button class="icon-action" type="button" data-action="notes-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Notas" aria-label="Editar notas">📝</button>
+              <button class="icon-action" type="button" data-action="edit-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Editar" aria-label="Editar tarjeta">&#9998;</button>
+              <button class="icon-action" type="button" data-action="replace-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Reemplazar" aria-label="Reemplazar tarjeta">&#8646;</button>
+              <button class="icon-action" type="button" data-action="notes-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Notas" aria-label="Editar notas">&#128221;</button>
               <button type="button" data-action="toggle-rejected" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">Rechazado</button>
               <button type="button" data-action="toggle-cooldown" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">24h</button>
             </div>
@@ -1221,26 +1221,6 @@ document.addEventListener("keydown", (event) => {
     pulseDetailView();
   }
 });
-
-modalRoot.addEventListener(
-  "mousedown",
-  (event) => {
-    if (!state.modal) {
-      return;
-    }
-
-    const target = event.target;
-    if (!(target instanceof HTMLElement)) {
-      return;
-    }
-
-    const field = target.closest("input, textarea, select");
-    if (field instanceof HTMLElement) {
-      field.focus();
-    }
-  },
-  true,
-);
 
 tabControl.addEventListener("click", () => {
   state.selectedTab = "control";
