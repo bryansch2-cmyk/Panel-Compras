@@ -12,7 +12,7 @@ const PRODUCT_RULES = [
   { key: "epic", label: "Epic", amount: 79, maxCount: 6 },
   { key: "xbox", label: "Xbox", amount: 79, maxCount: 2 },
   { key: "nitro", label: "Nitro", amount: 104.99, maxCount: 3 },
-  { key: "nitroYear", label: "Nitro 1 ano", amount: 1049.99, maxCount: 2 },
+  { key: "nitroYear", label: "Nitro 1y", amount: 1049.99, maxCount: 2 },
   { key: "crunchy", label: "Crunchy", amount: 89.9, maxCount: 0 },
 ];
 

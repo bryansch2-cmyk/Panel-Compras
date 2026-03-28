@@ -360,12 +360,6 @@ function getErrorMessage(code) {
 function openModal(config) {
   state.modal = config;
   renderModal();
-  window.setTimeout(() => {
-    const firstField = modalRoot.querySelector("input, textarea, select");
-    if (firstField instanceof HTMLElement) {
-      firstField.focus();
-    }
-  }, 0);
 }
 
 function closeModal() {
@@ -819,7 +813,7 @@ function renderModal() {
             </div>
             <button class="modal-close" type="button" data-action="close-modal">&times;</button>
           </div>
-          <form class="modal-form" data-action="submit-pin" data-device-id="${escapeHtml(modal.deviceId)}">
+          <form class="modal-form" data-modal-action="submit-pin" data-device-id="${escapeHtml(modal.deviceId)}">
             <input name="pin" type="password" inputmode="numeric" maxlength="6" placeholder="PIN de 6 digitos" required>
             ${modal.needsCreate ? '<input name="pinConfirm" type="password" inputmode="numeric" maxlength="6" placeholder="Confirmar PIN" required>' : ""}
             ${modal.error ? `<div class="modal-error">${escapeHtml(modal.error)}</div>` : ""}
@@ -845,7 +839,7 @@ function renderModal() {
             </div>
             <button class="modal-close" type="button" data-action="close-modal">&times;</button>
           </div>
-          <form class="modal-form" data-action="${escapeHtml(modal.type)}" data-device-id="${escapeHtml(modal.deviceId)}" data-card-id="${escapeHtml(modal.cardId)}">
+          <form class="modal-form" data-modal-action="${escapeHtml(modal.type)}" data-device-id="${escapeHtml(modal.deviceId)}" data-card-id="${escapeHtml(modal.cardId)}">
             <label class="modal-field">
               <span>Numero completo de la tarjeta</span>
               <input name="number" type="text" placeholder="Ej. 5383990268502182" value="${escapeHtml(modal.values.number)}" required>
@@ -879,7 +873,7 @@ function renderModal() {
                 <input name="nitro" type="text" inputmode="numeric" placeholder="0" value="${escapeHtml(modal.values.nitro)}">
               </label>
               <label class="modal-field">
-                <span>Compras Nitro 1 ano realizadas</span>
+                <span>Compras Nitro 1y realizadas</span>
                 <input name="nitroYear" type="text" inputmode="numeric" placeholder="0" value="${escapeHtml(modal.values.nitroYear)}">
               </label>
               <label class="modal-field">
@@ -910,7 +904,7 @@ function renderModal() {
             </div>
             <button class="modal-close" type="button" data-action="close-modal">&times;</button>
           </div>
-          <form class="modal-form" data-action="${escapeHtml(modal.type)}" data-device-id="${escapeHtml(modal.deviceId)}" data-card-id="${escapeHtml(modal.cardId)}">
+          <form class="modal-form" data-modal-action="${escapeHtml(modal.type)}" data-device-id="${escapeHtml(modal.deviceId)}" data-card-id="${escapeHtml(modal.cardId)}">
             <input name="number" type="text" placeholder="Numero de tarjeta" value="${escapeHtml(modal.values.number)}" required>
             <input name="expiry" type="text" placeholder="MM/YY" value="${escapeHtml(modal.values.expiry)}">
             <input name="cvv" type="text" placeholder="CVV" value="${escapeHtml(modal.values.cvv)}">
@@ -938,7 +932,7 @@ function renderModal() {
             </div>
             <button class="modal-close" type="button" data-action="close-modal">&times;</button>
           </div>
-          <form class="modal-form" data-action="save-notes" data-device-id="${escapeHtml(modal.deviceId)}" data-card-id="${escapeHtml(modal.cardId)}">
+          <form class="modal-form" data-modal-action="save-notes" data-device-id="${escapeHtml(modal.deviceId)}" data-card-id="${escapeHtml(modal.cardId)}">
             <textarea name="notes" placeholder="Escribe aqui tus notas">${escapeHtml(modal.values.notes)}</textarea>
             ${modal.error ? `<div class="modal-error">${escapeHtml(modal.error)}</div>` : ""}
             <div class="modal-actions">
@@ -1009,6 +1003,10 @@ document.addEventListener("click", async (event) => {
   const stopNode = event.target.closest("[data-stop-modal]");
   if (stopNode) {
     event.stopPropagation();
+    const modalCloseTrigger = event.target.closest('[data-action="close-modal"]');
+    if (!modalCloseTrigger) {
+      return;
+    }
   }
 
   const button = event.target.closest("[data-action]");
@@ -1109,13 +1107,13 @@ document.addEventListener("click", async (event) => {
 });
 
 document.addEventListener("submit", async (event) => {
-  const form = event.target.closest("form[data-action]");
+  const form = event.target.closest("form[data-action], form[data-modal-action]");
   if (!form) {
     return;
   }
 
   event.preventDefault();
-  const { action } = form.dataset;
+  const action = form.dataset.modalAction || form.dataset.action;
   const values = serializeForm(form);
 
   if (action === "recharge") {
