@@ -482,10 +482,15 @@ function renderDeviceList() {
     const isActive = device.id === state.selectedDeviceId;
     return `
       <button class="device-item ${isActive ? "active" : ""}" type="button" data-action="select-device" data-device-id="${escapeHtml(device.id)}">
-        <strong>${escapeHtml(device.title)}</strong>
-        <span>Saldo ${escapeHtml(formatMoney(device.availableBalance))}</span>
-        <span>Usado ${escapeHtml(formatMoney(device.pendingUsed))}</span>
-        <span>Limite ${escapeHtml(formatMoney(device.balanceLimitCurrent))}</span>
+        <div class="device-item-top">
+          <strong>${escapeHtml(device.title)}</strong>
+          <span class="device-item-badge">${isActive ? "En foco" : "Lista"}</span>
+        </div>
+        <div class="device-item-stats">
+          <span><b>Saldo</b> ${escapeHtml(formatMoney(device.availableBalance))}</span>
+          <span><b>Usado</b> ${escapeHtml(formatMoney(device.pendingUsed))}</span>
+          <span><b>Limite</b> ${escapeHtml(formatMoney(device.balanceLimitCurrent))}</span>
+        </div>
       </button>
     `;
   }).join("");
@@ -682,9 +687,10 @@ function renderControlTab() {
 
   detailView.innerHTML = `
     <div class="detail-head">
-      <div>
+      <div class="detail-title-block">
+        <p class="detail-kicker">Dispositivo seleccionado</p>
         <h2>${escapeHtml(device.title)}</h2>
-        <p>Saldo disponible ${escapeHtml(formatMoney(device.availableBalance))} - Saldo usado ${escapeHtml(formatMoney(device.pendingUsed))}</p>
+        <p class="detail-summary">Saldo disponible ${escapeHtml(formatMoney(device.availableBalance))} - Saldo usado ${escapeHtml(formatMoney(device.pendingUsed))}</p>
       </div>
       <div class="meta-strip">
         <span>Ultima recarga ${escapeHtml(formatMoney(device.lastRechargeAmount || 0))}</span>
