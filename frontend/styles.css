@@ -477,6 +477,21 @@ body.speeches-mode .sidebar {
   letter-spacing: 0.01em;
 }
 
+.meta-edit-button {
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  background: rgba(127, 193, 255, 0.1);
+  border: 1px solid rgba(127, 193, 255, 0.18);
+}
+
+.meta-edit-button:hover,
+.meta-edit-button:focus-visible {
+  transform: translateY(-1px);
+}
+
 .actions-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -977,6 +992,10 @@ body.speeches-mode .sidebar {
 :root[data-theme="light"] .badge,
 :root[data-theme="light"] .readonly-chip {
   background: rgba(239, 245, 252, 0.95);
+}
+
+:root[data-theme="light"] .meta-edit-button {
+  background: rgba(239, 245, 252, 0.98);
 }
 
 .compact-icon-button:hover,

@@ -543,6 +543,32 @@ async function revertLastCustomAmount(deviceId) {
   return writeState(state);
 }
 
+async function updateDeviceFinancials(deviceId, payload) {
+  const state = await loadState();
+  const device = findDevice(state, deviceId);
+  if (!device) {
+    throw new Error("device-not-found");
+  }
+
+  const nextAvailable = roundMoney(payload?.availableBalance);
+  const nextLimit = roundMoney(payload?.balanceLimitCurrent);
+  const nextRecharge = roundMoney(payload?.lastRechargeAmount);
+  const nextRechargeAt = String(payload?.lastRechargeAt || device.lastRechargeAt || "").trim();
+
+  if (nextAvailable < 0 || nextLimit < 0 || nextRecharge < 0) {
+    throw new Error("invalid-amount");
+  }
+
+  device.availableBalance = Math.max(0, Math.min(DEVICE_BALANCE_CAP, nextAvailable));
+  device.balanceLimitCurrent = Math.max(0, Math.min(DEVICE_BALANCE_CAP, nextLimit));
+  device.lastRechargeAmount = Math.max(0, nextRecharge);
+  device.lastRechargeAt = nextRechargeAt;
+  device.limitCycleMonth = getMonthKey(nextRechargeAt || todayIso());
+  device.pendingUsed = calculatePendingUsed(device);
+
+  return writeState(state);
+}
+
 async function updateCard(deviceId, cardId, payload) {
   const state = await loadState();
   const device = findDevice(state, deviceId);
@@ -761,6 +787,7 @@ module.exports = {
   addPendingUsed,
   deductPendingUsed,
   revertLastCustomAmount,
+  updateDeviceFinancials,
   updateCard,
   updateCardNotes,
   toggleCardRejected,

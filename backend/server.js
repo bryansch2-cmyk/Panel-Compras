@@ -8,6 +8,7 @@ const {
   addPendingUsed,
   deductPendingUsed,
   revertLastCustomAmount,
+  updateDeviceFinancials,
   updateCard,
   updateCardNotes,
   toggleCardRejected,
@@ -146,6 +147,13 @@ async function handleApi(req, res) {
 
   if (req.method === "POST" && segments[0] === "api" && segments[1] === "devices" && segments[3] === "revert-custom") {
     const state = await revertLastCustomAmount(segments[2]);
+    sendJson(res, 200, state);
+    return;
+  }
+
+  if (req.method === "POST" && segments[0] === "api" && segments[1] === "devices" && segments[3] === "financials") {
+    const payload = await readRequestBody(req);
+    const state = await updateDeviceFinancials(segments[2], payload);
     sendJson(res, 200, state);
     return;
   }

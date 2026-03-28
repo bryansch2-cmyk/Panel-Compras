@@ -438,6 +438,22 @@ function openNotesModal(deviceId, card) {
   });
 }
 
+function openDeviceFinancialsModal(device) {
+  openModal({
+    type: "device-financials",
+    deviceId: device.id,
+    title: "Ajustar progreso del dispositivo",
+    submitLabel: "Guardar progreso",
+    values: {
+      availableBalance: String(Number(device.availableBalance || 0)),
+      balanceLimitCurrent: String(Number(device.balanceLimitCurrent || 0)),
+      lastRechargeAmount: String(Number(device.lastRechargeAmount || 0)),
+      lastRechargeAt: String(device.lastRechargeAt || ""),
+    },
+    error: "",
+  });
+}
+
 function getHistoryEntries(device, historyType) {
   if (!device) {
     return [];
@@ -691,6 +707,7 @@ function renderControlTab() {
         <span>Fecha ${escapeHtml(formatDate(device.lastRechargeAt))}</span>
         <span>Limite actual ${escapeHtml(formatMoney(device.balanceLimitCurrent))}</span>
         <span>Tope fijo ${escapeHtml(formatMoney(state.constants.deviceBalanceCap))}</span>
+        <button class="meta-edit-button" type="button" data-action="edit-device-financials" data-device-id="${escapeHtml(device.id)}">Ajustar progreso</button>
       </div>
     </div>
 
@@ -893,6 +910,48 @@ function renderModal() {
     return;
   }
 
+  if (modal.type === "device-financials") {
+    modalRoot.innerHTML = `
+      <div class="modal-backdrop" data-modal-backdrop>
+        <div class="modal-card" data-stop-modal>
+          <div class="modal-head">
+            <div>
+              <h3>${escapeHtml(modal.title)}</h3>
+              <p>Fija manualmente el progreso previo del dispositivo.</p>
+            </div>
+            <button class="modal-close" type="button" data-action="close-modal">&times;</button>
+          </div>
+          <form class="modal-form" data-modal-action="device-financials" data-device-id="${escapeHtml(modal.deviceId)}">
+            <div class="form-grid">
+              <label class="modal-field">
+                <span>Saldo disponible actual</span>
+                <input name="availableBalance" type="text" inputmode="decimal" placeholder="Ej. 507" value="${escapeHtml(modal.values.availableBalance)}">
+              </label>
+              <label class="modal-field">
+                <span>Limite actual restante</span>
+                <input name="balanceLimitCurrent" type="text" inputmode="decimal" placeholder="Ej. 2243" value="${escapeHtml(modal.values.balanceLimitCurrent)}">
+              </label>
+              <label class="modal-field">
+                <span>Monto de la ultima recarga</span>
+                <input name="lastRechargeAmount" type="text" inputmode="decimal" placeholder="Ej. 1250" value="${escapeHtml(modal.values.lastRechargeAmount)}">
+              </label>
+              <label class="modal-field">
+                <span>Fecha de la ultima recarga</span>
+                <input name="lastRechargeAt" type="text" inputmode="numeric" placeholder="DD/MM/AAAA o AAAA-MM-DD" value="${escapeHtml(modal.values.lastRechargeAt)}">
+              </label>
+            </div>
+            ${modal.error ? `<div class="modal-error">${escapeHtml(modal.error)}</div>` : ""}
+            <div class="modal-actions">
+              <button type="button" data-action="close-modal">Cancelar</button>
+              <button type="submit">${escapeHtml(modal.submitLabel)}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
   if (modal.type === "replace-card") {
     modalRoot.innerHTML = `
       <div class="modal-backdrop" data-modal-backdrop>
@@ -1032,6 +1091,14 @@ document.addEventListener("click", async (event) => {
 
   if (action === "open-history") {
     openHistoryModal(button.dataset.deviceId, button.dataset.historyType);
+    return;
+  }
+
+  if (action === "edit-device-financials") {
+    const device = getDevices().find((entry) => entry.id === button.dataset.deviceId);
+    if (device) {
+      openDeviceFinancialsModal(device);
+    }
     return;
   }
 
@@ -1179,6 +1246,12 @@ document.addEventListener("submit", async (event) => {
 
   if (action === "edit-card") {
     await sendMutation(`/api/devices/${form.dataset.deviceId}/cards/${form.dataset.cardId}/update`, values);
+    closeModal();
+    return;
+  }
+
+  if (action === "device-financials") {
+    await sendMutation(`/api/devices/${form.dataset.deviceId}/financials`, values);
     closeModal();
     return;
   }
