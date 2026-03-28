@@ -775,7 +775,7 @@ function renderModal() {
     };
 
     modalRoot.innerHTML = `
-      <div class="modal-backdrop" data-action="close-modal">
+      <div class="modal-backdrop" data-modal-backdrop>
         <div class="modal-card modal-card-wide" data-stop-modal>
           <div class="modal-head">
             <div>
@@ -804,7 +804,7 @@ function renderModal() {
 
   if (modal.type === "pin") {
     modalRoot.innerHTML = `
-      <div class="modal-backdrop" data-action="close-modal">
+      <div class="modal-backdrop" data-modal-backdrop>
         <div class="modal-card" data-stop-modal>
           <div class="modal-head">
             <div>
@@ -830,7 +830,7 @@ function renderModal() {
 
   if (modal.type === "edit-card") {
     modalRoot.innerHTML = `
-      <div class="modal-backdrop" data-action="close-modal">
+      <div class="modal-backdrop" data-modal-backdrop>
         <div class="modal-card" data-stop-modal>
           <div class="modal-head">
             <div>
@@ -895,7 +895,7 @@ function renderModal() {
 
   if (modal.type === "replace-card") {
     modalRoot.innerHTML = `
-      <div class="modal-backdrop" data-action="close-modal">
+      <div class="modal-backdrop" data-modal-backdrop>
         <div class="modal-card" data-stop-modal>
           <div class="modal-head">
             <div>
@@ -923,7 +923,7 @@ function renderModal() {
 
   if (modal.type === "notes") {
     modalRoot.innerHTML = `
-      <div class="modal-backdrop" data-action="close-modal">
+      <div class="modal-backdrop" data-modal-backdrop>
         <div class="modal-card" data-stop-modal>
           <div class="modal-head">
             <div>
@@ -1000,11 +1000,9 @@ function moveDeviceSelection(direction) {
 }
 
 document.addEventListener("click", async (event) => {
-  const stopNode = event.target.closest("[data-stop-modal]");
-  if (stopNode) {
-    event.stopPropagation();
-    const modalCloseTrigger = event.target.closest('[data-action="close-modal"]');
-    if (!modalCloseTrigger) {
+  if (modalRoot.contains(event.target)) {
+    const closeButton = event.target.closest('[data-action="close-modal"]');
+    if (!closeButton) {
       return;
     }
   }
@@ -1103,6 +1101,13 @@ document.addEventListener("click", async (event) => {
 
   if (action === "deduct-pending") {
     await sendMutation(`/api/devices/${button.dataset.deviceId}/deduct-pending`, {});
+  }
+});
+
+modalRoot.addEventListener("click", (event) => {
+  const backdrop = event.target.closest("[data-modal-backdrop]");
+  if (backdrop && event.target === backdrop) {
+    closeModal();
   }
 });
 

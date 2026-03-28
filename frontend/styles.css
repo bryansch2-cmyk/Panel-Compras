@@ -640,7 +640,7 @@ body.speeches-mode .sidebar {
     linear-gradient(180deg, rgba(118, 208, 174, 0.12), color-mix(in srgb, var(--surface-soft) 92%, transparent));
   border-color: var(--line-hot);
   box-shadow:
-    0 20px 42px rgba(0, 0, 0, 0.16),
+    0 28px 58px rgba(0, 0, 0, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
   animation: fade-up 220ms ease;
   position: relative;
@@ -655,6 +655,7 @@ body.speeches-mode .sidebar {
   height: 280px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(255, 213, 115, 0.12), transparent 62%);
+  opacity: 0.84;
   pointer-events: none;
 }
 
@@ -752,6 +753,7 @@ body.speeches-mode .sidebar {
 
 .selected-card-primary .card-number {
   text-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+  letter-spacing: 0.03em;
 }
 
 .inline-actions button {
@@ -957,6 +959,19 @@ body.speeches-mode .sidebar {
   background: rgba(255, 255, 255, 0.9);
 }
 
+:root[data-theme="light"] .modal-backdrop {
+  background: rgba(193, 208, 226, 0.28);
+}
+
+:root[data-theme="light"] .modal-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(244, 248, 252, 0.94)),
+    rgba(255, 255, 255, 0.92);
+  box-shadow:
+    0 26px 54px rgba(79, 112, 146, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
 :root[data-theme="light"] .meta-strip span,
 :root[data-theme="light"] .history-icon-button,
 :root[data-theme="light"] .badge,
@@ -1087,8 +1102,9 @@ body.speeches-mode .sidebar {
   display: grid;
   place-items: center;
   padding: 18px;
-  background: rgba(5, 9, 15, 0.46);
-  backdrop-filter: none;
+  background: rgba(5, 9, 15, 0.38);
+  backdrop-filter: blur(14px) saturate(1.08);
+  animation: fade-up 160ms ease;
 }
 
 .modal-card {
@@ -1099,13 +1115,18 @@ body.speeches-mode .sidebar {
   max-height: calc(100vh - 36px);
   overflow: auto;
   padding: 18px;
-  border: 1px solid var(--line);
+  border: 1px solid color-mix(in srgb, var(--line) 76%, rgba(255, 255, 255, 0.12));
   border-radius: 24px;
-  background: color-mix(in srgb, var(--surface) 98%, transparent);
-  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.28);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--surface) 96%, rgba(255, 255, 255, 0.04)), color-mix(in srgb, var(--surface-soft) 92%, transparent)),
+    color-mix(in srgb, var(--surface) 92%, transparent);
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
   will-change: auto;
   transform: translateZ(0);
   backface-visibility: hidden;
+  animation: modal-pop 170ms ease;
 }
 
 .modal-card-wide {
@@ -1129,6 +1150,7 @@ body.speeches-mode .sidebar {
   min-width: 38px;
   min-height: 38px;
   padding: 0;
+  backdrop-filter: blur(10px);
 }
 
 .modal-form {
@@ -1149,6 +1171,13 @@ body.speeches-mode .sidebar {
     border-color 120ms ease,
     box-shadow 120ms ease,
     background-color 120ms ease;
+}
+
+.modal-card input:focus,
+.modal-card textarea:focus {
+  box-shadow:
+    0 0 0 1px rgba(127, 193, 255, 0.28),
+    0 10px 20px rgba(34, 53, 78, 0.16);
 }
 
 .modal-field {
