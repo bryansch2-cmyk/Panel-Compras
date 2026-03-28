@@ -1185,6 +1185,13 @@ modalRoot.addEventListener("mousedown", (event) => {
 });
 
 modalRoot.addEventListener("click", (event) => {
+  const closeTrigger = event.target.closest('[data-action="close-modal"]');
+  if (closeTrigger) {
+    event.stopPropagation();
+    closeModal();
+    return;
+  }
+
   if (event.target.closest("[data-stop-modal]")) {
     event.stopPropagation();
     return;
