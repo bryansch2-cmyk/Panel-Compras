@@ -1059,7 +1059,8 @@ function moveDeviceSelection(direction) {
 }
 
 document.addEventListener("click", async (event) => {
-  if (modalRoot.contains(event.target)) {
+  const modalContent = event.target.closest("[data-stop-modal]");
+  if (modalContent) {
     const closeButton = event.target.closest('[data-action="close-modal"]');
     if (!closeButton) {
       return;
@@ -1171,7 +1172,24 @@ document.addEventListener("click", async (event) => {
   }
 });
 
+modalRoot.addEventListener("pointerdown", (event) => {
+  if (event.target.closest("[data-stop-modal]")) {
+    event.stopPropagation();
+  }
+});
+
+modalRoot.addEventListener("mousedown", (event) => {
+  if (event.target.closest("[data-stop-modal]")) {
+    event.stopPropagation();
+  }
+});
+
 modalRoot.addEventListener("click", (event) => {
+  if (event.target.closest("[data-stop-modal]")) {
+    event.stopPropagation();
+    return;
+  }
+
   const backdrop = event.target.closest("[data-modal-backdrop]");
   if (backdrop && event.target === backdrop) {
     closeModal();
