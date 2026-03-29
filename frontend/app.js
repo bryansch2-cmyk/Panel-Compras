@@ -757,7 +757,7 @@ function renderActiveCardDetail(device) {
               <span class="card-label">${escapeHtml(activeCard.orderLabel || "Tarjeta activa")}</span>
               <span class="status-pill active">Activa</span>
               <span class="status-pill ${activeCard.rejectedAt ? "danger" : ""}">${escapeHtml(stateLabel)}</span>
-              ${cooldownLabel ? `<span class="status-pill cooldown">${escapeHtml(cooldownLabel)}</span>` : ""}
+              ${cooldownLabel ? `<span class="status-pill cooldown"><span class="cooldown-icon" aria-hidden="true">&#9201;</span><span>${escapeHtml(cooldownLabel)}</span></span>` : ""}
               ${lowBalance ? '<span class="status-pill low-balance">Saldo bajo</span>' : ""}
             </div>
             <div class="card-face">

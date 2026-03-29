@@ -1052,9 +1052,26 @@ body.speeches-mode .sidebar {
 }
 
 .status-pill.cooldown {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   background: rgba(201, 163, 92, 0.14);
   color: #d7b16a;
   border-color: rgba(201, 163, 92, 0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 8px 18px rgba(201, 163, 92, 0.1);
+}
+
+.cooldown-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: rgba(201, 163, 92, 0.16);
+  font-size: 0.72rem;
+  line-height: 1;
 }
 
 .status-pill.rejection-hold {
@@ -1521,9 +1538,16 @@ body.speeches-mode .sidebar {
 }
 
 :root[data-theme="light"] .status-pill.cooldown {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.42),
+    0 8px 16px rgba(191, 151, 78, 0.1);
   background: rgba(214, 184, 124, 0.18);
   border-color: rgba(191, 151, 78, 0.2);
   color: #8d6830;
+}
+
+:root[data-theme="light"] .cooldown-icon {
+  background: rgba(214, 184, 124, 0.22);
 }
 
 :root[data-theme="light"] .status-pill.rejection-hold {
