@@ -1,41 +1,41 @@
 :root {
   color-scheme: dark;
-  --bg: #0a1018;
-  --panel: #131b27;
-  --panel-soft: #1a2536;
-  --surface: rgba(19, 27, 39, 0.92);
-  --surface-soft: rgba(17, 25, 36, 0.76);
-  --surface-strong: #0f1621;
-  --surface-frost: rgba(12, 18, 27, 0.6);
-  --panel-tint: linear-gradient(180deg, rgba(122, 201, 181, 0.12), rgba(20, 28, 39, 0.94));
-  --line: rgba(153, 198, 255, 0.18);
-  --line-hot: rgba(122, 201, 181, 0.34);
-  --text: #eef4fb;
-  --muted: #8ea4c0;
-  --accent: #7fc1ff;
-  --green: #76d0ae;
-  --red: #ff858f;
-  --shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
+  --bg: #0c1016;
+  --panel: #151b24;
+  --panel-soft: #1b2430;
+  --surface: rgba(20, 27, 37, 0.94);
+  --surface-soft: rgba(18, 24, 33, 0.82);
+  --surface-strong: #111821;
+  --surface-frost: rgba(14, 19, 27, 0.66);
+  --panel-tint: linear-gradient(180deg, rgba(132, 157, 189, 0.08), rgba(18, 24, 33, 0.96));
+  --line: rgba(147, 166, 189, 0.16);
+  --line-hot: rgba(118, 150, 184, 0.28);
+  --text: #edf2f8;
+  --muted: #94a2b6;
+  --accent: #9ab2cf;
+  --green: #88b59f;
+  --red: #c9828d;
+  --shadow: 0 18px 40px rgba(0, 0, 0, 0.26);
 }
 
 :root[data-theme="light"] {
   color-scheme: light;
-  --bg: #eef5fb;
-  --panel: #fbfdff;
-  --panel-soft: #eef4fa;
-  --surface: rgba(252, 253, 255, 0.96);
-  --surface-soft: rgba(241, 246, 252, 0.92);
+  --bg: #eef2f6;
+  --panel: #fbfcfd;
+  --panel-soft: #f2f5f8;
+  --surface: rgba(252, 253, 254, 0.97);
+  --surface-soft: rgba(244, 247, 250, 0.94);
   --surface-strong: #ffffff;
-  --surface-frost: rgba(244, 248, 253, 0.95);
-  --panel-tint: linear-gradient(180deg, rgba(115, 188, 160, 0.16), rgba(252, 253, 255, 0.98));
-  --line: rgba(70, 104, 146, 0.18);
-  --line-hot: rgba(45, 155, 119, 0.28);
-  --text: #102034;
-  --muted: #5a6f88;
-  --accent: #245fd1;
-  --green: #1f8a68;
-  --red: #c74e5f;
-  --shadow: 0 22px 46px rgba(66, 93, 124, 0.12);
+  --surface-frost: rgba(246, 248, 251, 0.96);
+  --panel-tint: linear-gradient(180deg, rgba(150, 164, 182, 0.1), rgba(252, 253, 254, 0.98));
+  --line: rgba(92, 107, 128, 0.16);
+  --line-hot: rgba(109, 135, 165, 0.26);
+  --text: #1c2836;
+  --muted: #677689;
+  --accent: #55697f;
+  --green: #567b69;
+  --red: #a56570;
+  --shadow: 0 20px 42px rgba(74, 88, 104, 0.1);
 }
 
 * {
@@ -50,17 +50,17 @@ body {
   margin: 0;
   font-family: "Segoe UI", sans-serif;
   background:
-    radial-gradient(circle at top left, rgba(127, 193, 255, 0.16), transparent 24%),
-    radial-gradient(circle at bottom right, rgba(118, 208, 174, 0.12), transparent 20%),
+    radial-gradient(circle at top left, rgba(98, 116, 143, 0.14), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(102, 123, 110, 0.1), transparent 20%),
     var(--bg);
   color: var(--text);
 }
 
 :root[data-theme="light"] body {
   background:
-    radial-gradient(circle at top left, rgba(112, 167, 235, 0.18), transparent 22%),
-    radial-gradient(circle at top right, rgba(113, 193, 165, 0.12), transparent 20%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.42), transparent 20%),
+    radial-gradient(circle at top left, rgba(145, 160, 180, 0.16), transparent 22%),
+    radial-gradient(circle at top right, rgba(175, 184, 194, 0.12), transparent 20%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.46), transparent 20%),
     var(--bg);
 }
 
@@ -103,8 +103,8 @@ body {
   overflow: hidden;
   min-height: 148px;
   background:
-    linear-gradient(135deg, rgba(127, 193, 255, 0.06), transparent 42%),
-    linear-gradient(180deg, color-mix(in srgb, var(--surface) 95%, transparent), color-mix(in srgb, var(--surface-soft) 88%, transparent));
+    linear-gradient(135deg, rgba(122, 141, 166, 0.06), transparent 42%),
+    linear-gradient(180deg, color-mix(in srgb, var(--surface) 95%, transparent), color-mix(in srgb, var(--surface-soft) 90%, transparent));
 }
 
 .hero::before {
@@ -114,7 +114,7 @@ body {
   width: 320px;
   height: 320px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(127, 193, 255, 0.18), transparent 62%);
+  background: radial-gradient(circle, rgba(122, 141, 166, 0.16), transparent 62%);
   pointer-events: none;
 }
 
@@ -126,7 +126,7 @@ body {
   width: 240px;
   height: 240px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(118, 208, 174, 0.14), transparent 64%);
+  background: radial-gradient(circle, rgba(128, 153, 137, 0.12), transparent 64%);
   pointer-events: none;
 }
 
@@ -150,10 +150,10 @@ body {
 }
 
 .top-tab.active {
-  border-color: rgba(127, 193, 255, 0.4);
-  background: rgba(127, 193, 255, 0.12);
+  border-color: rgba(122, 141, 166, 0.34);
+  background: rgba(122, 141, 166, 0.12);
   color: var(--accent);
-  box-shadow: 0 10px 18px rgba(36, 95, 209, 0.12);
+  box-shadow: 0 10px 18px rgba(44, 56, 72, 0.12);
 }
 
 .compact-panel {
@@ -195,7 +195,7 @@ p {
 .badge {
   padding: 11px 15px;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
   color: var(--accent);
   font-size: 0.88rem;
   font-weight: 700;
@@ -224,14 +224,14 @@ button {
   padding: 0 16px;
   border: 1px solid var(--line);
   border-radius: 14px;
-  background: color-mix(in srgb, var(--panel-soft) 86%, transparent);
+  background: color-mix(in srgb, var(--panel-soft) 88%, transparent);
   color: var(--text);
   cursor: pointer;
 }
 
 button:hover {
   transform: translateY(-1px);
-  border-color: rgba(127, 193, 255, 0.32);
+  border-color: rgba(122, 141, 166, 0.26);
 }
 
 button:active {
@@ -358,8 +358,8 @@ body.speeches-mode .sidebar {
   min-height: 28px;
   padding: 0 10px;
   border-radius: 999px;
-  border: 1px solid rgba(127, 193, 255, 0.12);
-  background: rgba(127, 193, 255, 0.08);
+  border: 1px solid rgba(122, 141, 166, 0.14);
+  background: rgba(122, 141, 166, 0.08);
   color: var(--accent);
   font-size: 0.76rem;
   font-weight: 800;
@@ -378,9 +378,9 @@ body.speeches-mode .sidebar {
 }
 
 .device-item.active {
-  border-color: rgba(118, 208, 174, 0.44);
-  background: linear-gradient(180deg, rgba(118, 208, 174, 0.16), rgba(127, 193, 255, 0.05));
-  box-shadow: 0 0 0 1px rgba(118, 208, 174, 0.18), 0 16px 30px rgba(0, 0, 0, 0.12);
+  border-color: rgba(128, 153, 137, 0.28);
+  background: linear-gradient(180deg, rgba(128, 153, 137, 0.12), rgba(122, 141, 166, 0.04));
+  box-shadow: 0 0 0 1px rgba(128, 153, 137, 0.12), 0 16px 30px rgba(0, 0, 0, 0.12);
 }
 
 .device-item.active::before {
@@ -391,7 +391,7 @@ body.speeches-mode .sidebar {
   bottom: 14px;
   width: 4px;
   border-radius: 999px;
-  background: linear-gradient(180deg, var(--green), rgba(127, 193, 255, 0.8));
+  background: linear-gradient(180deg, var(--green), rgba(122, 141, 166, 0.75));
 }
 
 .device-item span {
@@ -469,7 +469,7 @@ body.speeches-mode .sidebar {
 .meta-strip span {
   padding: 9px 12px;
   border-radius: 999px;
-  border: 1px solid rgba(127, 193, 255, 0.12);
+  border: 1px solid rgba(122, 141, 166, 0.14);
   background: color-mix(in srgb, var(--panel-soft) 90%, transparent);
   color: var(--muted);
   font-size: 0.83rem;
@@ -483,8 +483,8 @@ body.speeches-mode .sidebar {
   border-radius: 999px;
   font-size: 0.84rem;
   font-weight: 700;
-  background: rgba(127, 193, 255, 0.1);
-  border: 1px solid rgba(127, 193, 255, 0.18);
+  background: rgba(122, 141, 166, 0.1);
+  border: 1px solid rgba(122, 141, 166, 0.18);
 }
 
 .meta-edit-button:hover,
@@ -614,7 +614,7 @@ body.speeches-mode .sidebar {
   font-size: 1.05rem;
   display: inline-grid;
   place-items: center;
-  background: color-mix(in srgb, var(--panel-soft) 92%, transparent);
+  background: color-mix(in srgb, var(--panel-soft) 94%, transparent);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
@@ -651,8 +651,8 @@ body.speeches-mode .sidebar {
   gap: 18px;
   padding: 22px;
   background:
-    linear-gradient(135deg, rgba(118, 208, 174, 0.12), transparent 28%),
-    linear-gradient(180deg, rgba(118, 208, 174, 0.12), color-mix(in srgb, var(--surface-soft) 92%, transparent));
+    linear-gradient(135deg, rgba(128, 153, 137, 0.1), transparent 28%),
+    linear-gradient(180deg, rgba(128, 153, 137, 0.08), color-mix(in srgb, var(--surface-soft) 94%, transparent));
   border-color: var(--line-hot);
   box-shadow:
     0 28px 58px rgba(0, 0, 0, 0.2),
@@ -669,7 +669,7 @@ body.speeches-mode .sidebar {
   width: 280px;
   height: 280px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 213, 115, 0.12), transparent 62%);
+  background: radial-gradient(circle, rgba(192, 176, 133, 0.1), transparent 62%);
   opacity: 0.84;
   pointer-events: none;
 }
@@ -701,7 +701,7 @@ body.speeches-mode .sidebar {
   line-height: 1.5;
   font-size: 0.92rem;
   padding: 12px 14px;
-  border: 1px solid rgba(127, 193, 255, 0.12);
+  border: 1px solid rgba(122, 141, 166, 0.14);
   border-radius: 20px;
   background: color-mix(in srgb, var(--surface-soft) 88%, transparent);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
@@ -736,22 +736,22 @@ body.speeches-mode .sidebar {
 }
 
 .card-label {
-  background: rgba(255, 213, 115, 0.14);
-  color: #ffd573;
+  background: rgba(192, 176, 133, 0.14);
+  color: #d6c59f;
   letter-spacing: 0.06em;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .status-pill {
-  background: rgba(127, 193, 255, 0.12);
+  background: rgba(122, 141, 166, 0.12);
   color: var(--muted);
-  border: 1px solid rgba(127, 193, 255, 0.12);
+  border: 1px solid rgba(122, 141, 166, 0.12);
 }
 
 .status-pill.active {
-  background: rgba(118, 208, 174, 0.14);
+  background: rgba(128, 153, 137, 0.14);
   color: var(--green);
-  border-color: rgba(118, 208, 174, 0.18);
+  border-color: rgba(128, 153, 137, 0.18);
 }
 
 .inline-actions {
@@ -760,7 +760,7 @@ body.speeches-mode .sidebar {
   flex-wrap: wrap;
   justify-content: flex-end;
   padding: 8px;
-  border: 1px solid rgba(127, 193, 255, 0.12);
+  border: 1px solid rgba(122, 141, 166, 0.12);
   border-radius: 20px;
   background: color-mix(in srgb, var(--surface-soft) 82%, transparent);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -783,8 +783,8 @@ body.speeches-mode .sidebar {
 .inline-actions .icon-action {
   min-width: 38px;
   padding: 0;
-  border-color: rgba(255, 133, 143, 0.28);
-  background: rgba(255, 133, 143, 0.08);
+  border-color: rgba(169, 118, 126, 0.24);
+  background: rgba(169, 118, 126, 0.08);
 }
 
 .readonly-chip {
@@ -795,7 +795,7 @@ body.speeches-mode .sidebar {
   border: 1px solid var(--line);
   border-radius: 999px;
   color: var(--muted);
-  background: rgba(127, 193, 255, 0.08);
+  background: rgba(122, 141, 166, 0.08);
   font-size: 0.84rem;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
@@ -849,7 +849,7 @@ body.speeches-mode .sidebar {
 .product-stat:hover,
 .card-mini:hover,
 .history-item:hover {
-  border-color: rgba(127, 193, 255, 0.24);
+  border-color: rgba(122, 141, 166, 0.24);
   transform: translateY(-2px);
   box-shadow: 0 14px 22px rgba(0, 0, 0, 0.08);
 }
@@ -873,7 +873,7 @@ body.speeches-mode .sidebar {
   width: fit-content;
   padding: 0 10px;
   border-radius: 999px;
-  background: rgba(255, 133, 143, 0.14);
+  background: rgba(169, 118, 126, 0.14);
   color: var(--red);
   font-size: 0.78rem;
   font-weight: 700;
@@ -886,7 +886,7 @@ body.speeches-mode .sidebar {
   display: inline-grid;
   place-items: center;
   border-radius: 12px;
-  background: rgba(127, 193, 255, 0.1);
+  background: rgba(122, 141, 166, 0.1);
   color: var(--accent);
   font-weight: 800;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
@@ -903,7 +903,7 @@ body.speeches-mode .sidebar {
   min-height: 34px;
   padding: 0;
   border-radius: 12px;
-  background: rgba(127, 193, 255, 0.08);
+  background: rgba(122, 141, 166, 0.08);
   font-weight: 800;
 }
 
@@ -921,7 +921,7 @@ body.speeches-mode .sidebar {
 .custom-amount-input {
   min-width: 0;
   min-height: 40px;
-  border: 1px solid rgba(127, 193, 255, 0.26);
+  border: 1px solid rgba(122, 141, 166, 0.24);
   background: color-mix(in srgb, var(--surface-soft) 94%, white 6%);
 }
 
@@ -931,8 +931,8 @@ body.speeches-mode .sidebar {
   padding: 0;
   border-radius: 12px;
   font-size: 1rem;
-  border: 1px solid rgba(255, 133, 143, 0.26);
-  background: rgba(255, 133, 143, 0.08);
+  border: 1px solid rgba(169, 118, 126, 0.24);
+  background: rgba(169, 118, 126, 0.08);
 }
 
 :root[data-theme="light"] .hero,
@@ -951,12 +951,12 @@ body.speeches-mode .sidebar {
 
 :root[data-theme="light"] .hero {
   background:
-    linear-gradient(135deg, rgba(117, 170, 236, 0.08), transparent 40%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(245, 249, 253, 0.92));
+    linear-gradient(135deg, rgba(164, 176, 191, 0.08), transparent 40%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(244, 247, 250, 0.94));
 }
 
 :root[data-theme="light"] .device-item {
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.88);
 }
 
 :root[data-theme="light"] .sidebar .panel-head {
@@ -971,7 +971,7 @@ body.speeches-mode .sidebar {
 :root[data-theme="light"] .product-stat,
 :root[data-theme="light"] .info-tile,
 :root[data-theme="light"] .card-mini {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.94);
 }
 
 :root[data-theme="light"] .modal-backdrop {
@@ -991,7 +991,7 @@ body.speeches-mode .sidebar {
 :root[data-theme="light"] .history-icon-button,
 :root[data-theme="light"] .badge,
 :root[data-theme="light"] .readonly-chip {
-  background: rgba(239, 245, 252, 0.95);
+  background: rgba(241, 245, 248, 0.96);
 }
 
 :root[data-theme="light"] .meta-edit-button {
