@@ -88,7 +88,7 @@ body {
 .history-section {
   border: 1px solid var(--line);
   border-radius: 28px;
-  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
   box-shadow: var(--shadow);
   backdrop-filter: blur(12px);
 }
@@ -103,8 +103,8 @@ body {
   overflow: hidden;
   min-height: 148px;
   background:
-    linear-gradient(135deg, rgba(122, 141, 166, 0.06), transparent 42%),
-    linear-gradient(180deg, color-mix(in srgb, var(--surface) 95%, transparent), color-mix(in srgb, var(--surface-soft) 90%, transparent));
+    linear-gradient(135deg, rgba(122, 141, 166, 0.04), transparent 42%),
+    linear-gradient(180deg, color-mix(in srgb, var(--surface) 96%, transparent), color-mix(in srgb, var(--surface-soft) 92%, transparent));
 }
 
 .hero::before {
@@ -114,7 +114,7 @@ body {
   width: 320px;
   height: 320px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(122, 141, 166, 0.16), transparent 62%);
+  background: radial-gradient(circle, rgba(122, 141, 166, 0.11), transparent 62%);
   pointer-events: none;
 }
 
@@ -126,7 +126,7 @@ body {
   width: 240px;
   height: 240px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(128, 153, 137, 0.12), transparent 64%);
+  background: radial-gradient(circle, rgba(128, 153, 137, 0.08), transparent 64%);
   pointer-events: none;
 }
 
@@ -180,7 +180,7 @@ p {
   margin-top: 8px;
   color: var(--muted);
   max-width: 56ch;
-  font-size: 1.02rem;
+  font-size: 0.98rem;
   line-height: 1.6;
 }
 
@@ -596,7 +596,7 @@ body.speeches-mode .sidebar {
   padding: 18px 20px;
   border: 1px solid var(--line);
   border-radius: 26px;
-  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  background: color-mix(in srgb, var(--surface) 91%, transparent);
   box-shadow: var(--shadow);
 }
 
@@ -619,7 +619,8 @@ body.speeches-mode .sidebar {
 }
 
 .history-icon-button:hover {
-  transform: translateY(-2px) scale(1.01);
+  transform: translateY(-1px);
+  border-color: rgba(122, 141, 166, 0.24);
 }
 
 .history-list {
@@ -633,7 +634,8 @@ body.speeches-mode .sidebar {
   padding: 12px 14px;
   border: 1px solid var(--line);
   border-radius: 18px;
-  background: var(--panel-soft);
+  background: color-mix(in srgb, var(--panel-soft) 94%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .history-item span {
@@ -951,8 +953,8 @@ body.speeches-mode .sidebar {
 
 :root[data-theme="light"] .hero {
   background:
-    linear-gradient(135deg, rgba(164, 176, 191, 0.08), transparent 40%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(244, 247, 250, 0.94));
+    linear-gradient(135deg, rgba(164, 176, 191, 0.06), transparent 40%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(245, 247, 249, 0.95));
 }
 
 :root[data-theme="light"] .device-item {
@@ -972,6 +974,11 @@ body.speeches-mode .sidebar {
 :root[data-theme="light"] .info-tile,
 :root[data-theme="light"] .card-mini {
   background: rgba(255, 255, 255, 0.94);
+}
+
+:root[data-theme="light"] .history-item,
+:root[data-theme="light"] .history-launcher {
+  background: rgba(250, 251, 252, 0.94);
 }
 
 :root[data-theme="light"] .modal-backdrop {
@@ -995,7 +1002,7 @@ body.speeches-mode .sidebar {
 }
 
 :root[data-theme="light"] .meta-edit-button {
-  background: rgba(239, 245, 252, 0.98);
+  background: rgba(241, 245, 248, 0.98);
 }
 
 .compact-icon-button:hover,
@@ -1041,28 +1048,29 @@ body.speeches-mode .sidebar {
   text-align: left;
   width: 100%;
   min-height: 124px;
-  animation: cascade-in 260ms ease both;
+  animation: cascade-in 280ms ease both;
   grid-template-columns: minmax(220px, 260px) minmax(0, 1fr) minmax(190px, 240px);
   align-items: center;
-  gap: 16px;
+  gap: 18px;
   position: relative;
   overflow: hidden;
+  background: color-mix(in srgb, var(--surface-soft) 94%, transparent);
 }
 
 .card-mini.active {
-  border-color: rgba(118, 208, 174, 0.42);
-  box-shadow: 0 0 0 1px rgba(118, 208, 174, 0.18), 0 18px 32px rgba(0, 0, 0, 0.12);
+  border-color: rgba(128, 153, 137, 0.32);
+  box-shadow: 0 0 0 1px rgba(128, 153, 137, 0.14), 0 18px 32px rgba(0, 0, 0, 0.12);
 }
 
 .card-mini.is-cycle-active {
-  border-color: rgba(118, 208, 174, 0.34);
-  background: linear-gradient(180deg, rgba(118, 208, 174, 0.14), color-mix(in srgb, var(--surface-soft) 92%, transparent));
+  border-color: rgba(128, 153, 137, 0.28);
+  background: linear-gradient(180deg, rgba(128, 153, 137, 0.12), color-mix(in srgb, var(--surface-soft) 94%, transparent));
 }
 
 .card-mini.is-cycle-inactive {
-  opacity: 0.62;
-  filter: saturate(0.7);
-  transform: scale(0.992);
+  opacity: 0.68;
+  filter: saturate(0.56);
+  transform: scale(0.995);
 }
 
 .card-mini.is-cycle-inactive strong,
