@@ -50,6 +50,10 @@ function isCardCooldownActive(card) {
   return Boolean(card?.cooldownUntil) && new Date(card.cooldownUntil).getTime() > Date.now();
 }
 
+function isCardRejectedHoldActive(card) {
+  return Boolean(card?.rejectedCooldownUntil) && new Date(card.rejectedCooldownUntil).getTime() > Date.now();
+}
+
 function createCard(order, number) {
   return {
     id: `card-${order}`,
@@ -65,6 +69,7 @@ function createCard(order, number) {
     baseCounts: createEmptyCounts(),
     cooldownUntil: "",
     rejectedAt: "",
+    rejectedCooldownUntil: "",
     notes: "",
   };
 }
@@ -194,6 +199,13 @@ function calculatePendingUsed(device) {
 }
 
 function normalizeCard(raw, index) {
+  const rawRejectedAt = String(raw?.rejectedAt || "");
+  const rawCooldownUntil = String(raw?.cooldownUntil || "");
+  const rawRejectedCooldownUntil = String(
+    raw?.rejectedCooldownUntil || (rawRejectedAt && rawCooldownUntil ? rawCooldownUntil : ""),
+  );
+  const rawManualCooldownUntil = rawRejectedAt && !raw?.rejectedCooldownUntil ? "" : rawCooldownUntil;
+
   return {
     id: typeof raw?.id === "string" ? raw.id : createId("card"),
     order: Number.isFinite(Number(raw?.order)) ? Number(raw.order) : index + 1,
@@ -206,8 +218,9 @@ function normalizeCard(raw, index) {
     resetAt: String(raw?.resetAt || ""),
     counts: normalizeCounts(raw?.counts),
     baseCounts: normalizeCounts(raw?.baseCounts),
-    cooldownUntil: String(raw?.cooldownUntil || ""),
-    rejectedAt: String(raw?.rejectedAt || ""),
+    cooldownUntil: rawManualCooldownUntil,
+    rejectedAt: rawRejectedAt,
+    rejectedCooldownUntil: rawRejectedCooldownUntil,
     notes: typeof raw?.notes === "string" ? raw.notes : "",
   };
 }
@@ -316,18 +329,19 @@ function refreshAutomaticCardStates(state) {
   state.devices.forEach((device) => {
     let deviceChanged = false;
     device.cards.forEach((card) => {
-      if (!card.cooldownUntil) {
-        return;
-      }
-      if (new Date(card.cooldownUntil).getTime() > Date.now()) {
-        return;
+      if (card.cooldownUntil && new Date(card.cooldownUntil).getTime() <= Date.now()) {
+        card.cooldownUntil = "";
+        card.counts.epic = 0;
+        card.baseCounts.epic = 0;
+        deviceChanged = true;
       }
 
-      card.cooldownUntil = "";
-      card.rejectedAt = "";
-      card.counts.epic = 0;
-      card.baseCounts.epic = 0;
-      deviceChanged = true;
+      if (card.rejectedCooldownUntil && new Date(card.rejectedCooldownUntil).getTime() <= Date.now()) {
+        card.rejectedCooldownUntil = "";
+        card.counts.epic = 0;
+        card.baseCounts.epic = 0;
+        deviceChanged = true;
+      }
     });
 
     if (refreshMonthlyBalanceLimit(device)) {
@@ -633,12 +647,10 @@ async function toggleCardRejected(deviceId, cardId) {
 
   if (card.rejectedAt) {
     card.rejectedAt = "";
-    if (!isCardCooldownActive(card)) {
-      card.cooldownUntil = "";
-    }
+    card.rejectedCooldownUntil = "";
   } else {
     card.rejectedAt = nowIso();
-    card.cooldownUntil = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+    card.rejectedCooldownUntil = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
     card.counts.epic = 0;
     card.baseCounts.epic = 0;
   }
@@ -661,7 +673,6 @@ async function toggleCardCooldown(deviceId, cardId) {
 
   if (isCardCooldownActive(card)) {
     card.cooldownUntil = "";
-    card.rejectedAt = "";
   } else {
     card.cooldownUntil = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
   }
@@ -703,6 +714,7 @@ async function replaceCard(deviceId, cardId, payload) {
     baseCounts: createEmptyCounts(),
     cooldownUntil: "",
     rejectedAt: "",
+    rejectedCooldownUntil: "",
     notes: "",
   };
 
@@ -728,6 +740,10 @@ async function updateProductCount(deviceId, cardId, productKey, delta) {
   const rule = PRODUCT_RULES.find((entry) => entry.key === productKey);
   if (!rule) {
     throw new Error("product-not-found");
+  }
+
+  if (productKey === "epic" && isCardRejectedHoldActive(card)) {
+    throw new Error("epic-rejection-hold");
   }
 
   if (productKey === "epic" && isCardCooldownActive(card)) {

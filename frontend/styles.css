@@ -874,11 +874,102 @@ body.speeches-mode .sidebar {
   align-content: start;
 }
 
+.card-face {
+  display: grid;
+  gap: 14px;
+  padding: 18px 20px;
+  border: 1px solid rgba(201, 163, 92, 0.14);
+  border-radius: 24px;
+  background:
+    linear-gradient(140deg, rgba(201, 163, 92, 0.11), transparent 28%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.01)),
+    color-mix(in srgb, var(--surface-soft) 86%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 16px 30px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-face::after {
+  content: "";
+  position: absolute;
+  inset: auto -8% -60% auto;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(128, 153, 137, 0.16), transparent 64%);
+  pointer-events: none;
+}
+
+.card-face-top,
+.card-face-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.card-face-brand {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: #d6c59f;
+}
+
+.card-face-chip {
+  width: 42px;
+  height: 30px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(217, 185, 118, 0.9), rgba(150, 124, 74, 0.9));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24), 0 8px 14px rgba(0, 0, 0, 0.12);
+  position: relative;
+}
+
+.card-face-chip::before,
+.card-face-chip::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: rgba(99, 72, 28, 0.34);
+}
+
+.card-face-chip::before {
+  left: 14px;
+}
+
+.card-face-chip::after {
+  right: 14px;
+}
+
+.card-face-meta {
+  color: var(--muted);
+  font-size: 0.84rem;
+  letter-spacing: 0.02em;
+}
+
 .selected-card-topside {
   display: grid;
   gap: 12px;
   justify-items: end;
   align-content: start;
+}
+
+.purchase-summary-shell,
+.inline-actions-shell {
+  display: grid;
+  gap: 8px;
+  justify-items: end;
+}
+
+.summary-kicker {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
 .purchase-summary {
@@ -966,6 +1057,12 @@ body.speeches-mode .sidebar {
   border-color: rgba(201, 163, 92, 0.22);
 }
 
+.status-pill.rejection-hold {
+  background: rgba(167, 117, 92, 0.16);
+  color: #d7a68b;
+  border-color: rgba(167, 117, 92, 0.22);
+}
+
 .status-pill.low-balance {
   background: rgba(180, 126, 112, 0.14);
   color: #d39c8f;
@@ -1017,6 +1114,12 @@ body.speeches-mode .sidebar {
   color: #d7b16a;
 }
 
+.inline-actions .is-active-toggle {
+  border-color: rgba(201, 163, 92, 0.26);
+  background: linear-gradient(135deg, rgba(201, 163, 92, 0.14), rgba(201, 163, 92, 0.08));
+  color: #e1c684;
+}
+
 .readonly-chip {
   display: inline-flex;
   align-items: center;
@@ -1053,6 +1156,25 @@ body.speeches-mode .sidebar {
 
 .info-tile strong {
   font-size: 1rem;
+}
+
+.secure-tile {
+  gap: 10px;
+  min-height: 106px;
+  align-content: start;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent),
+    color-mix(in srgb, var(--surface-soft) 88%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 10px 20px rgba(0, 0, 0, 0.04);
+}
+
+.secure-tile-label {
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 .note-highlight {
@@ -1120,6 +1242,25 @@ body.speeches-mode .sidebar {
 .product-stat strong {
   font-size: 1rem;
   letter-spacing: 0.01em;
+}
+
+.product-stat-headline {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.product-price {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #d8c49c;
+}
+
+.product-cap {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .product-lock {
@@ -1290,6 +1431,20 @@ body.speeches-mode .sidebar {
     rgba(255, 255, 255, 0.94);
 }
 
+:root[data-theme="light"] .card-face {
+  background:
+    linear-gradient(140deg, rgba(214, 184, 124, 0.16), transparent 32%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(243, 246, 250, 0.94));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.56),
+    0 18px 34px rgba(79, 112, 146, 0.08);
+}
+
+:root[data-theme="light"] .card-face-brand,
+:root[data-theme="light"] .product-price {
+  color: #8d6830;
+}
+
 :root[data-theme="light"] .product-stat,
 :root[data-theme="light"] .info-tile,
 :root[data-theme="light"] .card-mini {
@@ -1353,6 +1508,12 @@ body.speeches-mode .sidebar {
   color: #8d6830;
 }
 
+:root[data-theme="light"] .inline-actions .is-active-toggle {
+  background: rgba(214, 184, 124, 0.16);
+  border-color: rgba(191, 151, 78, 0.22);
+  color: #8d6830;
+}
+
 :root[data-theme="light"] .status-pill.danger {
   background: rgba(212, 168, 156, 0.18);
   border-color: rgba(180, 126, 112, 0.2);
@@ -1363,6 +1524,12 @@ body.speeches-mode .sidebar {
   background: rgba(214, 184, 124, 0.18);
   border-color: rgba(191, 151, 78, 0.2);
   color: #8d6830;
+}
+
+:root[data-theme="light"] .status-pill.rejection-hold {
+  background: rgba(212, 168, 156, 0.18);
+  border-color: rgba(180, 126, 112, 0.2);
+  color: #8f5648;
 }
 
 :root[data-theme="light"] .status-pill.low-balance {

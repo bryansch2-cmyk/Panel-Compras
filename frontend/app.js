@@ -345,12 +345,24 @@ function isCooldownActive(card) {
   return Boolean(card?.cooldownUntil) && new Date(card.cooldownUntil).getTime() > Date.now();
 }
 
+function isRejectedHoldActive(card) {
+  return Boolean(card?.rejectedCooldownUntil) && new Date(card.rejectedCooldownUntil).getTime() > Date.now();
+}
+
 function getCooldownLabel(card) {
   if (!isCooldownActive(card)) {
     return "";
   }
 
-  return `24h hasta ${formatDateTime(card.cooldownUntil)}`;
+  return `24h manual hasta ${formatDateTime(card.cooldownUntil)}`;
+}
+
+function getRejectedHoldLabel(card) {
+  if (!isRejectedHoldActive(card)) {
+    return "";
+  }
+
+  return `24h por rechazo hasta ${formatDateTime(card.rejectedCooldownUntil)}`;
 }
 
 function getProductRule(productKey) {
@@ -434,6 +446,7 @@ function getErrorMessage(code) {
     "speech-key-required": "Selecciona un speech valido.",
     "product-not-found": "No se encontro el producto.",
     "epic-cooldown-active": "Epic esta bloqueado mientras la tarjeta esta en 24h.",
+    "epic-rejection-hold": "Epic esta bloqueado por una tarjeta rechazada en observacion 24h.",
     "epic-max-reached": "Epic ya llego al maximo permitido.",
     "product-max-reached": "Ese producto ya llego a su limite.",
     "invalid-pin": "El PIN debe tener 6 digitos.",
@@ -688,10 +701,13 @@ function renderActiveCardDetail(device) {
   const cvvText = sensitiveVisible ? String(activeCard.cvv || "--") : "***";
   const unlockLabel = sensitiveVisible ? "Ocultar datos" : "Desbloquear";
   const cooldownLabel = getCooldownLabel(activeCard);
+  const rejectedHoldLabel = getRejectedHoldLabel(activeCard);
   const purchaseSummary = renderActiveCardCounts(activeCard);
   const stateLabel = activeCard.rejectedAt ? "Rechazada" : "Sin estado";
   const hasNotes = hasMeaningfulNotes(activeCard.notes);
   const lowBalance = isLowBalance(device.availableBalance);
+  const isManualCooldown = isCooldownActive(activeCard);
+  const isRejectedHold = isRejectedHoldActive(activeCard);
 
   const productCards = PRODUCT_ORDER.map((productKey) => {
     const rule = getProductRule(productKey);
@@ -700,13 +716,17 @@ function renderActiveCardDetail(device) {
     }
 
     const count = getCardDisplayedCount(activeCard, productKey);
-    const isEpicBlocked = productKey === "epic" && isCooldownActive(activeCard);
+    const isEpicBlocked = productKey === "epic" && (isManualCooldown || isRejectedHold);
+    const productLockLabel = isRejectedHold ? "Bloqueado por rechazo" : "Bloqueado por 24h";
 
     return `
       <div class="product-stat ${isEpicBlocked ? "is-disabled" : ""}">
-        <strong>${escapeHtml(rule.label)}</strong>
-        <span>${escapeHtml(formatMoney(rule.amount))}${rule.maxCount ? ` - Max ${escapeHtml(rule.maxCount)}` : ""}</span>
-        ${isEpicBlocked ? '<span class="product-lock">Bloqueado por 24h</span>' : ""}
+        <div class="product-stat-headline">
+          <strong>${escapeHtml(rule.label)}</strong>
+          <span class="product-price">${escapeHtml(formatMoney(rule.amount))}</span>
+        </div>
+        <span class="product-cap">${rule.maxCount ? `Max ${escapeHtml(rule.maxCount)}` : "Sin tope"}</span>
+        ${isEpicBlocked ? `<span class="product-lock">${escapeHtml(productLockLabel)}</span>` : ""}
         <div class="product-counter">
           <button type="button" data-action="update-product" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-product-key="${escapeHtml(productKey)}" data-delta="-1">-</button>
           <div class="product-stat-count">${escapeHtml(count)}</div>
@@ -727,35 +747,51 @@ function renderActiveCardDetail(device) {
               <span class="status-pill active">Activa</span>
               <span class="status-pill ${activeCard.rejectedAt ? "danger" : ""}">${escapeHtml(stateLabel)}</span>
               ${cooldownLabel ? `<span class="status-pill cooldown">${escapeHtml(cooldownLabel)}</span>` : ""}
+              ${rejectedHoldLabel ? `<span class="status-pill rejection-hold">${escapeHtml(rejectedHoldLabel)}</span>` : ""}
               ${lowBalance ? '<span class="status-pill low-balance">Saldo bajo</span>' : ""}
             </div>
-            <h3 class="card-number">${escapeHtml(numberText)}</h3>
-            <p>Creada ${escapeHtml(formatDate(activeCard.createdAt))} - Vence ${escapeHtml(activeCard.expiry || "--")}</p>
+            <div class="card-face">
+              <div class="card-face-top">
+                <span class="card-face-brand">KIDSTORE SECURE</span>
+                <span class="card-face-chip" aria-hidden="true"></span>
+              </div>
+              <h3 class="card-number">${escapeHtml(numberText)}</h3>
+              <div class="card-face-meta">
+                <span>Creada ${escapeHtml(formatDate(activeCard.createdAt))}</span>
+                <span>Vence ${escapeHtml(activeCard.expiry || "--")}</span>
+              </div>
+            </div>
           </div>
           <div class="selected-card-topside">
-            <p class="purchase-summary">${escapeHtml(purchaseSummary)}</p>
-            <div class="inline-actions">
-              <button type="button" data-action="unlock-sensitive" data-device-id="${escapeHtml(device.id)}">${escapeHtml(unlockLabel)}</button>
-              <button class="icon-action" type="button" data-action="edit-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Editar" aria-label="Editar tarjeta">&#9998;</button>
-              <button class="icon-action" type="button" data-action="replace-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Reemplazar" aria-label="Reemplazar tarjeta">&#8646;</button>
-              <button class="icon-action ${hasNotes ? "has-note" : ""}" type="button" data-action="notes-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Notas" aria-label="Editar notas">&#128221;</button>
-              <button type="button" data-action="toggle-rejected" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">Rechazado</button>
-              <button type="button" data-action="toggle-cooldown" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">24h</button>
+            <div class="purchase-summary-shell">
+              <span class="summary-kicker">Actividad acumulada</span>
+              <p class="purchase-summary">${escapeHtml(purchaseSummary)}</p>
+            </div>
+            <div class="inline-actions-shell">
+              <span class="summary-kicker">Acciones y alertas</span>
+              <div class="inline-actions">
+                <button type="button" data-action="unlock-sensitive" data-device-id="${escapeHtml(device.id)}">${escapeHtml(unlockLabel)}</button>
+                <button class="icon-action" type="button" data-action="edit-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Editar" aria-label="Editar tarjeta">&#9998;</button>
+                <button class="icon-action" type="button" data-action="replace-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Reemplazar" aria-label="Reemplazar tarjeta">&#8646;</button>
+                <button class="icon-action ${hasNotes ? "has-note" : ""}" type="button" data-action="notes-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Notas" aria-label="Editar notas">&#128221;</button>
+                <button type="button" class="${activeCard.rejectedAt ? "is-active-toggle" : ""}" data-action="toggle-rejected" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">Rechazado</button>
+                <button type="button" class="${isManualCooldown ? "is-active-toggle" : ""}" data-action="toggle-cooldown" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">24h</button>
+              </div>
             </div>
           </div>
         </div>
 
         <div class="selected-card-grid">
-          <div class="info-tile">
-            <span>MM/YY</span>
+          <div class="info-tile secure-tile">
+            <span class="secure-tile-label">MM/YY</span>
             <strong>${escapeHtml(activeCard.expiry || "--")}</strong>
           </div>
-          <div class="info-tile">
-            <span>CVV</span>
+          <div class="info-tile secure-tile">
+            <span class="secure-tile-label">CVV</span>
             <strong>${escapeHtml(cvvText)}</strong>
           </div>
-          <div class="info-tile">
-            <span>Creada</span>
+          <div class="info-tile secure-tile">
+            <span class="secure-tile-label">Creada</span>
             <strong>${escapeHtml(formatDate(activeCard.createdAt))}</strong>
           </div>
           <div class="info-tile info-tile-wide ${hasNotes ? "note-highlight" : ""}">
