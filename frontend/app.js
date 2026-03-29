@@ -492,6 +492,7 @@ function renderDeviceList() {
     const isActive = device.id === state.selectedDeviceId;
     const activeCard = getActiveCard(device);
     const hasNotes = hasMeaningfulNotes(activeCard?.notes);
+    const lowBalance = isLowBalance(device.availableBalance);
     return `
       <button class="device-item ${isActive ? "active" : ""}" type="button" data-action="select-device" data-device-id="${escapeHtml(device.id)}">
         <div class="device-item-top">
@@ -503,6 +504,7 @@ function renderDeviceList() {
           <span><b>Usado</b> ${escapeHtml(formatMoney(device.pendingUsed))}</span>
           <span><b>Limite</b> ${escapeHtml(formatMoney(device.balanceLimitCurrent))}</span>
         </div>
+        ${lowBalance ? `<div class="device-low-flag"><span class="device-low-dot"></span><span>Saldo bajo</span></div>` : ""}
         ${hasNotes ? `<div class="device-note-flag"><span class="device-note-dot"></span><span>Nota guardada</span></div>` : ""}
       </button>
     `;
@@ -529,6 +531,10 @@ function renderHistoryLaunchers(device) {
 
 function hasMeaningfulNotes(value) {
   return String(value || "").trim().length > 0;
+}
+
+function isLowBalance(value) {
+  return Number(value || 0) > 0 && Number(value || 0) <= 150;
 }
 
 function renderActiveCardCounts(card) {
@@ -568,6 +574,7 @@ function renderActiveCardDetail(device) {
   const purchaseSummary = renderActiveCardCounts(activeCard);
   const stateLabel = activeCard.rejectedAt ? "Rechazada" : "Sin estado";
   const hasNotes = hasMeaningfulNotes(activeCard.notes);
+  const lowBalance = isLowBalance(device.availableBalance);
 
   const productCards = PRODUCT_ORDER.map((productKey) => {
     const rule = getProductRule(productKey);
@@ -601,8 +608,9 @@ function renderActiveCardDetail(device) {
             <div class="status-row">
               <span class="card-label">${escapeHtml(activeCard.orderLabel || "Tarjeta activa")}</span>
               <span class="status-pill active">Activa</span>
-              <span class="status-pill">${escapeHtml(stateLabel)}</span>
-              ${cooldownLabel ? `<span class="status-pill active">${escapeHtml(cooldownLabel)}</span>` : ""}
+              <span class="status-pill ${activeCard.rejectedAt ? "danger" : ""}">${escapeHtml(stateLabel)}</span>
+              ${cooldownLabel ? `<span class="status-pill cooldown">${escapeHtml(cooldownLabel)}</span>` : ""}
+              ${lowBalance ? '<span class="status-pill low-balance">Saldo bajo</span>' : ""}
             </div>
             <h3 class="card-number">${escapeHtml(numberText)}</h3>
             <p>Creada ${escapeHtml(formatDate(activeCard.createdAt))} - Vence ${escapeHtml(activeCard.expiry || "--")}</p>

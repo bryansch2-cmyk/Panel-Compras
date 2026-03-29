@@ -402,6 +402,31 @@ body.speeches-mode .sidebar {
   box-shadow: 0 0 0 4px rgba(201, 163, 92, 0.12);
 }
 
+.device-low-flag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(180, 126, 112, 0.26);
+  background: rgba(180, 126, 112, 0.1);
+  color: #d39c8f;
+  font-size: 0.79rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.device-low-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #d39c8f;
+  box-shadow: 0 0 0 4px rgba(180, 126, 112, 0.12);
+}
+
 .device-item.active {
   border-color: rgba(128, 153, 137, 0.28);
   background: linear-gradient(180deg, rgba(128, 153, 137, 0.12), rgba(122, 141, 166, 0.04));
@@ -712,6 +737,18 @@ body.speeches-mode .sidebar {
   pointer-events: none;
 }
 
+.selected-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(201, 163, 92, 0.08);
+  box-shadow:
+    inset 0 0 0 1px rgba(201, 163, 92, 0.05),
+    inset 0 24px 48px rgba(255, 255, 255, 0.02);
+  pointer-events: none;
+}
+
 .selected-card h3 {
   font-size: 1.86rem;
   letter-spacing: 0.02em;
@@ -790,6 +827,24 @@ body.speeches-mode .sidebar {
   background: rgba(128, 153, 137, 0.14);
   color: var(--green);
   border-color: rgba(128, 153, 137, 0.18);
+}
+
+.status-pill.danger {
+  background: rgba(169, 118, 126, 0.14);
+  color: #e1a9b1;
+  border-color: rgba(169, 118, 126, 0.2);
+}
+
+.status-pill.cooldown {
+  background: rgba(201, 163, 92, 0.14);
+  color: #d7b16a;
+  border-color: rgba(201, 163, 92, 0.22);
+}
+
+.status-pill.low-balance {
+  background: rgba(180, 126, 112, 0.14);
+  color: #d39c8f;
+  border-color: rgba(180, 126, 112, 0.2);
 }
 
 .inline-actions {
@@ -1116,15 +1171,44 @@ body.speeches-mode .sidebar {
   color: #8d6830;
 }
 
+:root[data-theme="light"] .device-low-flag {
+  background: rgba(212, 168, 156, 0.18);
+  border-color: rgba(180, 126, 112, 0.2);
+  color: #8f5648;
+}
+
 :root[data-theme="light"] .device-note-dot {
   background: #b7893f;
   box-shadow: 0 0 0 4px rgba(191, 151, 78, 0.12);
+}
+
+:root[data-theme="light"] .device-low-dot {
+  background: #b46d5f;
+  box-shadow: 0 0 0 4px rgba(180, 126, 112, 0.12);
 }
 
 :root[data-theme="light"] .inline-actions .icon-action.has-note {
   background: rgba(214, 184, 124, 0.14);
   border-color: rgba(191, 151, 78, 0.22);
   color: #8d6830;
+}
+
+:root[data-theme="light"] .status-pill.danger {
+  background: rgba(212, 168, 156, 0.18);
+  border-color: rgba(180, 126, 112, 0.2);
+  color: #8f5648;
+}
+
+:root[data-theme="light"] .status-pill.cooldown {
+  background: rgba(214, 184, 124, 0.18);
+  border-color: rgba(191, 151, 78, 0.2);
+  color: #8d6830;
+}
+
+:root[data-theme="light"] .status-pill.low-balance {
+  background: rgba(212, 168, 156, 0.18);
+  border-color: rgba(180, 126, 112, 0.2);
+  color: #8f5648;
 }
 
 :root[data-theme="light"] .note-highlight {
