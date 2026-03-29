@@ -490,6 +490,8 @@ function renderDeviceList() {
 
   deviceList.innerHTML = devices.map((device) => {
     const isActive = device.id === state.selectedDeviceId;
+    const activeCard = getActiveCard(device);
+    const hasNotes = hasMeaningfulNotes(activeCard?.notes);
     return `
       <button class="device-item ${isActive ? "active" : ""}" type="button" data-action="select-device" data-device-id="${escapeHtml(device.id)}">
         <div class="device-item-top">
@@ -501,6 +503,7 @@ function renderDeviceList() {
           <span><b>Usado</b> ${escapeHtml(formatMoney(device.pendingUsed))}</span>
           <span><b>Limite</b> ${escapeHtml(formatMoney(device.balanceLimitCurrent))}</span>
         </div>
+        ${hasNotes ? `<div class="device-note-flag"><span class="device-note-dot"></span><span>Nota guardada</span></div>` : ""}
       </button>
     `;
   }).join("");
@@ -522,6 +525,10 @@ function renderHistoryLaunchers(device) {
       </div>
     </section>
   `;
+}
+
+function hasMeaningfulNotes(value) {
+  return String(value || "").trim().length > 0;
 }
 
 function renderActiveCardCounts(card) {
@@ -560,6 +567,7 @@ function renderActiveCardDetail(device) {
   const cooldownLabel = getCooldownLabel(activeCard);
   const purchaseSummary = renderActiveCardCounts(activeCard);
   const stateLabel = activeCard.rejectedAt ? "Rechazada" : "Sin estado";
+  const hasNotes = hasMeaningfulNotes(activeCard.notes);
 
   const productCards = PRODUCT_ORDER.map((productKey) => {
     const rule = getProductRule(productKey);
@@ -605,7 +613,7 @@ function renderActiveCardDetail(device) {
               <button type="button" data-action="unlock-sensitive" data-device-id="${escapeHtml(device.id)}">${escapeHtml(unlockLabel)}</button>
               <button class="icon-action" type="button" data-action="edit-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Editar" aria-label="Editar tarjeta">&#9998;</button>
               <button class="icon-action" type="button" data-action="replace-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Reemplazar" aria-label="Reemplazar tarjeta">&#8646;</button>
-              <button class="icon-action" type="button" data-action="notes-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Notas" aria-label="Editar notas">&#128221;</button>
+              <button class="icon-action ${hasNotes ? "has-note" : ""}" type="button" data-action="notes-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Notas" aria-label="Editar notas">&#128221;</button>
               <button type="button" data-action="toggle-rejected" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">Rechazado</button>
               <button type="button" data-action="toggle-cooldown" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">24h</button>
             </div>
@@ -625,8 +633,9 @@ function renderActiveCardDetail(device) {
             <span>Creada</span>
             <strong>${escapeHtml(formatDate(activeCard.createdAt))}</strong>
           </div>
-          <div class="info-tile info-tile-wide">
+          <div class="info-tile info-tile-wide ${hasNotes ? "note-highlight" : ""}">
             <span>Notas</span>
+            ${hasNotes ? '<em class="note-emphasis">Importante</em>' : ""}
             <strong>${escapeHtml(activeCard.notes || "Sin notas")}</strong>
           </div>
         </div>

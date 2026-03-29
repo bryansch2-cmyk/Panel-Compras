@@ -377,6 +377,31 @@ body.speeches-mode .sidebar {
   font-weight: 700;
 }
 
+.device-note-flag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(201, 163, 92, 0.24);
+  background: rgba(201, 163, 92, 0.1);
+  color: #d7b16a;
+  font-size: 0.79rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.device-note-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #d7b16a;
+  box-shadow: 0 0 0 4px rgba(201, 163, 92, 0.12);
+}
+
 .device-item.active {
   border-color: rgba(128, 153, 137, 0.28);
   background: linear-gradient(180deg, rgba(128, 153, 137, 0.12), rgba(122, 141, 166, 0.04));
@@ -800,6 +825,12 @@ body.speeches-mode .sidebar {
   background: rgba(169, 118, 126, 0.08);
 }
 
+.inline-actions .icon-action.has-note {
+  border-color: rgba(201, 163, 92, 0.3);
+  background: rgba(201, 163, 92, 0.12);
+  color: #d7b16a;
+}
+
 .readonly-chip {
   display: inline-flex;
   align-items: center;
@@ -836,6 +867,33 @@ body.speeches-mode .sidebar {
 
 .info-tile strong {
   font-size: 1rem;
+}
+
+.note-highlight {
+  position: relative;
+  border-color: rgba(201, 163, 92, 0.26);
+  background:
+    linear-gradient(135deg, rgba(201, 163, 92, 0.08), transparent 42%),
+    color-mix(in srgb, var(--surface-soft) 90%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 10px 20px rgba(0, 0, 0, 0.06);
+}
+
+.note-emphasis {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 24px;
+  padding: 0 9px;
+  border-radius: 999px;
+  background: rgba(201, 163, 92, 0.12);
+  color: #d7b16a;
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .info-tile-wide {
@@ -1050,6 +1108,35 @@ body.speeches-mode .sidebar {
 
 :root[data-theme="light"] .meta-edit-button {
   background: rgba(241, 245, 248, 0.98);
+}
+
+:root[data-theme="light"] .device-note-flag {
+  background: rgba(214, 184, 124, 0.16);
+  border-color: rgba(191, 151, 78, 0.22);
+  color: #8d6830;
+}
+
+:root[data-theme="light"] .device-note-dot {
+  background: #b7893f;
+  box-shadow: 0 0 0 4px rgba(191, 151, 78, 0.12);
+}
+
+:root[data-theme="light"] .inline-actions .icon-action.has-note {
+  background: rgba(214, 184, 124, 0.14);
+  border-color: rgba(191, 151, 78, 0.22);
+  color: #8d6830;
+}
+
+:root[data-theme="light"] .note-highlight {
+  background:
+    linear-gradient(135deg, rgba(214, 184, 124, 0.12), transparent 42%),
+    rgba(255, 255, 255, 0.94);
+  border-color: rgba(191, 151, 78, 0.2);
+}
+
+:root[data-theme="light"] .note-emphasis {
+  background: rgba(214, 184, 124, 0.18);
+  color: #8d6830;
 }
 
 :root[data-theme="light"] .custom-amount-input {
