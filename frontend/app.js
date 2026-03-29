@@ -597,19 +597,19 @@ function renderDeviceList() {
           <div class="device-expanded">
             <div class="device-profile-grid">
               <div class="device-profile-item">
-                <span>Nombre</span>
+                <span class="device-profile-label"><i aria-hidden="true">&#128100;</i><em>Nombre</em></span>
                 <strong>${escapeHtml(profile.ownerName)}</strong>
               </div>
               <div class="device-profile-item">
-                <span>Cuenta</span>
+                <span class="device-profile-label"><i aria-hidden="true">&#128179;</i><em>Cuenta</em></span>
                 <strong>${escapeHtml(profile.accountNumber)}</strong>
               </div>
               <div class="device-profile-item">
-                <span>Celular</span>
+                <span class="device-profile-label"><i aria-hidden="true">&#128222;</i><em>Celular</em></span>
                 <strong>${escapeHtml(profile.phone)}</strong>
               </div>
               <div class="device-profile-item device-profile-wide">
-                <span>Ziraat Bank</span>
+                <span class="device-profile-label"><i aria-hidden="true">&#127974;</i><em>Ziraat Bank</em></span>
                 <strong>${escapeHtml(profile.iban)}</strong>
               </div>
             </div>
