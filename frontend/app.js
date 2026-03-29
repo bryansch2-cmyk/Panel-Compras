@@ -636,9 +636,9 @@ function renderActiveCardDetail(device) {
           <form class="product-stat custom-amount-form" data-action="custom-amount" data-device-id="${escapeHtml(device.id)}">
             <strong>Otro monto</strong>
             <span>Compra libre</span>
+            <button class="visually-hidden-submit" type="submit" tabindex="-1" aria-hidden="true">Agregar monto</button>
             <div class="compact-action-row">
               <input class="custom-amount-input" name="amount" type="text" inputmode="decimal" placeholder="0.00" required>
-              <button class="visually-hidden-submit" type="submit" tabindex="-1" aria-hidden="true">Agregar monto</button>
               <button class="compact-icon-button" type="button" data-action="revert-custom" data-device-id="${escapeHtml(device.id)}" title="Revertir ultimo monto" aria-label="Revertir ultimo monto">&#8630;</button>
             </div>
           </form>
