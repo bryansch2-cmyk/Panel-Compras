@@ -11,6 +11,92 @@ const PRODUCT_ORDER = ["epic", "xbox", "nitro", "nitroYear", "crunchy"];
 const SENSITIVE_PIN_KEY = "panel-compras-web-sensitive-pin";
 const SENSITIVE_UNLOCK_MS = 30_000;
 const THEME_KEY = "panel-compras-web-theme";
+const DEVICE_PROFILES = {
+  "IPHONE 12 PRO FREDDY - HADI": {
+    ownerName: "GAZAL GUNDUZ",
+    accountNumber: "2391442833",
+    phone: "5340572401",
+    iban: "TR910021300000390061400000",
+  },
+  "SAMSUNG FREDDY - HADI": {
+    ownerName: "ERDOGAN YAMAN",
+    accountNumber: "2458863437",
+    phone: "5058301006",
+    iban: "TR910021300000390061400000",
+  },
+  "SAMSUNG FREDDY - HADI ISLAND": {
+    ownerName: "GAZAL DEMIRCAN",
+    accountNumber: "2431424336",
+    phone: "5076955213",
+    iban: "TR910021300000390061400000",
+  },
+  "XIAOMI DIEGO - HADI": {
+    ownerName: "GAZAK ADAK",
+    accountNumber: "2431419636",
+    phone: "5078530011",
+    iban: "TR910021300000390061400000",
+  },
+  "XIAOMI DIEGO - HADI ISLAND": {
+    ownerName: "GAZAL BOZTAY",
+    accountNumber: "2431483839",
+    phone: "5014806689",
+    iban: "TR910021300000390061400000",
+  },
+  "XIAOMI PAPA - HADI": {
+    ownerName: "GAZAL SAV",
+    accountNumber: "2431488936",
+    phone: "5072866093",
+    iban: "TR910021300000390061400000",
+  },
+  "XIAOMI PAPA - HADI ISLAND": {
+    ownerName: "GAZAL SATIN",
+    accountNumber: "2436099630",
+    phone: "5015633268",
+    iban: "TR910021300000390061400000",
+  },
+  "HUAWEI - HADI": {
+    ownerName: "GAZAL POLAT",
+    accountNumber: "2427643231",
+    phone: "5513698456",
+    iban: "TR910021300000390061400000",
+  },
+  "HUAWEI - HADI ISLAND": {
+    ownerName: "GAZAL ALTU",
+    accountNumber: "2436050837",
+    phone: "5051132582",
+    iban: "TR910021300000390061400000",
+  },
+  "XIAOMI MAMA - HADI": {
+    ownerName: "ERDOGAN CELEBI",
+    accountNumber: "2442279231",
+    phone: "5520822754",
+    iban: "TR910021300000390061400000",
+  },
+  "XIAOMI MAMA - HADI ISLAND": {
+    ownerName: "ERDOGAN DAMLA",
+    accountNumber: "2442287333",
+    phone: "5513633945",
+    iban: "TR910021300000390061400000",
+  },
+  "HONOR MAMA - HADI": {
+    ownerName: "ERDOGAN YASAR",
+    accountNumber: "2458740531",
+    phone: "5057151003",
+    iban: "TR910021300000390061400000",
+  },
+  "HONOR MAMA - HADI ISLAND": {
+    ownerName: "ERDOGAN BILICI",
+    accountNumber: "2458762538",
+    phone: "5055421007",
+    iban: "TR910021300000390061400000",
+  },
+  "IPHONE 12 PRO BRYAN": {
+    ownerName: "GAZAL GUL",
+    accountNumber: "2405386030",
+    phone: "5015885285",
+    iban: "TR910021300000390061400000",
+  },
+};
 
 const moneyFormatter = new Intl.NumberFormat("tr-TR", {
   style: "currency",
@@ -493,6 +579,7 @@ function renderDeviceList() {
     const activeCard = getActiveCard(device);
     const hasNotes = hasMeaningfulNotes(activeCard?.notes);
     const lowBalance = isLowBalance(device.availableBalance);
+    const profile = getDeviceProfile(device);
     return `
       <button class="device-item ${isActive ? "active" : ""}" type="button" data-action="select-device" data-device-id="${escapeHtml(device.id)}">
         <div class="device-item-top">
@@ -506,6 +593,28 @@ function renderDeviceList() {
         </div>
         ${lowBalance ? `<div class="device-low-flag"><span class="device-low-dot"></span><span>Saldo bajo</span></div>` : ""}
         ${hasNotes ? `<div class="device-note-flag"><span class="device-note-dot"></span><span>Nota guardada</span></div>` : ""}
+        ${isActive && profile ? `
+          <div class="device-expanded">
+            <div class="device-profile-grid">
+              <div class="device-profile-item">
+                <span>Nombre</span>
+                <strong>${escapeHtml(profile.ownerName)}</strong>
+              </div>
+              <div class="device-profile-item">
+                <span>Cuenta</span>
+                <strong>${escapeHtml(profile.accountNumber)}</strong>
+              </div>
+              <div class="device-profile-item">
+                <span>Celular</span>
+                <strong>${escapeHtml(profile.phone)}</strong>
+              </div>
+              <div class="device-profile-item device-profile-wide">
+                <span>Ziraat Bank</span>
+                <strong>${escapeHtml(profile.iban)}</strong>
+              </div>
+            </div>
+          </div>
+        ` : ""}
       </button>
     `;
   }).join("");
@@ -535,6 +644,14 @@ function hasMeaningfulNotes(value) {
 
 function isLowBalance(value) {
   return Number(value || 0) > 0 && Number(value || 0) <= 150;
+}
+
+function getDeviceProfile(device) {
+  if (!device?.title) {
+    return null;
+  }
+
+  return DEVICE_PROFILES[String(device.title).trim()] || null;
 }
 
 function renderActiveCardCounts(card) {
