@@ -349,20 +349,32 @@ function isRejectedHoldActive(card) {
   return Boolean(card?.rejectedCooldownUntil) && new Date(card.rejectedCooldownUntil).getTime() > Date.now();
 }
 
-function getCooldownLabel(card) {
-  if (!isCooldownActive(card)) {
-    return "";
+function getPrimaryCooldownUntil(card) {
+  const candidates = [card?.cooldownUntil, card?.rejectedCooldownUntil]
+    .map((value) => (value ? new Date(value).getTime() : 0))
+    .filter((value) => value > Date.now());
+
+  if (!candidates.length) {
+    return 0;
   }
 
-  return `24h manual hasta ${formatDateTime(card.cooldownUntil)}`;
+  return Math.max(...candidates);
 }
 
-function getRejectedHoldLabel(card) {
-  if (!isRejectedHoldActive(card)) {
+function formatCooldownCountdown(untilValue) {
+  const until = Number(untilValue || 0);
+  if (!until || until <= Date.now()) {
     return "";
   }
 
-  return `24h por rechazo hasta ${formatDateTime(card.rejectedCooldownUntil)}`;
+  const totalMinutes = Math.max(0, Math.ceil((until - Date.now()) / 60000));
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  return `24h ${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+}
+
+function getCooldownLabel(card) {
+  return formatCooldownCountdown(getPrimaryCooldownUntil(card));
 }
 
 function getProductRule(productKey) {
@@ -701,7 +713,6 @@ function renderActiveCardDetail(device) {
   const cvvText = sensitiveVisible ? String(activeCard.cvv || "--") : "***";
   const unlockLabel = sensitiveVisible ? "Ocultar datos" : "Desbloquear";
   const cooldownLabel = getCooldownLabel(activeCard);
-  const rejectedHoldLabel = getRejectedHoldLabel(activeCard);
   const purchaseSummary = renderActiveCardCounts(activeCard);
   const stateLabel = activeCard.rejectedAt ? "Rechazada" : "Sin estado";
   const hasNotes = hasMeaningfulNotes(activeCard.notes);
@@ -747,7 +758,6 @@ function renderActiveCardDetail(device) {
               <span class="status-pill active">Activa</span>
               <span class="status-pill ${activeCard.rejectedAt ? "danger" : ""}">${escapeHtml(stateLabel)}</span>
               ${cooldownLabel ? `<span class="status-pill cooldown">${escapeHtml(cooldownLabel)}</span>` : ""}
-              ${rejectedHoldLabel ? `<span class="status-pill rejection-hold">${escapeHtml(rejectedHoldLabel)}</span>` : ""}
               ${lowBalance ? '<span class="status-pill low-balance">Saldo bajo</span>' : ""}
             </div>
             <div class="card-face">
