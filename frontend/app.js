@@ -638,6 +638,7 @@ function renderActiveCardDetail(device) {
             <span>Compra libre</span>
             <div class="compact-action-row">
               <input class="custom-amount-input" name="amount" type="text" inputmode="decimal" placeholder="0.00" required>
+              <button class="visually-hidden-submit" type="submit" tabindex="-1" aria-hidden="true">Agregar monto</button>
               <button class="compact-icon-button" type="button" data-action="revert-custom" data-device-id="${escapeHtml(device.id)}" title="Revertir ultimo monto" aria-label="Revertir ultimo monto">&#8630;</button>
             </div>
           </form>
@@ -1296,6 +1297,14 @@ document.addEventListener("submit", async (event) => {
 });
 
 document.addEventListener("keydown", (event) => {
+  const customAmountInput = event.target instanceof HTMLElement ? event.target.closest(".custom-amount-input") : null;
+  if (customAmountInput && event.key === "Enter") {
+    event.preventDefault();
+    const form = customAmountInput.closest("form");
+    form?.requestSubmit();
+    return;
+  }
+
   if (event.key === "Escape" && state.modal) {
     closeModal();
     return;
