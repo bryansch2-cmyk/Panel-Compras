@@ -608,7 +608,7 @@ function renderDeviceList() {
                 <span class="device-profile-label"><i aria-hidden="true">&#128222;</i><em>Celular</em></span>
                 <strong>${escapeHtml(profile.phone)}</strong>
               </div>
-              <div class="device-profile-item device-profile-wide">
+              <div class="device-profile-item device-profile-wide device-profile-bank">
                 <span class="device-profile-label"><i aria-hidden="true">&#127974;</i><em>Ziraat Bank</em></span>
                 <strong>${escapeHtml(profile.iban)}</strong>
               </div>
