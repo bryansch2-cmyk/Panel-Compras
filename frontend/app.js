@@ -731,9 +731,12 @@ function renderActiveCardDetail(device) {
     const productLockLabel = isRejectedHold ? "Bloqueado por rechazo" : "Bloqueado por 24h";
 
     return `
-      <div class="product-stat ${isEpicBlocked ? "is-disabled" : ""}">
+      <div class="product-stat product-stat-${escapeHtml(productKey)} ${isEpicBlocked ? "is-disabled" : ""}">
         <div class="product-stat-headline">
-          <strong>${escapeHtml(rule.label)}</strong>
+          <div class="product-name-cluster">
+            <strong>${escapeHtml(rule.label)}</strong>
+            <span class="product-ticker">${escapeHtml(rule.key.toUpperCase())}</span>
+          </div>
           <span class="product-price">${escapeHtml(formatMoney(rule.amount))}</span>
         </div>
         <span class="product-cap">${rule.maxCount ? `Max ${escapeHtml(rule.maxCount)}` : "Sin tope"}</span>
@@ -813,9 +816,9 @@ function renderActiveCardDetail(device) {
 
         <div class="product-stats-grid">
           ${productCards}
-          <form class="product-stat custom-amount-form" data-action="custom-amount" data-device-id="${escapeHtml(device.id)}">
+          <form class="product-stat custom-amount-form product-stat-custom" data-action="custom-amount" data-device-id="${escapeHtml(device.id)}">
             <strong>Otro monto</strong>
-            <span>Compra libre</span>
+            <span class="product-cap">Compra libre</span>
             <button class="visually-hidden-submit" type="submit" tabindex="-1" aria-hidden="true">Agregar monto</button>
             <div class="compact-action-row">
               <input class="custom-amount-input" name="amount" type="text" inputmode="decimal" placeholder="0.00" required>

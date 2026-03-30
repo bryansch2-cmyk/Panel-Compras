@@ -1234,12 +1234,16 @@ body.speeches-mode .sidebar {
 .product-stat,
 .card-mini {
   display: grid;
-  gap: 8px;
-  padding: 14px;
+  gap: 10px;
+  padding: 15px;
   border: 1px solid var(--line);
   border-radius: 20px;
-  background: color-mix(in srgb, var(--surface-soft) 90%, transparent);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent),
+    color-mix(in srgb, var(--surface-soft) 90%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 10px 18px rgba(0, 0, 0, 0.03);
 }
 
 .product-stat:hover,
@@ -1268,6 +1272,26 @@ body.speeches-mode .sidebar {
   gap: 8px;
 }
 
+.product-name-cluster {
+  display: grid;
+  gap: 4px;
+}
+
+.product-ticker {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: rgba(122, 141, 166, 0.12);
+  border: 1px solid rgba(122, 141, 166, 0.12);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .product-price {
   font-size: 0.92rem;
   font-weight: 700;
@@ -1278,6 +1302,7 @@ body.speeches-mode .sidebar {
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--muted) 92%, transparent);
 }
 
 .product-lock {
@@ -1296,36 +1321,51 @@ body.speeches-mode .sidebar {
 
 .product-stat-count {
   width: fit-content;
-  min-width: 44px;
-  min-height: 36px;
+  min-width: 50px;
+  min-height: 38px;
   display: inline-grid;
   place-items: center;
-  border-radius: 12px;
-  background: rgba(122, 141, 166, 0.1);
-  color: var(--accent);
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent),
+    rgba(122, 141, 166, 0.1);
+  color: color-mix(in srgb, var(--accent) 86%, white 14%);
   font-weight: 800;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 8px 14px rgba(0, 0, 0, 0.04);
 }
 
 .product-counter {
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-top: auto;
 }
 
 .product-counter button {
-  min-width: 34px;
-  min-height: 34px;
+  min-width: 36px;
+  min-height: 36px;
   padding: 0;
-  border-radius: 12px;
-  background: rgba(122, 141, 166, 0.08);
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent),
+    rgba(122, 141, 166, 0.08);
   font-weight: 800;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .custom-amount-form {
   display: grid;
   gap: 8px;
   align-content: start;
+}
+
+.product-stat-custom {
+  background:
+    linear-gradient(135deg, rgba(169, 118, 126, 0.05), transparent 44%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent),
+    color-mix(in srgb, var(--surface-soft) 90%, transparent);
 }
 
 .custom-amount-form .compact-action-row {
@@ -1348,6 +1388,13 @@ body.speeches-mode .sidebar {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
   font-variant-numeric: tabular-nums;
   width: 100%;
+}
+
+.custom-amount-input:focus {
+  border-color: rgba(201, 163, 92, 0.34);
+  box-shadow:
+    0 0 0 4px rgba(201, 163, 92, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .custom-amount-input::placeholder {
@@ -1462,10 +1509,21 @@ body.speeches-mode .sidebar {
   color: #8d6830;
 }
 
+:root[data-theme="light"] .product-ticker {
+  background: rgba(236, 243, 251, 0.94);
+  border-color: rgba(191, 203, 217, 0.66);
+}
+
 :root[data-theme="light"] .product-stat,
 :root[data-theme="light"] .info-tile,
 :root[data-theme="light"] .card-mini {
   background: rgba(255, 255, 255, 0.94);
+}
+
+:root[data-theme="light"] .product-stat-custom {
+  background:
+    linear-gradient(135deg, rgba(212, 168, 156, 0.08), transparent 44%),
+    rgba(255, 255, 255, 0.94);
 }
 
 :root[data-theme="light"] .history-item,
@@ -1587,6 +1645,24 @@ body.speeches-mode .sidebar {
 
 .product-stat.is-disabled {
   opacity: 0.72;
+}
+
+.product-stat-epic {
+  border-color: rgba(122, 141, 166, 0.18);
+}
+
+.product-stat-xbox {
+  border-color: rgba(128, 153, 137, 0.16);
+}
+
+.product-stat-nitro,
+.product-stat-nitroYear {
+  border-color: rgba(201, 163, 92, 0.18);
+}
+
+.product-stat-crunchy,
+.product-stat-custom {
+  border-color: rgba(169, 118, 126, 0.18);
 }
 
 .cards-mini-grid {
