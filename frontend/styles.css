@@ -424,14 +424,12 @@ body.speeches-mode .sidebar {
   display: grid;
   gap: 4px;
   padding: 10px 11px;
-  padding-right: 42px;
   border: 1px solid rgba(122, 141, 166, 0.12);
   border-radius: 14px;
   background: color-mix(in srgb, var(--surface-soft) 90%, transparent);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
   user-select: text;
   -webkit-user-select: text;
-  position: relative;
 }
 
 .device-profile-item span {
@@ -466,66 +464,6 @@ body.speeches-mode .sidebar {
   cursor: text;
   user-select: text;
   -webkit-user-select: text;
-}
-
-.device-copy-button {
-  position: absolute;
-  top: 9px;
-  right: 9px;
-  width: 24px;
-  min-width: 24px;
-  min-height: 24px;
-  padding: 0;
-  border-radius: 999px;
-  border: 1px solid rgba(122, 141, 166, 0.14);
-  background: rgba(122, 141, 166, 0.08);
-  color: var(--muted);
-  font-size: 0.82rem;
-  font-weight: 700;
-  line-height: 1;
-  flex-shrink: 0;
-  transform: none;
-  z-index: 1;
-}
-
-.device-copy-button:hover,
-.device-copy-button:focus-visible {
-  transform: none;
-  border-color: rgba(122, 141, 166, 0.24);
-  background: rgba(122, 141, 166, 0.12);
-  color: var(--accent);
-  box-shadow: 0 0 0 2px rgba(122, 141, 166, 0.08);
-}
-
-.device-copy-button:active {
-  transform: none;
-}
-
-.device-copy-button-done {
-  display: none;
-}
-
-.device-copy-button-copy,
-.device-copy-button-done {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-
-.device-copy-button.is-copied {
-  border-color: rgba(128, 153, 137, 0.22);
-  background: rgba(128, 153, 137, 0.14);
-  color: color-mix(in srgb, var(--green) 86%, var(--text));
-  box-shadow: none;
-}
-
-.device-copy-button.is-copied .device-copy-button-copy {
-  display: none;
-}
-
-.device-copy-button.is-copied .device-copy-button-done {
-  display: inline;
 }
 
 .device-profile-wide {
@@ -1504,22 +1442,6 @@ body.speeches-mode .sidebar {
 
 :root[data-theme="light"] .device-profile-item {
   background: rgba(255, 255, 255, 0.92);
-}
-
-:root[data-theme="light"] .device-copy-button {
-  border-color: rgba(109, 135, 165, 0.12);
-  background: rgba(109, 135, 165, 0.08);
-}
-
-:root[data-theme="light"] .device-copy-button:hover,
-:root[data-theme="light"] .device-copy-button:focus-visible {
-  border-color: rgba(109, 135, 165, 0.24);
-  background: rgba(109, 135, 165, 0.12);
-}
-
-:root[data-theme="light"] .device-copy-button.is-copied {
-  border-color: rgba(86, 123, 105, 0.18);
-  background: rgba(86, 123, 105, 0.12);
 }
 
 :root[data-theme="light"] .device-expanded::before {

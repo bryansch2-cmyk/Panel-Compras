@@ -204,61 +204,6 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
-const copyFeedbackTimers = new WeakMap();
-
-async function copyText(value) {
-  const text = String(value ?? "").trim();
-  if (!text) {
-    return false;
-  }
-
-  if (navigator.clipboard?.writeText) {
-    try {
-      await navigator.clipboard.writeText(text);
-      return true;
-    } catch (error) {
-      console.warn("Clipboard API unavailable, using fallback.", error);
-    }
-  }
-
-  const textarea = document.createElement("textarea");
-  textarea.value = text;
-  textarea.setAttribute("readonly", "");
-  textarea.style.position = "fixed";
-  textarea.style.opacity = "0";
-  textarea.style.pointerEvents = "none";
-  document.body.appendChild(textarea);
-  textarea.focus();
-  textarea.select();
-  textarea.setSelectionRange(0, text.length);
-
-  let copied = false;
-  try {
-    copied = document.execCommand("copy");
-  } catch (error) {
-    console.warn("Clipboard fallback failed.", error);
-  }
-
-  textarea.remove();
-  return copied;
-}
-
-function showCopyFeedback(element) {
-  element.classList.add("is-copied");
-
-  const activeTimer = copyFeedbackTimers.get(element);
-  if (activeTimer) {
-    window.clearTimeout(activeTimer);
-  }
-
-  const timer = window.setTimeout(() => {
-    element.classList.remove("is-copied");
-    copyFeedbackTimers.delete(element);
-  }, 1200);
-
-  copyFeedbackTimers.set(element, timer);
-}
-
 function getStoredTheme() {
   return localStorage.getItem(THEME_KEY) || "dark";
 }
@@ -657,18 +602,6 @@ function renderProfileItem({ icon, label, value, wide = false, bank = false }) {
 
   return `
     <div class="${classes.join(" ")}">
-      <button
-        class="device-copy-button"
-        type="button"
-        data-action="copy-profile-field"
-        data-copy-value="${escapeHtml(value)}"
-        data-copy-label="${escapeHtml(label)}"
-        aria-label="Copiar ${escapeHtml(label)}"
-        title="Copiar ${escapeHtml(label)}"
-      >
-        <span class="device-copy-button-copy" aria-hidden="true">&#128203;</span>
-        <span class="device-copy-button-done" aria-hidden="true">&#10003;</span>
-      </button>
       <span class="device-profile-label"><i aria-hidden="true">${icon}</i><em>${escapeHtml(label)}</em></span>
       <strong class="device-profile-value">${escapeHtml(value)}</strong>
     </div>
@@ -1357,20 +1290,6 @@ document.addEventListener("click", async (event) => {
 
   if (action === "open-history") {
     openHistoryModal(button.dataset.deviceId, button.dataset.historyType);
-    return;
-  }
-
-  if (action === "copy-profile-field") {
-    event.preventDefault();
-    event.stopPropagation();
-
-    const copied = await copyText(button.dataset.copyValue || "");
-    if (!copied) {
-      window.alert(`No se pudo copiar ${button.dataset.copyLabel || "este valor"}.`);
-      return;
-    }
-
-    showCopyFeedback(button);
     return;
   }
 
