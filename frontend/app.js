@@ -133,7 +133,6 @@ const state = {
 };
 
 let unlockExpiryTimer = null;
-let detailSwitchTimer = null;
 
 function formatMoney(value) {
   return moneyFormatter.format(Number(value || 0));
@@ -203,6 +202,61 @@ function escapeHtml(value) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
+}
+
+const copyFeedbackTimers = new WeakMap();
+
+async function copyText(value) {
+  const text = String(value ?? "").trim();
+  if (!text) {
+    return false;
+  }
+
+  if (navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (error) {
+      console.warn("Clipboard API unavailable, using fallback.", error);
+    }
+  }
+
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.setAttribute("readonly", "");
+  textarea.style.position = "fixed";
+  textarea.style.opacity = "0";
+  textarea.style.pointerEvents = "none";
+  document.body.appendChild(textarea);
+  textarea.focus();
+  textarea.select();
+  textarea.setSelectionRange(0, text.length);
+
+  let copied = false;
+  try {
+    copied = document.execCommand("copy");
+  } catch (error) {
+    console.warn("Clipboard fallback failed.", error);
+  }
+
+  textarea.remove();
+  return copied;
+}
+
+function showCopyFeedback(element) {
+  element.classList.add("is-copied");
+
+  const activeTimer = copyFeedbackTimers.get(element);
+  if (activeTimer) {
+    window.clearTimeout(activeTimer);
+  }
+
+  const timer = window.setTimeout(() => {
+    element.classList.remove("is-copied");
+    copyFeedbackTimers.delete(element);
+  }, 1200);
+
+  copyFeedbackTimers.set(element, timer);
 }
 
 function getStoredTheme() {
@@ -592,6 +646,35 @@ function getHistoryEntries(device, historyType) {
   return [];
 }
 
+function renderProfileItem({ icon, label, value, wide = false, bank = false }) {
+  const classes = ["device-profile-item"];
+  if (wide) {
+    classes.push("device-profile-wide");
+  }
+  if (bank) {
+    classes.push("device-profile-bank");
+  }
+
+  return `
+    <div class="${classes.join(" ")}">
+      <button
+        class="device-copy-button"
+        type="button"
+        data-action="copy-profile-field"
+        data-copy-value="${escapeHtml(value)}"
+        data-copy-label="${escapeHtml(label)}"
+        aria-label="Copiar ${escapeHtml(label)}"
+        title="Copiar ${escapeHtml(label)}"
+      >
+        <span class="device-copy-button-copy">Copiar</span>
+        <span class="device-copy-button-done">Listo</span>
+      </button>
+      <span class="device-profile-label"><i aria-hidden="true">${icon}</i><em>${escapeHtml(label)}</em></span>
+      <strong class="device-profile-value">${escapeHtml(value)}</strong>
+    </div>
+  `;
+}
+
 function renderDeviceList() {
   const devices = getDevices();
   if (!devices.length) {
@@ -606,41 +689,56 @@ function renderDeviceList() {
     const lowBalance = isLowBalance(device.availableBalance);
     const profile = getDeviceProfile(device);
     return `
-      <button class="device-item ${isActive ? "active" : ""}" type="button" data-action="select-device" data-device-id="${escapeHtml(device.id)}">
-        <div class="device-item-top">
-          <strong>${escapeHtml(device.title)}</strong>
-          <span class="device-item-badge">${isActive ? "En foco" : "Lista"}</span>
+      <article class="device-item ${isActive ? "active" : ""}">
+        <div
+          class="device-item-select"
+          role="button"
+          tabindex="0"
+          aria-pressed="${isActive ? "true" : "false"}"
+          data-action="select-device"
+          data-device-id="${escapeHtml(device.id)}"
+        >
+          <div class="device-item-top">
+            <strong>${escapeHtml(device.title)}</strong>
+            <span class="device-item-badge">${isActive ? "En foco" : "Lista"}</span>
+          </div>
+          <div class="device-item-stats">
+            <span><b>Saldo</b> ${escapeHtml(formatMoney(device.availableBalance))}</span>
+            <span><b>Usado</b> ${escapeHtml(formatMoney(device.pendingUsed))}</span>
+            <span><b>Limite</b> ${escapeHtml(formatMoney(device.balanceLimitCurrent))}</span>
+          </div>
+          ${lowBalance ? `<div class="device-low-flag"><span class="device-low-dot"></span><span>Saldo bajo</span></div>` : ""}
+          ${hasNotes ? `<div class="device-note-flag"><span class="device-note-dot"></span><span>Nota guardada</span></div>` : ""}
         </div>
-        <div class="device-item-stats">
-          <span><b>Saldo</b> ${escapeHtml(formatMoney(device.availableBalance))}</span>
-          <span><b>Usado</b> ${escapeHtml(formatMoney(device.pendingUsed))}</span>
-          <span><b>Limite</b> ${escapeHtml(formatMoney(device.balanceLimitCurrent))}</span>
-        </div>
-        ${lowBalance ? `<div class="device-low-flag"><span class="device-low-dot"></span><span>Saldo bajo</span></div>` : ""}
-        ${hasNotes ? `<div class="device-note-flag"><span class="device-note-dot"></span><span>Nota guardada</span></div>` : ""}
         ${isActive && profile ? `
           <div class="device-expanded">
             <div class="device-profile-grid">
-              <div class="device-profile-item">
-                <span class="device-profile-label"><i aria-hidden="true">&#128100;</i><em>Nombre</em></span>
-                <strong>${escapeHtml(profile.ownerName)}</strong>
-              </div>
-              <div class="device-profile-item">
-                <span class="device-profile-label"><i aria-hidden="true">&#128179;</i><em>Cuenta</em></span>
-                <strong>${escapeHtml(profile.accountNumber)}</strong>
-              </div>
-              <div class="device-profile-item">
-                <span class="device-profile-label"><i aria-hidden="true">&#128222;</i><em>Celular</em></span>
-                <strong>${escapeHtml(profile.phone)}</strong>
-              </div>
-              <div class="device-profile-item device-profile-wide device-profile-bank">
-                <span class="device-profile-label"><i aria-hidden="true">&#127974;</i><em>Ziraat Bank</em></span>
-                <strong>${escapeHtml(profile.iban)}</strong>
-              </div>
+              ${renderProfileItem({
+                icon: "&#128100;",
+                label: "Nombre",
+                value: profile.ownerName,
+              })}
+              ${renderProfileItem({
+                icon: "&#128179;",
+                label: "Cuenta",
+                value: profile.accountNumber,
+              })}
+              ${renderProfileItem({
+                icon: "&#128222;",
+                label: "Celular",
+                value: profile.phone,
+              })}
+              ${renderProfileItem({
+                icon: "&#127974;",
+                label: "Ziraat Bank",
+                value: profile.iban,
+                wide: true,
+                bank: true,
+              })}
             </div>
           </div>
         ` : ""}
-      </button>
+      </article>
     `;
   }).join("");
 }
@@ -687,22 +785,6 @@ function renderActiveCardCounts(card) {
     }
     return `${rule.label}: ${getCardDisplayedCount(card, productKey)}`;
   }).filter(Boolean).join(" / ");
-}
-
-function pulseDetailView() {
-  if (detailSwitchTimer) {
-    window.clearTimeout(detailSwitchTimer);
-    detailSwitchTimer = null;
-  }
-
-  detailView.classList.remove("is-switching");
-  window.requestAnimationFrame(() => {
-    detailView.classList.add("is-switching");
-  });
-  detailSwitchTimer = window.setTimeout(() => {
-    detailView.classList.remove("is-switching");
-    detailSwitchTimer = null;
-  }, 210);
 }
 
 function renderActiveCardDetail(device) {
@@ -1270,12 +1352,25 @@ document.addEventListener("click", async (event) => {
   if (action === "select-device") {
     state.selectedDeviceId = button.dataset.deviceId;
     render();
-    pulseDetailView();
     return;
   }
 
   if (action === "open-history") {
     openHistoryModal(button.dataset.deviceId, button.dataset.historyType);
+    return;
+  }
+
+  if (action === "copy-profile-field") {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const copied = await copyText(button.dataset.copyValue || "");
+    if (!copied) {
+      window.alert(`No se pudo copiar ${button.dataset.copyLabel || "este valor"}.`);
+      return;
+    }
+
+    showCopyFeedback(button);
     return;
   }
 
@@ -1480,6 +1575,13 @@ document.addEventListener("submit", async (event) => {
 });
 
 document.addEventListener("keydown", (event) => {
+  const deviceItem = event.target instanceof HTMLElement ? event.target.closest('.device-item-select[data-action="select-device"]') : null;
+  if (deviceItem && (event.key === "Enter" || event.key === " ")) {
+    event.preventDefault();
+    deviceItem.click();
+    return;
+  }
+
   const customAmountInput = event.target instanceof HTMLElement ? event.target.closest(".custom-amount-input") : null;
   if (customAmountInput && event.key === "Enter") {
     event.preventDefault();
@@ -1520,13 +1622,11 @@ document.addEventListener("keydown", (event) => {
 
   if (event.key === "ArrowDown") {
     moveDeviceSelection(1);
-    pulseDetailView();
     return;
   }
 
   if (event.key === "ArrowUp") {
     moveDeviceSelection(-1);
-    pulseDetailView();
   }
 });
 
