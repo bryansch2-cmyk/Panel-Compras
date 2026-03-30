@@ -631,10 +631,10 @@ function renderDeviceList() {
           data-action="select-device"
           data-device-id="${escapeHtml(device.id)}"
         >
-          <div class="device-item-top">
-            <strong>${escapeHtml(device.title)}</strong>
-            <span class="device-item-badge">${isActive ? "En foco" : "Lista"}</span>
-          </div>
+        <div class="device-item-top">
+          <strong>${escapeHtml(device.title)}</strong>
+          ${isActive ? '<span class="device-item-badge">Lista</span>' : ""}
+        </div>
           <div class="device-item-stats">
             <span><b>Saldo</b> ${escapeHtml(formatMoney(device.availableBalance))}</span>
             <span><b>Usado</b> ${escapeHtml(formatMoney(device.pendingUsed))}</span>
