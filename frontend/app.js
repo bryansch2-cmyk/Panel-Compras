@@ -695,11 +695,14 @@ function pulseDetailView() {
     detailSwitchTimer = null;
   }
 
-  detailView.classList.add("is-switching");
+  detailView.classList.remove("is-switching");
+  window.requestAnimationFrame(() => {
+    detailView.classList.add("is-switching");
+  });
   detailSwitchTimer = window.setTimeout(() => {
     detailView.classList.remove("is-switching");
     detailSwitchTimer = null;
-  }, 170);
+  }, 210);
 }
 
 function renderActiveCardDetail(device) {
@@ -733,10 +736,7 @@ function renderActiveCardDetail(device) {
     return `
       <div class="product-stat product-stat-${escapeHtml(productKey)} ${isEpicBlocked ? "is-disabled" : ""}">
         <div class="product-stat-headline">
-          <div class="product-name-cluster">
-            <strong>${escapeHtml(rule.label)}</strong>
-            <span class="product-ticker">${escapeHtml(rule.key.toUpperCase())}</span>
-          </div>
+          <strong>${escapeHtml(rule.label)}</strong>
           <span class="product-price">${escapeHtml(formatMoney(rule.amount))}</span>
         </div>
         <span class="product-cap">${rule.maxCount ? `Max ${escapeHtml(rule.maxCount)}` : "Sin tope"}</span>

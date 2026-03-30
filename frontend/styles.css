@@ -338,6 +338,11 @@ body.speeches-mode .sidebar {
   background: color-mix(in srgb, var(--surface-soft) 82%, transparent);
   position: relative;
   overflow: hidden;
+  transition:
+    transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 180ms ease,
+    background 220ms ease,
+    box-shadow 220ms ease;
 }
 
 .device-item strong {
@@ -381,7 +386,7 @@ body.speeches-mode .sidebar {
   margin-top: 4px;
   padding-top: 12px;
   border-top: 1px solid rgba(122, 141, 166, 0.12);
-  animation: device-expand-in 180ms ease;
+  animation: device-expand-in 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
   position: relative;
 }
 
@@ -574,9 +579,9 @@ body.speeches-mode .sidebar {
 }
 
 .detail-view.is-switching {
-  opacity: 0.78;
-  transform: translateY(6px);
-  filter: saturate(0.96);
+  opacity: 0.9;
+  transform: translateY(3px) scale(0.996);
+  filter: saturate(0.985);
 }
 
 .detail-head {
@@ -1272,26 +1277,6 @@ body.speeches-mode .sidebar {
   gap: 8px;
 }
 
-.product-name-cluster {
-  display: grid;
-  gap: 4px;
-}
-
-.product-ticker {
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  min-height: 22px;
-  padding: 0 8px;
-  border-radius: 999px;
-  background: rgba(122, 141, 166, 0.12);
-  border: 1px solid rgba(122, 141, 166, 0.12);
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
 .product-price {
   font-size: 0.92rem;
   font-weight: 700;
@@ -1507,11 +1492,6 @@ body.speeches-mode .sidebar {
 :root[data-theme="light"] .card-face-brand,
 :root[data-theme="light"] .product-price {
   color: #8d6830;
-}
-
-:root[data-theme="light"] .product-ticker {
-  background: rgba(236, 243, 251, 0.94);
-  border-color: rgba(191, 203, 217, 0.66);
 }
 
 :root[data-theme="light"] .product-stat,
@@ -1795,7 +1775,7 @@ body.speeches-mode .sidebar {
   padding: 18px;
   background: rgba(5, 9, 15, 0.38);
   backdrop-filter: blur(14px) saturate(1.08);
-  animation: modal-fade 180ms ease;
+  animation: modal-fade 200ms ease;
 }
 
 .modal-card {
@@ -1817,7 +1797,7 @@ body.speeches-mode .sidebar {
   will-change: auto;
   transform: translateZ(0);
   backface-visibility: hidden;
-  animation: modal-card-in 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation: modal-card-in 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .modal-card-wide {
