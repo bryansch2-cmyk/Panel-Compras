@@ -424,7 +424,7 @@ body.speeches-mode .sidebar {
   display: grid;
   gap: 4px;
   padding: 10px 11px;
-  padding-right: 56px;
+  padding-right: 42px;
   border: 1px solid rgba(122, 141, 166, 0.12);
   border-radius: 14px;
   background: color-mix(in srgb, var(--surface-soft) 90%, transparent);
@@ -470,18 +470,19 @@ body.speeches-mode .sidebar {
 
 .device-copy-button {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 9px;
+  right: 9px;
+  width: 24px;
+  min-width: 24px;
   min-height: 24px;
-  padding: 0 8px;
+  padding: 0;
   border-radius: 999px;
   border: 1px solid rgba(122, 141, 166, 0.14);
   background: rgba(122, 141, 166, 0.08);
   color: var(--muted);
-  font-size: 0.62rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1;
   flex-shrink: 0;
   transform: none;
   z-index: 1;
@@ -502,6 +503,14 @@ body.speeches-mode .sidebar {
 
 .device-copy-button-done {
   display: none;
+}
+
+.device-copy-button-copy,
+.device-copy-button-done {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .device-copy-button.is-copied {

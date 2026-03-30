@@ -666,8 +666,8 @@ function renderProfileItem({ icon, label, value, wide = false, bank = false }) {
         aria-label="Copiar ${escapeHtml(label)}"
         title="Copiar ${escapeHtml(label)}"
       >
-        <span class="device-copy-button-copy">Copiar</span>
-        <span class="device-copy-button-done">Listo</span>
+        <span class="device-copy-button-copy" aria-hidden="true">&#128203;</span>
+        <span class="device-copy-button-done" aria-hidden="true">&#10003;</span>
       </button>
       <span class="device-profile-label"><i aria-hidden="true">${icon}</i><em>${escapeHtml(label)}</em></span>
       <strong class="device-profile-value">${escapeHtml(value)}</strong>
