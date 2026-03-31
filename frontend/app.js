@@ -942,8 +942,13 @@ function renderSpeechTab() {
   const accountSlots = Array.from({ length: ACCOUNT_SLOT_COUNT }, (_, index) => {
     const slotNumber = index + 1;
     const key = `account-${String(slotNumber).padStart(2, "0")}`;
-    const entry = speeches[key] || { primary: "", secondary: "" };
-    const hasContent = Boolean(String(entry.primary || "").trim() || String(entry.secondary || "").trim());
+    const rawEntry = speeches[key] || {};
+    const entry = {
+      nickname: String(rawEntry.nickname || "").trim(),
+      email: String(rawEntry.email || rawEntry.primary || "").trim(),
+      password: String(rawEntry.password || rawEntry.secondary || "").trim(),
+    };
+    const hasContent = Boolean(entry.nickname || entry.email || entry.password);
     return {
       key,
       slotNumber,
@@ -978,12 +983,16 @@ function renderSpeechTab() {
                 <span class="account-card-state ${slot.hasContent ? "is-ready" : ""}">${slot.hasContent ? "Guardada" : "Vacia"}</span>
               </div>
               <label class="speech-field account-field">
-                <span>Cuenta</span>
-                <input name="primary" type="text" value="${escapeHtml(slot.entry.primary || "")}" placeholder="Correo, usuario o referencia" autocomplete="off" spellcheck="false">
+                <span>Nick</span>
+                <input name="nickname" type="text" value="${escapeHtml(slot.entry.nickname || "")}" placeholder="Kidstore0001" autocomplete="off" spellcheck="false">
               </label>
               <label class="speech-field account-field">
-                <span>Detalle</span>
-                <textarea name="secondary" rows="3" placeholder="Notas rapidas, acceso o comentario" spellcheck="false">${escapeHtml(slot.entry.secondary || "")}</textarea>
+                <span>Correo</span>
+                <input name="email" type="email" value="${escapeHtml(slot.entry.email || "")}" placeholder="correo@gmail.com" autocomplete="off" spellcheck="false">
+              </label>
+              <label class="speech-field account-field">
+                <span>Contraseña</span>
+                <input name="password" type="text" value="${escapeHtml(slot.entry.password || "")}" placeholder="Contrasena de acceso" autocomplete="off" spellcheck="false">
               </label>
               <button class="account-save-button" type="submit">Guardar</button>
             </form>
@@ -1450,8 +1459,9 @@ document.addEventListener("submit", async (event) => {
 
   if (action === "save-speech") {
     await sendMutation(`/api/speeches/${form.dataset.speechKey}`, {
-      primary: values.primary || "",
-      secondary: values.secondary || "",
+      nickname: values.nickname || "",
+      email: values.email || "",
+      password: values.password || "",
     });
     return;
   }

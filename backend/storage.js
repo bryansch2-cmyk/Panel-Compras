@@ -785,11 +785,14 @@ async function updateSpeech(groupKey, payload) {
   state.speeches = state.speeches && typeof state.speeches === "object" ? state.speeches : {};
   const current = state.speeches[nextKey] && typeof state.speeches[nextKey] === "object"
     ? state.speeches[nextKey]
-    : { primary: "", secondary: "" };
+    : { primary: "", secondary: "", nickname: "", email: "", password: "" };
 
   state.speeches[nextKey] = {
     primary: typeof payload?.primary === "string" ? payload.primary : String(current.primary || ""),
     secondary: typeof payload?.secondary === "string" ? payload.secondary : String(current.secondary || ""),
+    nickname: typeof payload?.nickname === "string" ? payload.nickname : String(current.nickname || ""),
+    email: typeof payload?.email === "string" ? payload.email : String(current.email || ""),
+    password: typeof payload?.password === "string" ? payload.password : String(current.password || ""),
   };
 
   return writeState(state);

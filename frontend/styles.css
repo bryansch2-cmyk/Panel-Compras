@@ -2061,8 +2061,8 @@ body.is-busy button {
   background: color-mix(in srgb, var(--surface-strong) 88%, transparent);
 }
 
-.account-field textarea {
-  min-height: 88px;
+.account-field input {
+  min-height: 44px;
 }
 
 .account-save-button {
