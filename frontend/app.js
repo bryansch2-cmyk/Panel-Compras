@@ -957,19 +957,49 @@ function renderSpeechTab() {
     };
   });
   const filledCount = accountSlots.filter((slot) => slot.hasContent).length;
+  const commonPasswords = Array.from(new Set(
+    accountSlots.map((slot) => String(slot.entry.password || "").trim()).filter(Boolean),
+  )).slice(0, 8);
 
   detailView.innerHTML = `
     <section class="panel speeches-panel compact-panel accounts-panel">
       <div class="panel-head accounts-head">
         <div>
           <h2>Cuentas</h2>
-          <p class="panel-head-sub">Un bloque simple para guardar hasta 20 cuentas usadas para regalos de Fortnite.</p>
+          <p class="panel-head-sub">Contrasenas comunes arriba y, debajo, la lista de cuentas con correo a la izquierda y usuario a la derecha.</p>
         </div>
         <div class="accounts-summary">
-          <span class="accounts-summary-pill">${ACCOUNT_SLOT_COUNT} espacios</span>
+          <span class="accounts-summary-pill">${commonPasswords.length} contrasenas</span>
           <span class="accounts-summary-pill is-ready">${filledCount} guardadas</span>
         </div>
       </div>
+      <section class="accounts-passwords">
+        <div class="accounts-block-head">
+          <h3>Contrasenas</h3>
+          <p>Lista rapida de claves mas usadas.</p>
+        </div>
+        <div class="password-chip-list">
+          ${commonPasswords.length
+            ? commonPasswords.map((password, index) => `
+              <div class="password-chip">
+                <span class="account-slot-badge">Clave ${String(index + 1).padStart(2, "0")}</span>
+                <strong>${escapeHtml(password)}</strong>
+              </div>
+            `).join("")
+            : `<div class="empty empty-inline">No hay contrasenas guardadas todavia.</div>`}
+        </div>
+      </section>
+      <section class="accounts-passwords">
+        <div class="accounts-block-head">
+          <h3>Lista de cuentas</h3>
+          <p>Correo a la izquierda y usuario a la derecha.</p>
+        </div>
+        <div class="accounts-list-head" aria-hidden="true">
+          <span>Cuenta</span>
+          <span>Correo</span>
+          <span>Usuario</span>
+          <span></span>
+        </div>
       <div class="accounts-grid">
         ${accountSlots.map((slot) => {
           const slotLabel = `Cuenta ${String(slot.slotNumber).padStart(2, "0")}`;
@@ -999,6 +1029,7 @@ function renderSpeechTab() {
           `;
         }).join("")}
       </div>
+      </section>
     </section>
   `;
 }
@@ -1458,10 +1489,15 @@ document.addEventListener("submit", async (event) => {
   }
 
   if (action === "save-speech") {
+    const payload = {};
+    ["nickname", "email", "password", "primary", "secondary"].forEach((key) => {
+      if (Object.prototype.hasOwnProperty.call(values, key)) {
+        payload[key] = values[key] || "";
+      }
+    });
+
     await sendMutation(`/api/speeches/${form.dataset.speechKey}`, {
-      nickname: values.nickname || "",
-      email: values.email || "",
-      password: values.password || "",
+      ...payload,
     });
     return;
   }
