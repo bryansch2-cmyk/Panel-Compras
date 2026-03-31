@@ -2036,62 +2036,177 @@ body.is-busy button {
   .actions {
     justify-content: flex-start;
     width: 100%;
+    gap: 10px;
+  }
+
+  .copy {
+    font-size: 0.92rem;
+  }
+
+  .badge {
+    padding: 9px 13px;
+    font-size: 0.8rem;
   }
 
   .top-tabs {
     position: static;
     top: auto;
-    width: 100%;
-    flex-wrap: wrap;
+    width: fit-content;
     margin-bottom: 2px;
+    gap: 8px;
+  }
+
+  .top-tab {
+    min-height: 36px;
+    padding: 0 14px;
+    font-size: 0.92rem;
   }
 
   .layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: 300px minmax(0, 1fr);
+    gap: 14px;
   }
 
   .sidebar {
-    position: static;
-    top: auto;
-    max-height: none;
+    top: 16px;
+    max-height: calc(100vh - 32px);
+    padding: 16px;
   }
 
   .sidebar .panel-head {
     position: static;
     top: auto;
-    margin: 0 0 16px;
+    margin: 0 0 12px;
     padding: 0;
     background: transparent;
     border-bottom: 0;
     backdrop-filter: none;
   }
 
-  .selected-card-head,
-  .section-row {
-    grid-template-columns: 1fr;
-    flex-direction: column;
-    align-items: flex-start;
+  .panel {
+    padding: 16px;
   }
 
-  .selected-card-topside,
-  .purchase-summary-shell,
-  .inline-actions-shell,
-  .purchase-summary {
-    justify-items: start;
-    text-align: left;
+  .device-item {
+    gap: 10px;
+    padding: 15px 14px;
+  }
+
+  .device-item strong {
+    font-size: 0.94rem;
+  }
+
+  .device-item span {
+    font-size: 0.82rem;
+  }
+
+  .device-item-badge {
+    min-height: 24px;
+    padding: 0 9px;
+    font-size: 0.72rem;
+  }
+
+  .device-note-flag,
+  .device-low-flag {
+    min-height: 26px;
+    padding: 0 10px;
+    font-size: 0.73rem;
+  }
+
+  .device-profile-item {
+    padding: 9px 10px;
+  }
+
+  .device-profile-item span {
+    font-size: 0.7rem;
+  }
+
+  .device-profile-item strong {
+    font-size: 0.82rem;
+  }
+
+  .selected-card h3 {
+    font-size: 1.56rem;
+  }
+
+  .selected-card-head {
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .card-face {
+    gap: 12px;
+    padding: 16px 17px;
+    border-radius: 20px;
+  }
+
+  .card-face-brand {
+    font-size: 0.68rem;
+  }
+
+  .card-face-chip {
+    width: 38px;
+    height: 28px;
+  }
+
+  .selected-card-primary .card-number {
+    font-size: 1.7rem;
+  }
+
+  .card-face-meta {
+    font-size: 0.78rem;
+  }
+
+  .summary-kicker {
+    font-size: 0.66rem;
   }
 
   .purchase-summary {
-    width: 100%;
-    max-width: none;
+    max-width: 100%;
+    font-size: 0.81rem;
+    padding: 11px 12px;
+    border-radius: 16px;
+  }
+
+  .card-label,
+  .status-pill {
+    padding: 6px 10px;
+    font-size: 0.72rem;
   }
 
   .inline-actions {
-    justify-content: flex-start;
+    gap: 6px;
+    padding: 7px;
+  }
+
+  .inline-actions button {
+    min-height: 32px;
+    padding: 0 10px;
+    font-size: 0.76rem;
+  }
+
+  .inline-actions .icon-action {
+    min-width: 32px;
+  }
+
+  .history-launcher {
+    padding: 15px 16px;
+    border-radius: 22px;
+  }
+
+  .section-row {
+    gap: 10px;
+  }
+
+  .history-icon-button {
+    min-width: 40px;
+    min-height: 40px;
+    font-size: 0.95rem;
   }
 }
 
-@media (max-width: 980px) {
+@media (max-width: 860px) {
   .sidebar {
     position: static;
     max-height: none;
