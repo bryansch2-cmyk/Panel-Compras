@@ -977,7 +977,7 @@ function renderSpeechTab() {
             <form class="glass-form inline-form account-card" data-action="save-speech" data-speech-key="${escapeHtml(slot.key)}">
               <div class="account-card-head">
                 <div class="account-card-title">
-                  <span class="account-card-kicker">${escapeHtml(slotLabel)}</span>
+                  <span class="account-slot-badge">${escapeHtml(slotLabel)}</span>
                   <h3>${slot.hasContent ? "Lista para operar" : "Espacio disponible"}</h3>
                 </div>
                 <span class="account-card-state ${slot.hasContent ? "is-ready" : ""}">${slot.hasContent ? "Guardada" : "Vacia"}</span>

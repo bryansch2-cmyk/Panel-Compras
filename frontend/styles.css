@@ -1996,6 +1996,8 @@ body.is-busy button {
 }
 
 .account-card {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
   padding: 16px;
   border-radius: 22px;
@@ -2012,6 +2014,7 @@ body.is-busy button {
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
+  grid-column: 1 / -1;
 }
 
 .account-card-title {
@@ -2019,11 +2022,20 @@ body.is-busy button {
   gap: 5px;
 }
 
+.account-slot-badge,
 .account-card-kicker {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  width: fit-content;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(122, 141, 166, 0.14);
+  background: rgba(122, 141, 166, 0.08);
   color: var(--accent);
   font-size: 0.72rem;
   font-weight: 800;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -2056,6 +2068,19 @@ body.is-busy button {
   gap: 7px;
 }
 
+.account-card > .account-field:nth-of-type(1) {
+  order: 2;
+}
+
+.account-card > .account-field:nth-of-type(2) {
+  order: 1;
+}
+
+.account-card > .account-field:nth-of-type(3) {
+  order: 3;
+  grid-column: 1 / -1;
+}
+
 .account-field input,
 .account-field textarea {
   background: color-mix(in srgb, var(--surface-strong) 88%, transparent);
@@ -2065,9 +2090,25 @@ body.is-busy button {
   min-height: 44px;
 }
 
+.account-password-input {
+  letter-spacing: 0.02em;
+}
+
+.account-card > .account-field:nth-of-type(3) > span {
+  font-size: 0;
+  line-height: 0;
+}
+
+.account-card > .account-field:nth-of-type(3) > span::after {
+  content: "Contrasena";
+  font-size: 0.84rem;
+  line-height: 1.2;
+}
+
 .account-save-button {
   justify-self: start;
   min-width: 112px;
+  grid-column: 1 / -1;
 }
 
 .speech-grid {
@@ -2418,5 +2459,17 @@ body.is-busy button {
   .account-card-head {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .account-card {
+    grid-template-columns: 1fr;
+  }
+
+  .account-card > .account-field:nth-of-type(1),
+  .account-card > .account-field:nth-of-type(2),
+  .account-card > .account-field:nth-of-type(3),
+  .account-save-button {
+    grid-column: auto;
+    order: initial;
   }
 }
