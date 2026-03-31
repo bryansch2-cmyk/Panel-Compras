@@ -940,15 +940,15 @@ function renderSpeechTab() {
   const speeches = state.data?.speeches || {};
   const keys = Object.keys(speeches);
   if (!keys.length) {
-    detailView.innerHTML = `<div class="empty">No hay speeches cargados.</div>`;
+    detailView.innerHTML = `<div class="empty">No hay cuentas cargadas.</div>`;
     return;
   }
 
   detailView.innerHTML = `
     <section class="panel speeches-panel compact-panel">
       <div class="panel-head">
-        <h2>Speeches</h2>
-        <p class="panel-head-sub">Edita los mensajes guardados del panel.</p>
+        <h2>Cuentas</h2>
+        <p class="panel-head-sub">Edita los datos guardados del panel.</p>
       </div>
       <div class="speech-grid">
         ${keys.map((key) => {
@@ -964,7 +964,7 @@ function renderSpeechTab() {
                 <span>Secundario</span>
                 <textarea name="secondary">${escapeHtml(entry.secondary || "")}</textarea>
               </label>
-              <button type="submit">Guardar speech</button>
+              <button type="submit">Guardar cuenta</button>
             </form>
           `;
         }).join("")}

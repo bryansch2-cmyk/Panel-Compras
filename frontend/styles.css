@@ -138,8 +138,7 @@ body {
 .top-tabs {
   display: flex;
   gap: 10px;
-  position: sticky;
-  top: 12px;
+  position: static;
   z-index: 12;
   width: fit-content;
 }
