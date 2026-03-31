@@ -2015,6 +2015,82 @@ body.is-busy button {
   }
 }
 
+@media (max-width: 1500px) {
+  .app-shell {
+    width: calc(100% - 20px);
+    margin-top: 12px;
+    gap: 14px;
+  }
+
+  .hero {
+    min-height: auto;
+    padding: 22px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .brand-mark {
+    font-size: clamp(2.4rem, 7vw, 4.2rem);
+  }
+
+  .actions {
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .top-tabs {
+    position: static;
+    top: auto;
+    width: 100%;
+    flex-wrap: wrap;
+    margin-bottom: 2px;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    top: auto;
+    max-height: none;
+  }
+
+  .sidebar .panel-head {
+    position: static;
+    top: auto;
+    margin: 0 0 16px;
+    padding: 0;
+    background: transparent;
+    border-bottom: 0;
+    backdrop-filter: none;
+  }
+
+  .selected-card-head,
+  .section-row {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .selected-card-topside,
+  .purchase-summary-shell,
+  .inline-actions-shell,
+  .purchase-summary {
+    justify-items: start;
+    text-align: left;
+  }
+
+  .purchase-summary {
+    width: 100%;
+    max-width: none;
+  }
+
+  .inline-actions {
+    justify-content: flex-start;
+  }
+}
+
 @media (max-width: 980px) {
   .sidebar {
     position: static;
