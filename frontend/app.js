@@ -205,6 +205,43 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
+async function copyText(value) {
+  const text = String(value ?? "").trim();
+  if (!text) {
+    return false;
+  }
+
+  if (navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (error) {
+      console.warn("Clipboard API unavailable, using fallback.", error);
+    }
+  }
+
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.setAttribute("readonly", "");
+  textarea.style.position = "fixed";
+  textarea.style.opacity = "0";
+  textarea.style.pointerEvents = "none";
+  document.body.appendChild(textarea);
+  textarea.focus();
+  textarea.select();
+  textarea.setSelectionRange(0, text.length);
+
+  let copied = false;
+  try {
+    copied = document.execCommand("copy");
+  } catch (error) {
+    console.warn("Clipboard fallback failed.", error);
+  }
+
+  textarea.remove();
+  return copied;
+}
+
 function getStoredTheme() {
   return localStorage.getItem(THEME_KEY) || "dark";
 }
@@ -959,7 +996,7 @@ function renderSpeechTab() {
   const filledCount = accountSlots.filter((slot) => slot.hasContent).length;
   const commonPasswords = Array.from(new Set(
     accountSlots.map((slot) => String(slot.entry.password || "").trim()).filter(Boolean),
-  )).slice(0, 8);
+  )).slice(0, 3);
 
   detailView.innerHTML = `
     <section class="panel speeches-panel compact-panel accounts-panel">
@@ -981,7 +1018,7 @@ function renderSpeechTab() {
         <div class="password-chip-list">
           ${commonPasswords.length
             ? commonPasswords.map((password, index) => `
-              <div class="password-chip">
+              <div class="password-chip" data-action="copy-password" data-copy-value="${escapeHtml(password)}" title="Copiar contrasena">
                 <span class="account-slot-badge">Clave ${String(index + 1).padStart(2, "0")}</span>
                 <strong>${escapeHtml(password)}</strong>
               </div>
@@ -1351,6 +1388,18 @@ document.addEventListener("click", async (event) => {
 
   if (action === "open-history") {
     openHistoryModal(button.dataset.deviceId, button.dataset.historyType);
+    return;
+  }
+
+  if (action === "copy-password") {
+    event.preventDefault();
+    const copied = await copyText(button.dataset.copyValue || "");
+    if (!copied) {
+      window.alert("No se pudo copiar la contrasena.");
+      return;
+    }
+    button.classList.add("is-copied");
+    window.setTimeout(() => button.classList.remove("is-copied"), 1000);
     return;
   }
 

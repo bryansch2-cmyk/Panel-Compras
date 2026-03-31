@@ -2028,6 +2028,21 @@ body.is-busy button {
   border: 1px solid rgba(122, 141, 166, 0.12);
   border-radius: 18px;
   background: color-mix(in srgb, var(--surface-frost) 92%, transparent);
+  cursor: copy;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    transform 160ms ease;
+}
+
+.password-chip:hover {
+  border-color: rgba(122, 141, 166, 0.24);
+  transform: translateY(-1px);
+}
+
+.password-chip.is-copied {
+  border-color: rgba(128, 153, 137, 0.22);
+  background: rgba(128, 153, 137, 0.12);
 }
 
 .password-chip strong {
@@ -2123,11 +2138,11 @@ body.is-busy button {
 }
 
 .account-card > .account-field:nth-of-type(1) {
-  order: 3;
+  order: 2;
 }
 
 .account-card > .account-field:nth-of-type(2) {
-  order: 2;
+  order: 3;
 }
 
 .account-card > .account-field:nth-of-type(3) {
