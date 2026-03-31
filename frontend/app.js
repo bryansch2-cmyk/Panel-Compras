@@ -8,6 +8,7 @@ const detailView = document.querySelector("#detailView");
 const modalRoot = document.querySelector("#modalRoot");
 
 const PRODUCT_ORDER = ["epic", "xbox", "nitro", "nitroYear", "crunchy"];
+const ACCOUNT_SLOT_COUNT = 20;
 const SENSITIVE_PIN_KEY = "panel-compras-web-sensitive-pin";
 const SENSITIVE_UNLOCK_MS = 30_000;
 const THEME_KEY = "panel-compras-web-theme";
@@ -938,33 +939,53 @@ function renderControlTab() {
 
 function renderSpeechTab() {
   const speeches = state.data?.speeches || {};
-  const keys = Object.keys(speeches);
-  if (!keys.length) {
-    detailView.innerHTML = `<div class="empty">No hay cuentas cargadas.</div>`;
-    return;
-  }
+  const accountSlots = Array.from({ length: ACCOUNT_SLOT_COUNT }, (_, index) => {
+    const slotNumber = index + 1;
+    const key = `account-${String(slotNumber).padStart(2, "0")}`;
+    const entry = speeches[key] || { primary: "", secondary: "" };
+    const hasContent = Boolean(String(entry.primary || "").trim() || String(entry.secondary || "").trim());
+    return {
+      key,
+      slotNumber,
+      entry,
+      hasContent,
+    };
+  });
+  const filledCount = accountSlots.filter((slot) => slot.hasContent).length;
 
   detailView.innerHTML = `
-    <section class="panel speeches-panel compact-panel">
-      <div class="panel-head">
-        <h2>Cuentas</h2>
-        <p class="panel-head-sub">Edita los datos guardados del panel.</p>
+    <section class="panel speeches-panel compact-panel accounts-panel">
+      <div class="panel-head accounts-head">
+        <div>
+          <h2>Cuentas</h2>
+          <p class="panel-head-sub">Un bloque simple para guardar hasta 20 cuentas usadas para regalos de Fortnite.</p>
+        </div>
+        <div class="accounts-summary">
+          <span class="accounts-summary-pill">${ACCOUNT_SLOT_COUNT} espacios</span>
+          <span class="accounts-summary-pill is-ready">${filledCount} guardadas</span>
+        </div>
       </div>
-      <div class="speech-grid">
-        ${keys.map((key) => {
-          const entry = speeches[key] || { primary: "", secondary: "" };
+      <div class="accounts-grid">
+        ${accountSlots.map((slot) => {
+          const slotLabel = `Cuenta ${String(slot.slotNumber).padStart(2, "0")}`;
           return `
-            <form class="glass-form inline-form" data-action="save-speech" data-speech-key="${escapeHtml(key)}">
-              <h3>${escapeHtml(key)}</h3>
-              <label class="speech-field">
-                <span>Principal</span>
-                <textarea name="primary">${escapeHtml(entry.primary || "")}</textarea>
+            <form class="glass-form inline-form account-card" data-action="save-speech" data-speech-key="${escapeHtml(slot.key)}">
+              <div class="account-card-head">
+                <div class="account-card-title">
+                  <span class="account-card-kicker">${escapeHtml(slotLabel)}</span>
+                  <h3>${slot.hasContent ? "Lista para operar" : "Espacio disponible"}</h3>
+                </div>
+                <span class="account-card-state ${slot.hasContent ? "is-ready" : ""}">${slot.hasContent ? "Guardada" : "Vacia"}</span>
+              </div>
+              <label class="speech-field account-field">
+                <span>Cuenta</span>
+                <input name="primary" type="text" value="${escapeHtml(slot.entry.primary || "")}" placeholder="Correo, usuario o referencia" autocomplete="off" spellcheck="false">
               </label>
-              <label class="speech-field">
-                <span>Secundario</span>
-                <textarea name="secondary">${escapeHtml(entry.secondary || "")}</textarea>
+              <label class="speech-field account-field">
+                <span>Detalle</span>
+                <textarea name="secondary" rows="3" placeholder="Notas rapidas, acceso o comentario" spellcheck="false">${escapeHtml(slot.entry.secondary || "")}</textarea>
               </label>
-              <button type="submit">Guardar cuenta</button>
+              <button class="account-save-button" type="submit">Guardar</button>
             </form>
           `;
         }).join("")}
