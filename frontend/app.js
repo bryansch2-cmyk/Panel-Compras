@@ -9,6 +9,11 @@ const modalRoot = document.querySelector("#modalRoot");
 
 const PRODUCT_ORDER = ["epic", "xbox", "nitro", "nitroYear", "crunchy"];
 const ACCOUNT_SLOT_COUNT = 20;
+const SHARED_PASSWORDS = [
+  "kiddarkness20111303",
+  "lokyclow2104",
+  "franki20111303",
+];
 const SENSITIVE_PIN_KEY = "panel-compras-web-sensitive-pin";
 const SENSITIVE_UNLOCK_MS = 30_000;
 const THEME_KEY = "panel-compras-web-theme";
@@ -994,9 +999,7 @@ function renderSpeechTab() {
     };
   });
   const filledCount = accountSlots.filter((slot) => slot.hasContent).length;
-  const commonPasswords = Array.from(new Set(
-    accountSlots.map((slot) => String(slot.entry.password || "").trim()).filter(Boolean),
-  )).slice(0, 3);
+  const commonPasswords = SHARED_PASSWORDS;
 
   detailView.innerHTML = `
     <section class="panel speeches-panel compact-panel accounts-panel">
