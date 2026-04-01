@@ -2084,7 +2084,7 @@ body.is-busy button {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  grid-column: auto;
+  grid-column: 1;
 }
 
 .account-card-title {
@@ -2137,12 +2137,12 @@ body.is-busy button {
   gap: 7px;
 }
 
-.account-card > .account-field:nth-of-type(1) {
-  order: 3;
+.account-field-email {
+  grid-column: 2;
 }
 
-.account-card > .account-field:nth-of-type(2) {
-  order: 2;
+.account-field-nickname {
+  grid-column: 3;
 }
 
 .account-card > .account-field:nth-of-type(3) {
@@ -2170,7 +2170,7 @@ body.is-busy button {
   justify-self: start;
   width: 112px;
   min-width: 112px;
-  grid-column: auto;
+  grid-column: 4;
 }
 
 .speech-grid {
@@ -2538,6 +2538,12 @@ body.is-busy button {
   .account-save-button {
     grid-column: auto;
     order: initial;
+  }
+
+  .account-card-head,
+  .account-field-email,
+  .account-field-nickname {
+    grid-column: auto;
   }
 
   .account-card > .account-field:nth-of-type(3) {

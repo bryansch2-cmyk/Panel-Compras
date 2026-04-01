@@ -1052,13 +1052,13 @@ function renderSpeechTab() {
                 </div>
                 <span class="account-card-state ${slot.hasContent ? "is-ready" : ""}">${slot.hasContent ? "Guardada" : "Vacia"}</span>
               </div>
-              <label class="speech-field account-field">
-                <span>Nick</span>
-                <input name="nickname" type="text" value="${escapeHtml(slot.entry.nickname || "")}" placeholder="Kidstore0001" autocomplete="off" spellcheck="false">
-              </label>
-              <label class="speech-field account-field">
+              <label class="speech-field account-field account-field-email">
                 <span>Correo</span>
                 <input name="email" type="email" value="${escapeHtml(slot.entry.email || "")}" placeholder="correo@gmail.com" autocomplete="off" spellcheck="false">
+              </label>
+              <label class="speech-field account-field account-field-nickname">
+                <span>Nick</span>
+                <input name="nickname" type="text" value="${escapeHtml(slot.entry.nickname || "")}" placeholder="Kidstore0001" autocomplete="off" spellcheck="false">
               </label>
               <label class="speech-field account-field">
                 <span>Contraseña</span>
