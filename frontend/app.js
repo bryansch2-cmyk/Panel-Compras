@@ -1006,7 +1006,6 @@ function renderSpeechTab() {
       <div class="panel-head accounts-head">
         <div>
           <h2>Cuentas</h2>
-          <p class="panel-head-sub">Contrasenas comunes arriba y, debajo, la lista de cuentas con correo a la izquierda y usuario a la derecha.</p>
         </div>
         <div class="accounts-summary">
           <span class="accounts-summary-pill">${commonPasswords.length} contrasenas</span>
@@ -1016,7 +1015,6 @@ function renderSpeechTab() {
       <section class="accounts-passwords">
         <div class="accounts-block-head">
           <h3>Contrasenas</h3>
-          <p>Lista rapida de claves mas usadas.</p>
         </div>
         <div class="password-chip-list">
           ${commonPasswords.length
@@ -1032,7 +1030,6 @@ function renderSpeechTab() {
       <section class="accounts-passwords">
         <div class="accounts-block-head">
           <h3>Lista de cuentas</h3>
-          <p>Correo a la izquierda y usuario a la derecha.</p>
         </div>
         <div class="accounts-list-head" aria-hidden="true">
           <span>Cuenta</span>
