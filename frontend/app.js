@@ -427,6 +427,17 @@ function getCardDisplayedCount(card, productKey) {
   return Number(card?.baseCounts?.[productKey] || 0) + Number(card?.counts?.[productKey] || 0);
 }
 
+function getCardConfirmedPurchaseCount(card) {
+  return PRODUCT_ORDER.reduce((total, productKey) => {
+    return total + Number(card?.baseCounts?.[productKey] || 0);
+  }, 0);
+}
+
+function formatConfirmedPurchaseLabel(count) {
+  const safeCount = Math.max(0, Number(count || 0));
+  return `${safeCount} compra${safeCount === 1 ? "" : "s"} confirmada${safeCount === 1 ? "" : "s"}`;
+}
+
 function setBusy(nextValue) {
   state.requestPending = nextValue;
   document.body.classList.toggle("is-busy", nextValue);
@@ -774,6 +785,8 @@ function renderActiveCardDetail(device) {
   const cvvText = sensitiveVisible ? String(activeCard.cvv || "--") : "***";
   const unlockLabel = sensitiveVisible ? "Ocultar datos" : "Desbloquear";
   const cooldownLabel = getCooldownLabel(activeCard);
+  const confirmedPurchaseCount = getCardConfirmedPurchaseCount(activeCard);
+  const confirmedPurchaseLabel = formatConfirmedPurchaseLabel(confirmedPurchaseCount);
   const purchaseSummary = renderActiveCardCounts(activeCard);
   const stateLabel = activeCard.rejectedAt ? "Rechazada" : "Sin estado";
   const hasNotes = hasMeaningfulNotes(activeCard.notes);
@@ -836,6 +849,7 @@ function renderActiveCardDetail(device) {
           <div class="selected-card-topside">
             <div class="purchase-summary-shell">
               <span class="summary-kicker">Actividad acumulada</span>
+              <strong class="purchase-total">${escapeHtml(confirmedPurchaseLabel)}</strong>
               <p class="purchase-summary">${escapeHtml(purchaseSummary)}</p>
             </div>
             <div class="inline-actions-shell">

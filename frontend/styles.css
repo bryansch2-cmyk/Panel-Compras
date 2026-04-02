@@ -966,6 +966,10 @@ body.speeches-mode .sidebar {
   justify-items: end;
 }
 
+.purchase-summary-shell {
+  width: min(100%, 520px);
+}
+
 .summary-kicker {
   font-size: 0.72rem;
   font-weight: 800;
@@ -974,8 +978,16 @@ body.speeches-mode .sidebar {
   color: var(--muted);
 }
 
+.purchase-total {
+  font-size: clamp(1.2rem, 1.6vw, 1.55rem);
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  text-align: right;
+  color: var(--text);
+}
+
 .purchase-summary {
-  max-width: 520px;
+  width: 100%;
   color: var(--muted);
   text-align: right;
   line-height: 1.45;
@@ -2408,6 +2420,10 @@ body.is-busy button {
     font-size: 0.66rem;
   }
 
+  .purchase-total {
+    font-size: 1.08rem;
+  }
+
   .purchase-summary {
     max-width: 100%;
     font-size: 0.81rem;
@@ -2505,6 +2521,16 @@ body.is-busy button {
   .selected-card-topside,
   .purchase-summary {
     justify-items: start;
+    text-align: left;
+  }
+
+  .purchase-summary-shell,
+  .inline-actions-shell {
+    width: 100%;
+    justify-items: start;
+  }
+
+  .purchase-total {
     text-align: left;
   }
 
