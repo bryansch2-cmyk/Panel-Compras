@@ -8,6 +8,7 @@ const DATA_DIR = process.env.DATA_DIR
 const STATE_PATH = path.join(DATA_DIR, "state.json");
 const BUNDLED_STATE_PATH = path.join(LOCAL_DATA_DIR, "state.json");
 const DEVICE_BALANCE_CAP = 2750;
+const CARD_CYCLE_ORDERS = [1, 2, 3];
 const PRODUCT_RULES = [
   { key: "epic", label: "Epic", amount: 79, maxCount: 6 },
   { key: "xbox", label: "Xbox", amount: 79, maxCount: 2 },
@@ -40,6 +41,11 @@ function createEmptyCounts() {
     nitroYear: 0,
     crunchy: 0,
   };
+}
+
+function getNextCardOrder(order) {
+  const index = CARD_CYCLE_ORDERS.indexOf(Number(order));
+  return CARD_CYCLE_ORDERS[(index + 1 + CARD_CYCLE_ORDERS.length) % CARD_CYCLE_ORDERS.length];
 }
 
 function getMonthKey(value) {
@@ -719,7 +725,7 @@ async function replaceCard(deviceId, cardId, payload) {
   };
 
   device.cards.push(replacementCard);
-  device.activeCardOrder = replacementCard.order;
+  device.activeCardOrder = getNextCardOrder(card.order);
   device.pendingUsed = calculatePendingUsed(device);
 
   return writeState(state);
