@@ -632,6 +632,16 @@ function getHistoryEntries(device, historyType) {
   }
 
   if (historyType === "replacements") {
+    const replacementHistory = Array.isArray(device.replacementHistory) ? device.replacementHistory : [];
+    if (replacementHistory.length) {
+      return replacementHistory.map((entry) => ({
+        id: entry.id,
+        at: entry.at,
+        productName: `${entry.fromLabel || `Tarjeta ${entry.fromOrder || "-"}`} -> ${entry.toLabel || `Tarjeta ${entry.toOrder || "-"}`}`,
+        note: `Terminada en ${entry.fromLast4 || "----"} reemplazada por ${entry.toLast4 || "----"}`,
+      }));
+    }
+
     return getAllCards(device)
       .filter((card) => card.resetAt)
       .map((card) => ({

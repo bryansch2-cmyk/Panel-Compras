@@ -48,6 +48,23 @@ function getNextCardOrder(order) {
   return CARD_CYCLE_ORDERS[(index + 1 + CARD_CYCLE_ORDERS.length) % CARD_CYCLE_ORDERS.length];
 }
 
+function getCardLast4(number) {
+  return String(number || "").replace(/\D/g, "").slice(-4) || "----";
+}
+
+function normalizeReplacementHistoryEntry(raw) {
+  return {
+    id: typeof raw?.id === "string" ? raw.id : createId("replacement"),
+    at: String(raw?.at || raw?.date || ""),
+    fromOrder: Number.isFinite(Number(raw?.fromOrder)) ? Number(raw.fromOrder) : 0,
+    fromLabel: typeof raw?.fromLabel === "string" ? raw.fromLabel : "",
+    fromLast4: typeof raw?.fromLast4 === "string" ? raw.fromLast4 : "",
+    toOrder: Number.isFinite(Number(raw?.toOrder)) ? Number(raw.toOrder) : 0,
+    toLabel: typeof raw?.toLabel === "string" ? raw.toLabel : "",
+    toLast4: typeof raw?.toLast4 === "string" ? raw.toLast4 : "",
+  };
+}
+
 function getMonthKey(value) {
   return String(value || todayIso()).slice(0, 7);
 }
@@ -109,6 +126,7 @@ function createSeedState() {
         lastRechargeAmount: 1500,
         rechargeHistory: [],
         purchaseHistory: [],
+        replacementHistory: [],
         pendingLedger: [],
         cards: [
           firstCard,
@@ -277,6 +295,9 @@ function normalizeDevice(raw) {
           note: typeof entry?.note === "string" ? entry.note : "",
         }))
       : [],
+    replacementHistory: Array.isArray(raw?.replacementHistory)
+      ? raw.replacementHistory.map(normalizeReplacementHistoryEntry)
+      : [],
     pendingLedger: Array.isArray(raw?.pendingLedger) ? raw.pendingLedger : [],
     cards,
   };
@@ -402,6 +423,10 @@ function findDevice(state, deviceId) {
 
 function findCard(device, cardId) {
   return Array.isArray(device?.cards) ? device.cards.find((card) => card.id === cardId) : null;
+}
+
+function findVisibleCardByOrder(device, order) {
+  return (Array.isArray(device?.cards) ? device.cards : []).find((card) => !card.archived && Number(card.order) === Number(order)) || null;
 }
 
 async function applyRecharge(deviceId, amount) {
@@ -703,29 +728,59 @@ async function replaceCard(deviceId, cardId, payload) {
     throw new Error("invalid-card-number");
   }
 
-  card.archived = true;
-  card.resetAt = String(payload?.createdAt || todayIso()).trim() || todayIso();
+  const nextOrder = getNextCardOrder(card.order);
+  const nextCreatedAt = String(payload?.createdAt || todayIso()).trim() || todayIso();
+  const replacementTimestamp = nowIso();
+  const targetCard = findVisibleCardByOrder(device, nextOrder);
 
-  const replacementCard = {
-    id: createId("card"),
-    order: card.order,
-    orderLabel: card.orderLabel || `Tarjeta ${card.order}`,
-    number: nextNumber,
-    createdAt: String(payload?.createdAt || todayIso()).trim() || todayIso(),
-    expiry: String(payload?.expiry || "").trim(),
-    cvv: String(payload?.cvv || "").trim(),
-    archived: false,
-    resetAt: "",
-    counts: createEmptyCounts(),
-    baseCounts: createEmptyCounts(),
-    cooldownUntil: "",
-    rejectedAt: "",
-    rejectedCooldownUntil: "",
-    notes: "",
-  };
+  card.resetAt = replacementTimestamp;
+  device.replacementHistory = Array.isArray(device.replacementHistory) ? device.replacementHistory : [];
+  device.replacementHistory.unshift({
+    id: createId("replacement"),
+    at: replacementTimestamp,
+    fromOrder: Number(card.order || 0),
+    fromLabel: card.orderLabel || `Tarjeta ${card.order}`,
+    fromLast4: getCardLast4(card.number),
+    toOrder: nextOrder,
+    toLabel: `Tarjeta ${nextOrder}`,
+    toLast4: getCardLast4(nextNumber),
+  });
+  device.replacementHistory = device.replacementHistory.slice(0, 80);
 
-  device.cards.push(replacementCard);
-  device.activeCardOrder = getNextCardOrder(card.order);
+  if (targetCard) {
+    targetCard.number = nextNumber;
+    targetCard.createdAt = nextCreatedAt;
+    targetCard.expiry = String(payload?.expiry || "").trim();
+    targetCard.cvv = String(payload?.cvv || "").trim();
+    targetCard.archived = false;
+    targetCard.resetAt = "";
+    targetCard.counts = createEmptyCounts();
+    targetCard.baseCounts = createEmptyCounts();
+    targetCard.cooldownUntil = "";
+    targetCard.rejectedAt = "";
+    targetCard.rejectedCooldownUntil = "";
+    targetCard.notes = "";
+  } else {
+    device.cards.push({
+      id: createId("card"),
+      order: nextOrder,
+      orderLabel: `Tarjeta ${nextOrder}`,
+      number: nextNumber,
+      createdAt: nextCreatedAt,
+      expiry: String(payload?.expiry || "").trim(),
+      cvv: String(payload?.cvv || "").trim(),
+      archived: false,
+      resetAt: "",
+      counts: createEmptyCounts(),
+      baseCounts: createEmptyCounts(),
+      cooldownUntil: "",
+      rejectedAt: "",
+      rejectedCooldownUntil: "",
+      notes: "",
+    });
+  }
+
+  device.activeCardOrder = nextOrder;
   device.pendingUsed = calculatePendingUsed(device);
 
   return writeState(state);
