@@ -9,8 +9,9 @@ const STATE_PATH = path.join(DATA_DIR, "state.json");
 const BUNDLED_STATE_PATH = path.join(LOCAL_DATA_DIR, "state.json");
 const DEVICE_BALANCE_CAP = 2750;
 const CARD_CYCLE_ORDERS = [1, 2, 3];
+const CARD_BLOCK_DURATION_MS = 24 * 60 * 60 * 1000;
 const PRODUCT_RULES = [
-  { key: "epic", label: "Epic", amount: 79, maxCount: 6 },
+  { key: "epic", label: "Epic", amount: 79, maxCount: 0 },
   { key: "xbox", label: "Xbox", amount: 79, maxCount: 2 },
   { key: "nitro", label: "Nitro", amount: 104.99, maxCount: 3 },
   { key: "nitroYear", label: "Nitro 1y", amount: 1049.99, maxCount: 2 },
@@ -358,15 +359,12 @@ function refreshAutomaticCardStates(state) {
     device.cards.forEach((card) => {
       if (card.cooldownUntil && new Date(card.cooldownUntil).getTime() <= Date.now()) {
         card.cooldownUntil = "";
-        card.counts.epic = 0;
-        card.baseCounts.epic = 0;
         deviceChanged = true;
       }
 
       if (card.rejectedCooldownUntil && new Date(card.rejectedCooldownUntil).getTime() <= Date.now()) {
         card.rejectedCooldownUntil = "";
-        card.counts.epic = 0;
-        card.baseCounts.epic = 0;
+        card.rejectedAt = "";
         deviceChanged = true;
       }
     });
@@ -635,14 +633,13 @@ async function updateCard(deviceId, cardId, payload) {
   card.expiry = String(payload?.expiry || card.expiry || "").trim();
   card.cvv = String(payload?.cvv || card.cvv || "").trim();
   card.createdAt = String(payload?.createdAt || card.createdAt || "").trim();
-  card.baseCounts = normalizeCounts({
+  card.counts = normalizeCounts({
     epic: payload?.epic,
     xbox: payload?.xbox,
     nitro: payload?.nitro,
     nitroYear: payload?.nitroYear,
     crunchy: payload?.crunchy,
   });
-  card.counts = normalizeCounts({});
   device.pendingUsed = calculatePendingUsed(device);
 
   return writeState(state);
@@ -681,9 +678,7 @@ async function toggleCardRejected(deviceId, cardId) {
     card.rejectedCooldownUntil = "";
   } else {
     card.rejectedAt = nowIso();
-    card.rejectedCooldownUntil = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
-    card.counts.epic = 0;
-    card.baseCounts.epic = 0;
+    card.rejectedCooldownUntil = new Date(Date.now() + CARD_BLOCK_DURATION_MS).toISOString();
   }
 
   device.pendingUsed = calculatePendingUsed(device);
@@ -705,7 +700,7 @@ async function toggleCardCooldown(deviceId, cardId) {
   if (isCardCooldownActive(card)) {
     card.cooldownUntil = "";
   } else {
-    card.cooldownUntil = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+    card.cooldownUntil = new Date(Date.now() + CARD_BLOCK_DURATION_MS).toISOString();
   }
 
   return writeState(state);
@@ -820,8 +815,6 @@ async function updateProductCount(deviceId, cardId, productKey, delta) {
     nextPending += delta;
   } else if (currentPending > 0) {
     nextPending = Math.max(0, currentPending + delta);
-  } else if (currentBase > 0) {
-    nextBase = Math.max(0, currentBase + delta);
   }
 
   const nextDisplayed = Math.max(0, nextBase + nextPending);

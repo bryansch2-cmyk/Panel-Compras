@@ -139,6 +139,8 @@ const state = {
 };
 
 let unlockExpiryTimer = null;
+let cooldownTimer = null;
+let countdownSyncPending = false;
 
 function formatMoney(value) {
   return moneyFormatter.format(Number(value || 0));
@@ -391,9 +393,18 @@ function isRejectedHoldActive(card) {
   return Boolean(card?.rejectedCooldownUntil) && new Date(card.rejectedCooldownUntil).getTime() > Date.now();
 }
 
+function getCountdownTimestamp(value) {
+  if (!value) {
+    return 0;
+  }
+
+  const timestamp = new Date(value).getTime();
+  return Number.isFinite(timestamp) ? timestamp : 0;
+}
+
 function getPrimaryCooldownUntil(card) {
   const candidates = [card?.cooldownUntil, card?.rejectedCooldownUntil]
-    .map((value) => (value ? new Date(value).getTime() : 0))
+    .map((value) => getCountdownTimestamp(value))
     .filter((value) => value > Date.now());
 
   if (!candidates.length) {
@@ -409,10 +420,11 @@ function formatCooldownCountdown(untilValue) {
     return "";
   }
 
-  const totalMinutes = Math.max(0, Math.ceil((until - Date.now()) / 60000));
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
-  return `24h ${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+  const totalSeconds = Math.max(0, Math.ceil((until - Date.now()) / 1000));
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 }
 
 function getCooldownLabel(card) {
@@ -424,7 +436,15 @@ function getProductRule(productKey) {
 }
 
 function getCardDisplayedCount(card, productKey) {
-  return Number(card?.baseCounts?.[productKey] || 0) + Number(card?.counts?.[productKey] || 0);
+  return getCardConfirmedCount(card, productKey) + getCardPendingCount(card, productKey);
+}
+
+function getCardConfirmedCount(card, productKey) {
+  return Number(card?.baseCounts?.[productKey] || 0);
+}
+
+function getCardPendingCount(card, productKey) {
+  return Number(card?.counts?.[productKey] || 0);
 }
 
 function getCardConfirmedPurchaseCount(card) {
@@ -561,11 +581,18 @@ function openEditCardModal(deviceId, card) {
       expiry: String(card.expiry || ""),
       cvv: String(card.cvv || ""),
       createdAt: String(card.createdAt || ""),
-      epic: String(getCardDisplayedCount(card, "epic")),
-      xbox: String(getCardDisplayedCount(card, "xbox")),
-      nitro: String(getCardDisplayedCount(card, "nitro")),
-      nitroYear: String(getCardDisplayedCount(card, "nitroYear")),
-      crunchy: String(getCardDisplayedCount(card, "crunchy")),
+      epic: String(getCardPendingCount(card, "epic")),
+      xbox: String(getCardPendingCount(card, "xbox")),
+      nitro: String(getCardPendingCount(card, "nitro")),
+      nitroYear: String(getCardPendingCount(card, "nitroYear")),
+      crunchy: String(getCardPendingCount(card, "crunchy")),
+    },
+    accumulated: {
+      epic: String(getCardConfirmedCount(card, "epic")),
+      xbox: String(getCardConfirmedCount(card, "xbox")),
+      nitro: String(getCardConfirmedCount(card, "nitro")),
+      nitroYear: String(getCardConfirmedCount(card, "nitroYear")),
+      crunchy: String(getCardConfirmedCount(card, "crunchy")),
     },
     error: "",
   });
@@ -798,11 +825,13 @@ function renderActiveCardDetail(device) {
   const confirmedPurchaseCount = getCardConfirmedPurchaseCount(activeCard);
   const confirmedPurchaseLabel = formatConfirmedPurchaseLabel(confirmedPurchaseCount);
   const purchaseSummary = renderActiveCardCounts(activeCard);
-  const stateLabel = activeCard.rejectedAt ? "Rechazada" : "Sin estado";
-  const hasNotes = hasMeaningfulNotes(activeCard.notes);
-  const lowBalance = isLowBalance(device.availableBalance);
   const isManualCooldown = isCooldownActive(activeCard);
   const isRejectedHold = isRejectedHoldActive(activeCard);
+  const rejectedUntil = getCountdownTimestamp(activeCard.rejectedCooldownUntil);
+  const manualCooldownUntil = getCountdownTimestamp(activeCard.cooldownUntil);
+  const stateLabel = isRejectedHold ? "Rechazada" : "Sin estado";
+  const hasNotes = hasMeaningfulNotes(activeCard.notes);
+  const lowBalance = isLowBalance(device.availableBalance);
 
   const productCards = PRODUCT_ORDER.map((productKey) => {
     const rule = getProductRule(productKey);
@@ -813,6 +842,7 @@ function renderActiveCardDetail(device) {
     const count = getCardDisplayedCount(activeCard, productKey);
     const isEpicBlocked = productKey === "epic" && (isManualCooldown || isRejectedHold);
     const productLockLabel = isRejectedHold ? "Bloqueado por rechazo" : "Bloqueado por 24h";
+    const productLockUntil = isRejectedHold ? rejectedUntil : manualCooldownUntil;
 
     return `
       <div class="product-stat product-stat-${escapeHtml(productKey)} ${isEpicBlocked ? "is-disabled" : ""}">
@@ -821,7 +851,7 @@ function renderActiveCardDetail(device) {
           <span class="product-price">${escapeHtml(formatMoney(rule.amount))}</span>
         </div>
         <span class="product-cap">${rule.maxCount ? `Max ${escapeHtml(rule.maxCount)}` : "Sin tope"}</span>
-        ${isEpicBlocked ? `<span class="product-lock">${escapeHtml(productLockLabel)}</span>` : ""}
+        ${isEpicBlocked ? `<span class="product-lock" data-countdown-label="${escapeHtml(productLockLabel)}" data-countdown-until="${escapeHtml(productLockUntil)}">${escapeHtml(`${productLockLabel} ${formatCooldownCountdown(productLockUntil)}`.trim())}</span>` : ""}
         <div class="product-counter">
           <button type="button" data-action="update-product" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-product-key="${escapeHtml(productKey)}" data-delta="-1">-</button>
           <div class="product-stat-count">${escapeHtml(count)}</div>
@@ -840,8 +870,8 @@ function renderActiveCardDetail(device) {
             <div class="status-row">
               <span class="card-label">${escapeHtml(activeCard.orderLabel || "Tarjeta activa")}</span>
               <span class="status-pill active">Activa</span>
-              <span class="status-pill ${activeCard.rejectedAt ? "danger" : ""}">${escapeHtml(stateLabel)}</span>
-              ${cooldownLabel ? `<span class="status-pill cooldown"><span class="cooldown-icon" aria-hidden="true">&#9201;</span><span>${escapeHtml(cooldownLabel)}</span></span>` : ""}
+              <span class="status-pill ${isRejectedHold ? "danger" : ""}">${escapeHtml(stateLabel)}</span>
+              ${cooldownLabel ? `<span class="status-pill cooldown"><span class="cooldown-icon" aria-hidden="true">&#9201;</span><span data-countdown-label="Bloqueo" data-countdown-until="${escapeHtml(getPrimaryCooldownUntil(activeCard))}">${escapeHtml(`Bloqueo ${cooldownLabel}`)}</span></span>` : ""}
               ${lowBalance ? '<span class="status-pill low-balance">Saldo bajo</span>' : ""}
             </div>
             <div class="card-face">
@@ -869,8 +899,8 @@ function renderActiveCardDetail(device) {
                 <button class="icon-action" type="button" data-action="edit-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Editar" aria-label="Editar tarjeta">&#9998;</button>
                 <button class="icon-action" type="button" data-action="replace-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Reemplazar" aria-label="Reemplazar tarjeta">&#8646;</button>
                 <button class="icon-action ${hasNotes ? "has-note" : ""}" type="button" data-action="notes-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Notas" aria-label="Editar notas">&#128221;</button>
-                <button type="button" class="${activeCard.rejectedAt ? "is-active-toggle" : ""}" data-action="toggle-rejected" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">Rechazado</button>
-                <button type="button" class="${isManualCooldown ? "is-active-toggle" : ""}" data-action="toggle-cooldown" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}">24h</button>
+                <button type="button" class="${isRejectedHold ? "is-active-toggle" : ""}" data-action="toggle-rejected" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-countdown-label="Rechazado" data-countdown-until="${escapeHtml(rejectedUntil)}">${escapeHtml(`Rechazado${isRejectedHold ? ` ${formatCooldownCountdown(rejectedUntil)}` : ""}`)}</button>
+                <button type="button" class="${isManualCooldown ? "is-active-toggle" : ""}" data-action="toggle-cooldown" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-countdown-label="24h" data-countdown-until="${escapeHtml(manualCooldownUntil)}">${escapeHtml(`24h${isManualCooldown ? ` ${formatCooldownCountdown(manualCooldownUntil)}` : ""}`)}</button>
               </div>
             </div>
           </div>
@@ -1173,7 +1203,7 @@ function renderModal() {
           <div class="modal-head">
             <div>
               <h3>${escapeHtml(modal.title)}</h3>
-              <p>Ajusta los datos reales y el progreso acumulado de la tarjeta.</p>
+              <p>Ajusta los datos reales y las compras pendientes sin tocar el acumulado confirmado.</p>
             </div>
             <button class="modal-close" type="button" data-action="close-modal">&times;</button>
           </div>
@@ -1196,26 +1226,49 @@ function renderModal() {
               <span>Fecha de creacion de esta tarjeta</span>
               <input name="createdAt" type="text" inputmode="numeric" placeholder="DD/MM/AAAA o AAAA-MM-DD" value="${escapeHtml(modal.values.createdAt)}">
             </label>
-            <div class="modal-section-title">Compras reales acumuladas</div>
+            <div class="modal-section-title">Compras acumuladas confirmadas</div>
+            <div class="form-grid">
+              <div class="modal-field">
+                <span>Epic confirmadas</span>
+                <strong>${escapeHtml(modal.accumulated?.epic || "0")}</strong>
+              </div>
+              <div class="modal-field">
+                <span>Xbox confirmadas</span>
+                <strong>${escapeHtml(modal.accumulated?.xbox || "0")}</strong>
+              </div>
+              <div class="modal-field">
+                <span>Nitro confirmadas</span>
+                <strong>${escapeHtml(modal.accumulated?.nitro || "0")}</strong>
+              </div>
+              <div class="modal-field">
+                <span>Nitro 1y confirmadas</span>
+                <strong>${escapeHtml(modal.accumulated?.nitroYear || "0")}</strong>
+              </div>
+              <div class="modal-field">
+                <span>Crunchy confirmadas</span>
+                <strong>${escapeHtml(modal.accumulated?.crunchy || "0")}</strong>
+              </div>
+            </div>
+            <div class="modal-section-title">Compras pendientes editables</div>
             <div class="form-grid">
               <label class="modal-field">
-                <span>Compras Epic realizadas</span>
+                <span>Pendientes Epic</span>
                 <input name="epic" type="text" inputmode="numeric" placeholder="0" value="${escapeHtml(modal.values.epic)}">
               </label>
               <label class="modal-field">
-                <span>Compras Xbox realizadas</span>
+                <span>Pendientes Xbox</span>
                 <input name="xbox" type="text" inputmode="numeric" placeholder="0" value="${escapeHtml(modal.values.xbox)}">
               </label>
               <label class="modal-field">
-                <span>Compras Nitro realizadas</span>
+                <span>Pendientes Nitro</span>
                 <input name="nitro" type="text" inputmode="numeric" placeholder="0" value="${escapeHtml(modal.values.nitro)}">
               </label>
               <label class="modal-field">
-                <span>Compras Nitro 1y realizadas</span>
+                <span>Pendientes Nitro 1y</span>
                 <input name="nitroYear" type="text" inputmode="numeric" placeholder="0" value="${escapeHtml(modal.values.nitroYear)}">
               </label>
               <label class="modal-field">
-                <span>Compras Crunchy realizadas</span>
+                <span>Pendientes Crunchy</span>
                 <input name="crunchy" type="text" inputmode="numeric" placeholder="0" value="${escapeHtml(modal.values.crunchy)}">
               </label>
             </div>
@@ -1347,6 +1400,48 @@ function render() {
   }
 
   renderModal();
+  updateCountdownLabels();
+}
+
+function updateCountdownLabels() {
+  const countdownElements = Array.from(document.querySelectorAll("[data-countdown-label][data-countdown-until]"));
+  if (!countdownElements.length) {
+    return;
+  }
+
+  const now = Date.now();
+  let shouldSync = false;
+
+  countdownElements.forEach((element) => {
+    const label = String(element.dataset.countdownLabel || "").trim();
+    const until = Number(element.dataset.countdownUntil || 0);
+    if (!until || until <= now) {
+      element.textContent = label;
+      if (until) {
+        shouldSync = true;
+      }
+      return;
+    }
+
+    element.textContent = `${label} ${formatCooldownCountdown(until)}`.trim();
+  });
+
+  if (shouldSync && !countdownSyncPending) {
+    countdownSyncPending = true;
+    loadState().finally(() => {
+      countdownSyncPending = false;
+    });
+  }
+}
+
+function startCooldownTimer() {
+  if (cooldownTimer) {
+    clearInterval(cooldownTimer);
+  }
+
+  cooldownTimer = window.setInterval(() => {
+    updateCountdownLabels();
+  }, 1000);
 }
 
 function serializeForm(form) {
@@ -1704,4 +1799,5 @@ reloadButton.addEventListener("click", loadState);
 
 initTheme();
 scheduleUnlockExpiryCheck();
+startCooldownTimer();
 loadState();
