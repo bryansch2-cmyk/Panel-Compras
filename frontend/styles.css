@@ -219,8 +219,9 @@ body.is-loading {
 .notice-pill {
   display: inline-flex;
   align-items: center;
-  min-height: 32px;
-  padding: 0 14px;
+  gap: 10px;
+  min-height: 38px;
+  padding: 6px 14px 6px 8px;
   border-radius: 999px;
   border: 1px solid rgba(148, 191, 221, 0.16);
   background:
@@ -232,6 +233,69 @@ body.is-loading {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
     0 8px 16px rgba(0, 0, 0, 0.08);
+}
+
+.notice-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: 4px;
+}
+
+.notice-pill-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 900;
+  line-height: 1;
+  flex: 0 0 auto;
+}
+
+.notice-pill-label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.notice-pill-text {
+  opacity: 0.94;
+}
+
+.notice-pill-recommendation {
+  border-color: rgba(99, 199, 178, 0.24);
+}
+
+.notice-pill-recommendation .notice-pill-icon {
+  background: linear-gradient(180deg, rgba(99, 199, 178, 0.94), rgba(46, 126, 110, 0.98));
+  color: #effffb;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 6px 12px rgba(13, 63, 56, 0.22);
+}
+
+.notice-pill-recommendation .notice-pill-label {
+  color: #85ddcb;
+}
+
+.notice-pill-warning {
+  border-color: rgba(212, 116, 127, 0.24);
+}
+
+.notice-pill-warning .notice-pill-icon {
+  background: linear-gradient(180deg, rgba(209, 91, 105, 0.96), rgba(129, 43, 58, 0.98));
+  color: #fff4f4;
+  border-radius: 6px;
+  clip-path: polygon(50% 6%, 94% 88%, 6% 88%);
+  box-shadow:
+    0 6px 12px rgba(63, 14, 20, 0.22);
+}
+
+.notice-pill-warning .notice-pill-label {
+  color: #f0a7af;
 }
 
 .top-tab {
@@ -1777,6 +1841,24 @@ body.speeches-mode .sidebar {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.94),
     0 8px 16px rgba(79, 112, 146, 0.08);
+}
+
+:root[data-theme="light"] .notice-pill-recommendation .notice-pill-icon {
+  background: linear-gradient(180deg, rgba(79, 178, 147, 0.94), rgba(43, 121, 102, 0.98));
+  color: #f7fffc;
+}
+
+:root[data-theme="light"] .notice-pill-recommendation .notice-pill-label {
+  color: #2e7867;
+}
+
+:root[data-theme="light"] .notice-pill-warning .notice-pill-icon {
+  background: linear-gradient(180deg, rgba(214, 109, 120, 0.96), rgba(166, 61, 73, 0.98));
+  color: #fff7f7;
+}
+
+:root[data-theme="light"] .notice-pill-warning .notice-pill-label {
+  color: #9b4250;
 }
 
 :root[data-theme="light"] .loading-overlay {

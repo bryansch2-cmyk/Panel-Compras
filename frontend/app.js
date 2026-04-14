@@ -13,10 +13,36 @@ const loadingStatus = document.querySelector("#loadingStatus");
 const PRODUCT_ORDER = ["epic", "xbox", "nitro", "nitroYear", "crunchy"];
 const ACCOUNT_SLOT_COUNT = 20;
 const NOTICE_MESSAGES = [
-  "Recomendacion: verifica saldo y limite antes de recargar un dispositivo.",
-  "Advertencia: usa Rechazado solo cuando la tarjeta quede realmente en observacion.",
-  "Recordatorio: editar tarjeta solo cambia compras pendientes, no el acumulado confirmado.",
-  "Consejo: revisa el ciclo activo antes de reemplazar una tarjeta para evitar errores.",
+  {
+    type: "recommendation",
+    label: "Recomendacion",
+    icon: "!",
+    text: "Verifica saldo disponible antes de vincular una tarjeta.",
+  },
+  {
+    type: "recommendation",
+    label: "Recomendacion",
+    icon: "!",
+    text: "Revisa saldo y limite antes de recargar un dispositivo.",
+  },
+  {
+    type: "warning",
+    label: "Advertencia",
+    icon: "▲",
+    text: "Resta el saldo usado antes de cambiar dispositivo y cerrar turno.",
+  },
+  {
+    type: "warning",
+    label: "Advertencia",
+    icon: "▲",
+    text: "Controla tarjetas con saldo bajo, rechazos repetidos o listas para reemplazo.",
+  },
+  {
+    type: "warning",
+    label: "Advertencia",
+    icon: "▲",
+    text: "Deja una nota si una tarjeta queda vinculada a una cuenta.",
+  },
 ];
 const SHARED_PASSWORDS = [
   "kiddarkness20111303",
@@ -275,16 +301,27 @@ function renderNoticeStrip() {
   }
 
   const items = NOTICE_MESSAGES
-    .map((message) => String(message || "").trim())
-    .filter(Boolean);
+    .map((entry) => ({
+      type: String(entry?.type || "").trim(),
+      label: String(entry?.label || "").trim(),
+      icon: String(entry?.icon || "").trim(),
+      text: String(entry?.text || "").trim(),
+    }))
+    .filter((entry) => entry.label && entry.text);
 
   if (!items.length) {
     noticeStrip.innerHTML = "";
     return;
   }
 
-  const chips = items.map((message) => `
-    <span class="notice-pill">${escapeHtml(message)}</span>
+  const chips = items.map((entry) => `
+    <span class="notice-pill notice-pill-${escapeHtml(entry.type || "default")}">
+      <span class="notice-pill-badge">
+        <span class="notice-pill-icon" aria-hidden="true">${escapeHtml(entry.icon || "!")}</span>
+        <span class="notice-pill-label">${escapeHtml(entry.label)}</span>
+      </span>
+      <span class="notice-pill-text">${escapeHtml(entry.text)}</span>
+    </span>
   `).join("");
 
   noticeStrip.innerHTML = `
