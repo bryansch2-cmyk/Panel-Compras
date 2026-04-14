@@ -25,6 +25,8 @@
         <button id="tabSpeeches" class="top-tab" type="button" role="tab" aria-selected="false">Cuentas</button>
       </nav>
 
+      <section id="noticeStrip" class="notice-strip" aria-label="Recomendaciones del panel"></section>
+
       <section class="layout">
         <aside class="panel sidebar">
           <div class="panel-head">
@@ -40,6 +42,16 @@
     </main>
 
     <div id="modalRoot"></div>
+    <div id="loadingOverlay" class="loading-overlay" aria-hidden="true">
+      <div class="loading-card">
+        <span class="loading-kicker">KIDSTORE WEB</span>
+        <strong class="loading-title">Cargando panel</strong>
+        <p id="loadingStatus" class="loading-status">Preparando dispositivos, tarjetas y datos del panel.</p>
+        <div class="loading-bar" aria-hidden="true">
+          <span class="loading-bar-fill"></span>
+        </div>
+      </div>
+    </div>
 
     <script src="./app.js"></script>
   </body>

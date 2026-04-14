@@ -3,12 +3,21 @@ const connectionBadge = document.querySelector("#connectionBadge");
 const reloadButton = document.querySelector("#reloadButton");
 const tabControl = document.querySelector("#tabControl");
 const tabSpeeches = document.querySelector("#tabSpeeches");
+const noticeStrip = document.querySelector("#noticeStrip");
 const deviceList = document.querySelector("#deviceList");
 const detailView = document.querySelector("#detailView");
 const modalRoot = document.querySelector("#modalRoot");
+const loadingOverlay = document.querySelector("#loadingOverlay");
+const loadingStatus = document.querySelector("#loadingStatus");
 
 const PRODUCT_ORDER = ["epic", "xbox", "nitro", "nitroYear", "crunchy"];
 const ACCOUNT_SLOT_COUNT = 20;
+const NOTICE_MESSAGES = [
+  "Recomendacion: verifica saldo y limite antes de recargar un dispositivo.",
+  "Advertencia: usa Rechazado solo cuando la tarjeta quede realmente en observacion.",
+  "Recordatorio: editar tarjeta solo cambia compras pendientes, no el acumulado confirmado.",
+  "Consejo: revisa el ciclo activo antes de reemplazar una tarjeta para evitar errores.",
+];
 const SHARED_PASSWORDS = [
   "kiddarkness20111303",
   "lokyclow2104",
@@ -136,6 +145,7 @@ const state = {
   sensitiveUnlockedUntilByDevice: {},
   modal: null,
   requestPending: false,
+  initialLoadComplete: false,
 };
 
 let unlockExpiryTimer = null;
@@ -257,6 +267,48 @@ function applyTheme(theme) {
   const nextTheme = theme === "light" ? "light" : "dark";
   document.documentElement.dataset.theme = nextTheme;
   themeToggle.textContent = nextTheme === "light" ? "Tema oscuro" : "Tema claro";
+}
+
+function renderNoticeStrip() {
+  if (!noticeStrip) {
+    return;
+  }
+
+  const items = NOTICE_MESSAGES
+    .map((message) => String(message || "").trim())
+    .filter(Boolean);
+
+  if (!items.length) {
+    noticeStrip.innerHTML = "";
+    return;
+  }
+
+  const chips = items.map((message) => `
+    <span class="notice-pill">${escapeHtml(message)}</span>
+  `).join("");
+
+  noticeStrip.innerHTML = `
+    <div class="notice-strip-shell">
+      <div class="notice-track">
+        ${chips}
+        ${chips}
+      </div>
+    </div>
+  `;
+}
+
+function setLoadingOverlay(visible, message = "") {
+  if (!loadingOverlay) {
+    return;
+  }
+
+  if (loadingStatus && message) {
+    loadingStatus.textContent = message;
+  }
+
+  loadingOverlay.classList.toggle("is-visible", visible);
+  loadingOverlay.setAttribute("aria-hidden", visible ? "false" : "true");
+  document.body.classList.toggle("is-loading", visible);
 }
 
 function initTheme() {
@@ -492,15 +544,26 @@ function applyLoadedState(payload) {
 }
 
 async function loadState() {
+  const isInitialLoad = !state.initialLoadComplete;
   try {
+    if (isInitialLoad) {
+      setLoadingOverlay(true, "Conectando con el backend y preparando el panel.");
+    }
     connectionBadge.textContent = "Conectando...";
     const payload = await apiFetch("/api/state");
     applyLoadedState(payload);
     connectionBadge.textContent = "Backend activo";
+    state.initialLoadComplete = true;
     render();
+    if (isInitialLoad) {
+      window.setTimeout(() => {
+        setLoadingOverlay(false);
+      }, 280);
+    }
   } catch (error) {
     connectionBadge.textContent = "Error de carga";
     detailView.innerHTML = `<div class="empty">No se pudo cargar el panel. ${escapeHtml(error.message)}</div>`;
+    setLoadingOverlay(false, "No se pudo cargar el panel.");
   }
 }
 
@@ -1381,6 +1444,7 @@ function renderModal() {
 
 function render() {
   document.body.classList.toggle("speeches-mode", state.selectedTab === "speeches");
+  renderNoticeStrip();
 
   if (state.selectedTab === "speeches") {
     deviceList.innerHTML = "";
@@ -1798,6 +1862,8 @@ themeToggle.addEventListener("click", toggleTheme);
 reloadButton.addEventListener("click", loadState);
 
 initTheme();
+renderNoticeStrip();
+setLoadingOverlay(true, "Preparando dispositivos, tarjetas y conexiones del panel.");
 scheduleUnlockExpiryCheck();
 startCooldownTimer();
 loadState();
