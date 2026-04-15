@@ -1164,6 +1164,12 @@ body.speeches-mode .sidebar {
   align-items: start;
 }
 
+.cards-main-column {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
 .selected-card {
   display: grid;
   gap: 18px;
@@ -3341,6 +3347,10 @@ body.fintech-control-mode .selected-card {
 body.fintech-control-mode .cards-overview-grid {
   grid-template-columns: minmax(0, 1.35fr) minmax(310px, 0.75fr);
   align-items: start;
+}
+
+body.fintech-control-mode .cards-main-column {
+  gap: 18px;
 }
 
 body.fintech-control-mode .card-face {

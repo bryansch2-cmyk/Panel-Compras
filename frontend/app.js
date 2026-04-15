@@ -1221,10 +1221,12 @@ function renderControlTab() {
 
     ${renderHistoryLaunchers(device)}
     <div class="cards-overview-grid">
-      ${renderActiveCardDetail(device)}
+      <div class="cards-main-column">
+        ${renderActiveCardDetail(device)}
+        ${renderActiveProductStats(device, activeCard, isManualCooldown, isRejectedHold, rejectedUntil, manualCooldownUntil)}
+      </div>
       ${renderCardCycle(device)}
     </div>
-    ${renderActiveProductStats(device, activeCard, isManualCooldown, isRejectedHold, rejectedUntil, manualCooldownUntil)}
     </div>
   `;
 }
