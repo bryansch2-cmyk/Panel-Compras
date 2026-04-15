@@ -911,16 +911,27 @@ body.speeches-mode .sidebar {
 
 .finance-balance-card {
   display: grid;
-  gap: 6px;
-  padding: 20px 22px;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 24px;
   border: 1px solid rgba(109, 153, 196, 0.16);
   border-radius: 26px;
   background:
-    linear-gradient(135deg, rgba(84, 142, 184, 0.18), transparent 44%),
-    linear-gradient(180deg, rgba(24, 42, 62, 0.92), rgba(16, 29, 43, 0.96));
+    radial-gradient(circle at 16% 28%, rgba(255, 255, 255, 0.16), transparent 16%),
+    radial-gradient(circle at 84% 26%, rgba(255, 255, 255, 0.14), transparent 14%),
+    linear-gradient(135deg, rgba(84, 142, 184, 0.24), transparent 42%),
+    linear-gradient(145deg, rgba(106, 114, 255, 0.96), rgba(84, 98, 244, 0.98));
   box-shadow:
     0 18px 34px rgba(7, 16, 27, 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.finance-balance-center {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  text-align: center;
 }
 
 .finance-balance-kicker {
@@ -944,76 +955,50 @@ body.speeches-mode .sidebar {
   font-size: 0.95rem;
 }
 
-.finance-action-grid {
+.finance-balance-circle {
+  width: 108px;
+  min-width: 108px;
+  height: 108px;
+  min-height: 108px;
+  padding: 14px;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.finance-quick-action {
-  border: 1px solid rgba(122, 141, 166, 0.12);
-  border-radius: 24px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent),
-    color-mix(in srgb, var(--surface-soft) 94%, transparent);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 14px 26px rgba(0, 0, 0, 0.05);
-}
-
-button.finance-quick-action {
-  width: 100%;
-  min-height: 116px;
-  padding: 18px 20px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  text-align: left;
-}
-
-.finance-action-icon {
-  width: 46px;
-  height: 46px;
-  display: inline-grid;
   place-items: center;
-  border-radius: 16px;
-  background: rgba(118, 208, 174, 0.12);
-  color: var(--green);
-  font-size: 1.3rem;
+  gap: 6px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.04) 42%, transparent),
+    rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 18px 26px rgba(29, 38, 110, 0.18);
+  color: #ffffff;
+}
+
+.finance-balance-circle-symbol,
+.finance-used-circle-amount {
+  font-size: 1.38rem;
   font-weight: 900;
+  letter-spacing: -0.03em;
 }
 
-.finance-action-copy {
-  display: grid;
-  gap: 5px;
+.finance-balance-circle-label {
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(245, 247, 255, 0.78);
 }
 
-.finance-action-copy strong {
-  font-size: 1rem;
-  letter-spacing: 0.01em;
-}
-
-.finance-action-copy em {
-  font-style: normal;
-  color: var(--muted);
-  font-size: 0.86rem;
-  line-height: 1.45;
-}
-
-.finance-used-card {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 14px;
-  padding: 18px 20px;
-}
-
-.finance-used-card button {
-  min-width: 172px;
+.finance-balance-circle.is-empty {
+  opacity: 0.56;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 
 .finance-meta-strip {
   gap: 12px;
+  justify-content: center;
 }
 
 .modal-note {
@@ -1370,9 +1355,8 @@ button.finance-quick-action {
   border: 1px solid rgba(201, 163, 92, 0.14);
   border-radius: 24px;
   background:
-    linear-gradient(140deg, rgba(214, 168, 95, 0.14), transparent 28%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.01)),
-    color-mix(in srgb, var(--surface-soft) 84%, transparent);
+    linear-gradient(145deg, rgba(68, 197, 216, 0.94), rgba(78, 143, 255, 0.96) 48%, rgba(73, 96, 231, 0.98)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.01));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
     0 16px 30px rgba(0, 0, 0, 0.08);
@@ -1380,12 +1364,30 @@ button.finance-quick-action {
   overflow: hidden;
 }
 
+.card-face > * {
+  position: relative;
+  z-index: 1;
+}
+
+.card-face::before {
+  content: "";
+  position: absolute;
+  inset: -18% auto auto 42%;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.18), transparent 62%);
+  pointer-events: none;
+}
+
 .card-face-wave {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at top left, rgba(255, 255, 255, 0.18), transparent 28%),
-    radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.12), transparent 24%);
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.22), transparent 18%),
+    radial-gradient(circle at 72% 10%, rgba(255, 255, 255, 0.14), transparent 22%),
+    radial-gradient(circle at 84% 62%, rgba(255, 255, 255, 0.1), transparent 18%),
+    radial-gradient(circle at 18% 88%, rgba(255, 255, 255, 0.08), transparent 20%);
   pointer-events: none;
 }
 
@@ -1427,7 +1429,11 @@ button.finance-quick-action {
 }
 
 .card-network-mastercard {
-  text-transform: none;
+  min-width: auto;
+  min-height: auto;
+  padding: 4px 6px;
+  gap: 0;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .card-network-mastercard-circles {
@@ -1436,8 +1442,8 @@ button.finance-quick-action {
 }
 
 .card-network-mastercard-circles span {
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
   border-radius: 999px;
 }
 
@@ -2323,7 +2329,7 @@ button.finance-quick-action {
 
 :root[data-theme="light"] .card-face {
   background:
-    linear-gradient(140deg, rgba(214, 184, 124, 0.16), transparent 32%),
+    linear-gradient(145deg, rgba(110, 214, 233, 0.92), rgba(102, 143, 255, 0.94) 44%, rgba(87, 104, 233, 0.96)),
     linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(243, 246, 250, 0.94));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.56),
@@ -2331,8 +2337,60 @@ button.finance-quick-action {
 }
 
 :root[data-theme="light"] .card-face-brand,
-:root[data-theme="light"] .product-price {
-  color: #8d6830;
+:root[data-theme="light"] .card-face-detail span,
+:root[data-theme="light"] .card-face-detail strong,
+:root[data-theme="light"] .card-number {
+  color: #f9fcff;
+}
+
+:root[data-theme="light"] .finance-balance-card {
+  background:
+    radial-gradient(circle at 16% 28%, rgba(255, 255, 255, 0.18), transparent 16%),
+    radial-gradient(circle at 84% 26%, rgba(255, 255, 255, 0.16), transparent 14%),
+    linear-gradient(145deg, #8d92ff, #6b72ff 56%, #545ef1);
+}
+
+:root[data-theme="light"] .finance-balance-kicker,
+:root[data-theme="light"] .finance-balance-note,
+:root[data-theme="light"] .finance-balance-circle-label {
+  color: rgba(245, 247, 255, 0.82);
+}
+
+:root[data-theme="light"] .finance-balance-circle {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.06) 42%, transparent),
+    rgba(255, 255, 255, 0.12);
+}
+
+:root[data-theme="light"] .modal-card input,
+:root[data-theme="light"] .modal-card textarea,
+:root[data-theme="light"] .custom-amount-input {
+  color: #23324a;
+  border-color: rgba(137, 164, 192, 0.24);
+  background: rgba(255, 255, 255, 0.98);
+}
+
+:root[data-theme="light"] .modal-card input::placeholder,
+:root[data-theme="light"] .modal-card textarea::placeholder,
+:root[data-theme="light"] .custom-amount-input::placeholder,
+:root[data-theme="light"] .modal-note,
+:root[data-theme="light"] .product-cap,
+:root[data-theme="light"] .purchase-summary,
+:root[data-theme="light"] .info-tile span {
+  color: #667791;
+}
+
+:root[data-theme="light"] .modal-actions button:last-child {
+  background: linear-gradient(135deg, #7e83ff, #5d66ff 58%, #4b47eb);
+  color: #ffffff;
+}
+
+:root[data-theme="light"] .product-price,
+:root[data-theme="light"] .purchase-total,
+:root[data-theme="light"] .info-tile strong,
+:root[data-theme="light"] .modal-head h3,
+:root[data-theme="light"] .modal-field strong {
+  color: #23324a;
 }
 
 :root[data-theme="light"] .product-stat,
@@ -2759,6 +2817,15 @@ button.finance-quick-action {
   animation: modal-card-in 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+.modal-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.16), transparent);
+  pointer-events: none;
+}
+
 .modal-card-wide {
   width: min(100%, 860px);
 }
@@ -2774,6 +2841,10 @@ button.finance-quick-action {
 .modal-head p {
   margin-top: 6px;
   color: var(--muted);
+}
+
+.modal-head h3 {
+  color: var(--text);
 }
 
 .modal-close {
@@ -2843,6 +2914,10 @@ button.finance-quick-action {
   font-weight: 700;
 }
 
+.modal-field strong {
+  color: var(--text);
+}
+
 .modal-section-title {
   color: var(--text);
   font-size: 0.92rem;
@@ -2865,6 +2940,49 @@ button.finance-quick-action {
   background: rgba(255, 133, 143, 0.1);
   color: #ffd5d9;
   font-size: 0.92rem;
+}
+
+body.fintech-control-mode .modal-card {
+  border: 0;
+  background:
+    radial-gradient(circle at top left, rgba(121, 130, 255, 0.16), transparent 28%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(245, 246, 255, 0.95));
+  box-shadow:
+    0 28px 56px rgba(100, 109, 150, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+
+body.fintech-control-mode .modal-close,
+body.fintech-control-mode .modal-actions button,
+body.fintech-control-mode .modal-form button {
+  border: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(244, 246, 255, 0.94));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.94),
+    0 10px 18px rgba(104, 112, 151, 0.08);
+}
+
+body.fintech-control-mode .modal-actions button:last-child {
+  background: linear-gradient(135deg, #7e83ff, #5d66ff 58%, #4b47eb);
+  color: #ffffff;
+}
+
+body.fintech-control-mode .modal-card input,
+body.fintech-control-mode .modal-card textarea {
+  border-color: rgba(150, 160, 208, 0.16);
+  background: rgba(248, 249, 255, 0.96);
+  color: #2c3550;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.94),
+    0 8px 16px rgba(105, 114, 154, 0.06);
+}
+
+body.fintech-control-mode .modal-card input::placeholder,
+body.fintech-control-mode .modal-card textarea::placeholder,
+body.fintech-control-mode .modal-head p,
+body.fintech-control-mode .modal-note,
+body.fintech-control-mode .modal-field span {
+  color: #7a84a1;
 }
 
 .modal-history-content {
@@ -3384,7 +3502,8 @@ body.fintech-control-mode .detail-title-block h2 {
 body.fintech-control-mode .finance-balance-card {
   border: 0;
   background:
-    radial-gradient(circle at top right, rgba(255, 255, 255, 0.2), transparent 28%),
+    radial-gradient(circle at 18% 28%, rgba(255, 255, 255, 0.18), transparent 16%),
+    radial-gradient(circle at 82% 26%, rgba(255, 255, 255, 0.16), transparent 14%),
     linear-gradient(145deg, #8d92ff, #6b72ff 56%, #545ef1);
   box-shadow:
     0 24px 38px rgba(92, 99, 255, 0.22),
@@ -3396,37 +3515,18 @@ body.fintech-control-mode .finance-balance-note {
   color: rgba(245, 247, 255, 0.78);
 }
 
-body.fintech-control-mode .finance-action-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-body.fintech-control-mode .finance-quick-action {
+body.fintech-control-mode .finance-balance-circle {
   border: 0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(244, 246, 255, 0.94));
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.96),
-    0 18px 30px rgba(104, 112, 151, 0.08);
-}
-
-body.fintech-control-mode .finance-action-icon {
-  background: linear-gradient(135deg, #8d92ff, #6b72ff 56%, #545ef1);
-  color: #ffffff;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.06) 42%, transparent),
+    rgba(255, 255, 255, 0.12);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.24),
-    0 10px 18px rgba(92, 99, 255, 0.18);
+    0 14px 24px rgba(92, 99, 255, 0.16);
 }
 
-body.fintech-control-mode .finance-action-copy strong {
-  color: #2d3550;
-}
-
-body.fintech-control-mode .finance-used-card button {
-  border: 0;
-  background: linear-gradient(135deg, #7e83ff, #5d66ff 58%, #4b47eb);
-  color: #ffffff;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.24),
-    0 12px 22px rgba(92, 99, 255, 0.16);
+body.fintech-control-mode .finance-used-circle.is-empty {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 body.fintech-control-mode .finance-meta-strip span {
@@ -3535,8 +3635,7 @@ body.fintech-control-mode .card-face {
   min-height: 240px;
   align-content: space-between;
   background:
-    radial-gradient(circle at top left, rgba(255, 255, 255, 0.18), transparent 24%),
-    linear-gradient(140deg, #8f95ff 0%, #747dff 42%, #5861f1 100%);
+    linear-gradient(145deg, #63d0eb 0%, #6d8eff 44%, #4f5ee8 100%);
   box-shadow:
     0 24px 38px rgba(92, 99, 255, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.24);
@@ -3544,14 +3643,20 @@ body.fintech-control-mode .card-face {
 
 body.fintech-control-mode .card-face-wave {
   background:
-    radial-gradient(circle at 18% 10%, rgba(255, 255, 255, 0.16), transparent 20%),
-    radial-gradient(circle at 100% 100%, rgba(255, 255, 255, 0.14), transparent 28%);
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.24), transparent 18%),
+    radial-gradient(circle at 72% 10%, rgba(255, 255, 255, 0.16), transparent 22%),
+    radial-gradient(circle at 84% 62%, rgba(255, 255, 255, 0.12), transparent 18%),
+    radial-gradient(circle at 18% 88%, rgba(255, 255, 255, 0.09), transparent 20%);
 }
 
 body.fintech-control-mode .card-face-brand,
 body.fintech-control-mode .card-face-meta,
 body.fintech-control-mode .card-number {
   color: #ffffff;
+}
+
+body.fintech-control-mode .card-network-mastercard {
+  background: rgba(255, 255, 255, 0.12);
 }
 
 body.fintech-control-mode .selected-card-compact-layout {
@@ -3804,10 +3909,6 @@ body.fintech-control-mode .history-item:hover {
     grid-template-columns: 1fr;
   }
 
-  .finance-action-grid {
-    grid-template-columns: 1fr;
-  }
-
   .actions-grid,
   .selected-card-grid,
   .cards-mini-grid {
@@ -4054,12 +4155,22 @@ body.fintech-control-mode .history-item:hover {
     align-items: flex-start;
   }
 
-  .finance-used-card {
-    grid-template-columns: 1fr;
+  .finance-balance-card {
+    grid-template-columns: 88px minmax(0, 1fr) 88px;
+    gap: 12px;
+    padding: 18px;
   }
 
-  .finance-used-card button {
-    width: 100%;
+  .finance-balance-circle {
+    width: 88px;
+    min-width: 88px;
+    height: 88px;
+    min-height: 88px;
+  }
+
+  .finance-balance-circle-symbol,
+  .finance-used-circle-amount {
+    font-size: 1.05rem;
   }
 
   .product-stat {

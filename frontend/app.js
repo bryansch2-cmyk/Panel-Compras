@@ -955,7 +955,6 @@ function renderCardNetworkMark(network) {
         <span class="card-network-mastercard-circles" aria-hidden="true">
           <span></span><span></span>
         </span>
-        <span>mastercard</span>
       </span>
     `;
   }
@@ -1195,6 +1194,8 @@ function renderControlTab() {
   const isRejectedHold = isRejectedHoldActive(activeCard);
   const rejectedUntil = getCountdownTimestamp(activeCard?.rejectedCooldownUntil);
   const manualCooldownUntil = getCountdownTimestamp(activeCard?.cooldownUntil);
+  const pendingUsedAmount = Number(device.pendingUsed || 0);
+  const hasPendingUsed = pendingUsedAmount > 0;
 
   detailView.innerHTML = `
     <div class="control-dashboard">
@@ -1208,28 +1209,22 @@ function renderControlTab() {
       </div>
 
       <section class="finance-balance-card">
-        <span class="finance-balance-kicker">Saldo disponible</span>
-        <strong class="finance-balance-amount">${escapeHtml(formatMoney(device.availableBalance))}</strong>
-        <p class="finance-balance-note">Saldo usado ${escapeHtml(formatMoney(device.pendingUsed))}</p>
-      </section>
-
-      <div class="finance-action-grid">
-        <button class="finance-quick-action finance-recharge-action" type="button" data-action="open-recharge" data-device-id="${escapeHtml(device.id)}">
-          <span class="finance-action-icon" aria-hidden="true">+</span>
-          <span class="finance-action-copy">
-            <strong>Recargar saldo</strong>
-            <em>Abre una ventana para registrar la recarga.</em>
-          </span>
+        <button class="finance-balance-circle finance-recharge-circle" type="button" data-action="open-recharge" data-device-id="${escapeHtml(device.id)}" title="Registrar recarga" aria-label="Registrar recarga">
+          <span class="finance-balance-circle-symbol">₺</span>
+          <span class="finance-balance-circle-label">Recargar</span>
         </button>
 
-        <section class="finance-quick-action finance-used-card">
-          <div class="finance-action-copy">
-            <strong>Saldo usado</strong>
-            <em>${escapeHtml(formatMoney(device.pendingUsed))} pendientes por restar</em>
-          </div>
-          <button type="button" data-action="deduct-pending" data-device-id="${escapeHtml(device.id)}">Restar saldo usado</button>
-        </section>
-      </div>
+        <div class="finance-balance-center">
+          <span class="finance-balance-kicker">Saldo disponible</span>
+          <strong class="finance-balance-amount">${escapeHtml(formatMoney(device.availableBalance))}</strong>
+          <p class="finance-balance-note">Disponible para nuevas compras en este dispositivo.</p>
+        </div>
+
+        <button class="finance-balance-circle finance-used-circle ${hasPendingUsed ? "" : "is-empty"}" type="button" data-action="deduct-pending" data-device-id="${escapeHtml(device.id)}" title="Restar saldo usado" aria-label="Restar saldo usado" ${hasPendingUsed ? "" : "disabled"}>
+          <span class="finance-used-circle-amount">${escapeHtml(formatMoney(device.pendingUsed))}</span>
+          <span class="finance-balance-circle-label">Restar</span>
+        </button>
+      </section>
 
       <div class="meta-strip finance-meta-strip">
         <span>Ultima recarga ${escapeHtml(formatMoney(device.lastRechargeAmount || 0))}</span>
