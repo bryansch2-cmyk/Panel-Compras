@@ -2825,6 +2825,483 @@ body.is-busy button {
   background: color-mix(in srgb, var(--surface-soft) 82%, transparent);
 }
 
+body.fintech-control-mode {
+  color-scheme: light;
+  --bg: #e3e4f1;
+  --panel: #ffffff;
+  --panel-soft: #f2f3fb;
+  --surface: rgba(255, 255, 255, 0.96);
+  --surface-soft: rgba(245, 246, 255, 0.98);
+  --surface-strong: #ffffff;
+  --surface-frost: rgba(249, 250, 255, 0.94);
+  --line: rgba(144, 153, 194, 0.16);
+  --line-hot: rgba(108, 109, 255, 0.24);
+  --text: #232a3d;
+  --muted: #7e87a1;
+  --accent: #6671ff;
+  --green: #5663ff;
+  --red: #ef747e;
+  --gold: #8c78ff;
+  --panel-info: rgba(255, 255, 255, 0.98);
+  --panel-highlight: rgba(255, 255, 255, 0.98);
+  --panel-active-device: rgba(111, 118, 255, 0.98);
+  --section-recharge: rgba(255, 255, 255, 0.98);
+  --section-recharge-soft: rgba(242, 244, 255, 0.98);
+  --section-card: rgba(255, 255, 255, 0.98);
+  --section-card-soft: rgba(246, 247, 255, 0.98);
+  --section-cycle: rgba(255, 255, 255, 0.98);
+  --section-cycle-soft: rgba(235, 237, 250, 0.74);
+  --shadow: 0 18px 42px rgba(92, 104, 151, 0.12);
+  background:
+    radial-gradient(circle at top left, rgba(121, 130, 255, 0.16), transparent 28%),
+    radial-gradient(circle at top right, rgba(143, 98, 255, 0.11), transparent 24%),
+    radial-gradient(circle at bottom left, rgba(92, 215, 255, 0.1), transparent 22%),
+    linear-gradient(180deg, #e8e8f7 0%, #dddff0 100%);
+}
+
+body.fintech-control-mode .app-shell {
+  gap: 22px;
+}
+
+body.fintech-control-mode .hero {
+  min-height: 134px;
+  border: 0;
+  border-radius: 34px;
+  background:
+    radial-gradient(circle at 16% 22%, rgba(112, 120, 255, 0.14), transparent 22%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 247, 255, 0.94));
+  box-shadow:
+    0 24px 44px rgba(100, 109, 150, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+body.fintech-control-mode .hero::before,
+body.fintech-control-mode .hero::after {
+  display: none;
+}
+
+body.fintech-control-mode .brand-mark {
+  font-family: "Segoe UI", sans-serif;
+  font-size: clamp(2.8rem, 4.6vw, 4.6rem);
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  text-transform: none;
+  color: #222a42;
+  text-shadow: none;
+  font-weight: 800;
+}
+
+body.fintech-control-mode .kicker {
+  color: #8a90ab;
+}
+
+body.fintech-control-mode .actions > button,
+body.fintech-control-mode .badge {
+  border: 0;
+  min-height: 42px;
+  border-radius: 16px;
+  background: rgba(240, 242, 250, 0.98);
+  color: #6a7390;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.94),
+    0 10px 22px rgba(105, 114, 154, 0.08);
+}
+
+body.fintech-control-mode .top-tabs {
+  padding: 8px;
+  border-radius: 22px;
+  background: rgba(248, 249, 255, 0.9);
+  box-shadow:
+    0 18px 30px rgba(100, 109, 150, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88);
+}
+
+body.fintech-control-mode .top-tab {
+  border: 0;
+  border-radius: 16px;
+  color: #7a82a0;
+  background: transparent;
+}
+
+body.fintech-control-mode .top-tab.active {
+  color: #ffffff;
+  background: linear-gradient(135deg, #7d82ff, #5a63ff 58%, #4c43ec);
+  box-shadow:
+    0 14px 26px rgba(92, 99, 255, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+}
+
+body.fintech-control-mode .notice-strip {
+  border: 0;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(245, 246, 255, 0.94));
+  box-shadow:
+    0 18px 30px rgba(100, 109, 150, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+body.fintech-control-mode .notice-strip::before {
+  background: linear-gradient(90deg, rgba(231, 233, 245, 0.98), transparent);
+}
+
+body.fintech-control-mode .notice-strip::after {
+  background: linear-gradient(270deg, rgba(231, 233, 245, 0.98), transparent);
+}
+
+body.fintech-control-mode .layout {
+  grid-template-columns: 330px minmax(0, 1fr);
+  gap: 22px;
+}
+
+body.fintech-control-mode .panel {
+  border: 0;
+  border-radius: 34px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 247, 255, 0.94));
+  box-shadow:
+    0 26px 46px rgba(100, 109, 150, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+  backdrop-filter: none;
+}
+
+body.fintech-control-mode .sidebar {
+  padding: 22px;
+}
+
+body.fintech-control-mode .sidebar .panel-head {
+  margin: -22px -22px 18px;
+  padding: 20px 22px 14px;
+  border-bottom: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(247, 248, 255, 0.92));
+}
+
+body.fintech-control-mode .device-item {
+  border: 0;
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(245, 246, 255, 0.94));
+  box-shadow:
+    0 16px 28px rgba(104, 112, 151, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+}
+
+body.fintech-control-mode .device-item.active {
+  border: 0;
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.2), transparent 28%),
+    linear-gradient(145deg, #8d92ff, #6b72ff 56%, #545ef1);
+  box-shadow:
+    0 24px 42px rgba(92, 99, 255, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.26);
+}
+
+body.fintech-control-mode .device-item.active::before {
+  display: none;
+}
+
+body.fintech-control-mode .device-item.active strong,
+body.fintech-control-mode .device-item.active b,
+body.fintech-control-mode .device-item.active .device-item-badge {
+  color: #ffffff;
+}
+
+body.fintech-control-mode .device-item.active .device-item-stats span,
+body.fintech-control-mode .device-item.active .device-item span,
+body.fintech-control-mode .device-item.active .device-profile-item span {
+  color: rgba(240, 243, 255, 0.78);
+}
+
+body.fintech-control-mode .device-item.active .device-item-badge,
+body.fintech-control-mode .device-item.active .device-profile-item {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+body.fintech-control-mode .device-profile-item,
+body.fintech-control-mode .device-profile-bank {
+  border: 0;
+  background: rgba(242, 244, 252, 0.96);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+body.fintech-control-mode .detail {
+  padding: 22px;
+}
+
+body.fintech-control-mode .control-dashboard {
+  display: grid;
+  gap: 20px;
+}
+
+body.fintech-control-mode .control-dashboard .detail-head,
+body.fintech-control-mode .control-dashboard .history-launcher,
+body.fintech-control-mode .control-dashboard .selected-card,
+body.fintech-control-mode .control-dashboard .history-launcher + .cards-section + .cards-section {
+  border: 0;
+  border-radius: 32px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(245, 246, 255, 0.94));
+  box-shadow:
+    0 22px 40px rgba(100, 109, 150, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+
+body.fintech-control-mode .control-dashboard .detail-head {
+  padding: 24px 24px 20px;
+  gap: 16px;
+}
+
+body.fintech-control-mode .detail-kicker,
+body.fintech-control-mode .summary-kicker {
+  color: #9098b6;
+}
+
+body.fintech-control-mode .detail-title-block h2 {
+  font-size: clamp(2rem, 3vw, 2.9rem);
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+}
+
+body.fintech-control-mode .meta-strip span,
+body.fintech-control-mode .meta-edit-button,
+body.fintech-control-mode .readonly-chip {
+  border: 0;
+  background: rgba(240, 242, 250, 0.96);
+  color: #7b84a0;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    0 8px 16px rgba(105, 114, 154, 0.06);
+}
+
+body.fintech-control-mode .meta-edit-button {
+  background: linear-gradient(135deg, #7e83ff, #5d66ff 58%, #4b47eb);
+  color: #ffffff;
+}
+
+body.fintech-control-mode .control-actions-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+
+body.fintech-control-mode .control-actions-grid > .action-card,
+body.fintech-control-mode .control-actions-grid > .action-card:first-child,
+body.fintech-control-mode .used-summary-card {
+  border: 0;
+  border-radius: 28px;
+  padding: 22px;
+  color: #ffffff;
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.2), transparent 28%),
+    linear-gradient(145deg, #8e95ff, #6871ff 54%, #5749f2);
+  box-shadow:
+    0 24px 38px rgba(92, 99, 255, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+body.fintech-control-mode .used-summary-card {
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.22), transparent 28%),
+    linear-gradient(145deg, #9d86ff, #7567ff 54%, #5d4ce8);
+}
+
+body.fintech-control-mode .control-actions-grid .action-card h3,
+body.fintech-control-mode .control-actions-grid .action-card p,
+body.fintech-control-mode .control-actions-grid .action-card strong,
+body.fintech-control-mode .balance-highlight {
+  color: #ffffff;
+}
+
+body.fintech-control-mode .balance-highlight,
+body.fintech-control-mode .compact-action-row input,
+body.fintech-control-mode .compact-action-row button,
+body.fintech-control-mode .used-summary-card button {
+  border: 0;
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+body.fintech-control-mode .history-launcher {
+  padding: 22px 24px;
+}
+
+body.fintech-control-mode .history-icon-button {
+  color: #626c88;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(247, 248, 255, 0.9));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.94),
+    0 10px 18px rgba(104, 112, 151, 0.08);
+}
+
+body.fintech-control-mode .history-launcher + .cards-section > h3,
+body.fintech-control-mode .history-launcher + .cards-section + .cards-section > .section-row h3 {
+  color: #303851;
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
+}
+
+body.fintech-control-mode .selected-card {
+  padding: 24px;
+}
+
+body.fintech-control-mode .selected-card-head {
+  border: 0;
+  border-radius: 28px;
+  background: rgba(243, 245, 255, 0.96);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+
+body.fintech-control-mode .card-face {
+  border: 0;
+  min-height: 210px;
+  align-content: space-between;
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.22), transparent 32%),
+    linear-gradient(145deg, #7e87ff, #6570ff 54%, #5148f2);
+  box-shadow:
+    0 24px 38px rgba(92, 99, 255, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+}
+
+body.fintech-control-mode .card-face-brand,
+body.fintech-control-mode .card-face-meta,
+body.fintech-control-mode .card-number {
+  color: #ffffff;
+}
+
+body.fintech-control-mode .card-face-chip {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(214, 224, 255, 0.88));
+}
+
+body.fintech-control-mode .purchase-summary,
+body.fintech-control-mode .inline-actions,
+body.fintech-control-mode .info-tile,
+body.fintech-control-mode .product-stat,
+body.fintech-control-mode .card-mini {
+  border: 0;
+  background: rgba(242, 244, 252, 0.98);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.94),
+    0 14px 26px rgba(104, 112, 151, 0.08);
+}
+
+body.fintech-control-mode .purchase-total {
+  font-size: clamp(1.4rem, 2vw, 1.95rem);
+}
+
+body.fintech-control-mode .inline-actions button {
+  border: 0;
+  color: #ffffff;
+  background: linear-gradient(135deg, #7d82ff, #5f67ff 58%, #4f47ef);
+  box-shadow:
+    0 12px 24px rgba(92, 99, 255, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+body.fintech-control-mode .inline-actions .icon-action {
+  min-width: 40px;
+  color: #616b88;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    0 10px 18px rgba(104, 112, 151, 0.08);
+}
+
+body.fintech-control-mode .inline-actions .icon-action.has-note,
+body.fintech-control-mode .inline-actions .is-active-toggle {
+  color: #ffffff;
+  background: linear-gradient(135deg, #9589ff, #7266ff 58%, #5d4ce8);
+}
+
+body.fintech-control-mode .note-emphasis {
+  border: 0;
+  background: rgba(108, 109, 255, 0.12);
+  color: #6068f7;
+}
+
+body.fintech-control-mode .product-stats-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+body.fintech-control-mode .product-stat {
+  min-height: 200px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(244, 246, 255, 0.94));
+}
+
+body.fintech-control-mode .product-price,
+body.fintech-control-mode .card-label,
+body.fintech-control-mode .status-pill.active {
+  color: #6068f7;
+}
+
+body.fintech-control-mode .card-label,
+body.fintech-control-mode .status-pill,
+body.fintech-control-mode .product-lock {
+  border: 0;
+  background: rgba(108, 109, 255, 0.1);
+}
+
+body.fintech-control-mode .status-pill.danger,
+body.fintech-control-mode .status-pill.low-balance,
+body.fintech-control-mode .product-lock {
+  color: #ef747e;
+  background: rgba(239, 116, 126, 0.12);
+}
+
+body.fintech-control-mode .status-pill.cooldown {
+  color: #6a63ff;
+  background: rgba(121, 130, 255, 0.12);
+}
+
+body.fintech-control-mode .product-stat-count,
+body.fintech-control-mode .product-counter button,
+body.fintech-control-mode .compact-icon-button {
+  border: 0;
+  color: #5f6783;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(241, 243, 252, 0.92));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    0 10px 18px rgba(104, 112, 151, 0.08);
+}
+
+body.fintech-control-mode .history-launcher + .cards-section + .cards-section {
+  padding: 24px;
+}
+
+body.fintech-control-mode .card-mini.active,
+body.fintech-control-mode .card-mini.is-cycle-active {
+  background:
+    linear-gradient(145deg, #8e95ff, #6972ff 54%, #555df1);
+  box-shadow:
+    0 22px 36px rgba(92, 99, 255, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+body.fintech-control-mode .card-mini.active strong,
+body.fintech-control-mode .card-mini.active span,
+body.fintech-control-mode .card-mini.is-cycle-active strong,
+body.fintech-control-mode .card-mini.is-cycle-active span,
+body.fintech-control-mode .card-mini.is-cycle-active .card-label,
+body.fintech-control-mode .card-mini.is-cycle-active .status-pill {
+  color: #ffffff;
+}
+
+body.fintech-control-mode .card-mini.is-cycle-inactive {
+  opacity: 1;
+  filter: none;
+  transform: none;
+  border-style: solid;
+}
+
+body.fintech-control-mode .card-mini:hover,
+body.fintech-control-mode .product-stat:hover,
+body.fintech-control-mode .history-item:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 20px 32px rgba(104, 112, 151, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+
 @keyframes fade-up {
   from {
     opacity: 0;

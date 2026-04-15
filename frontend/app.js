@@ -1092,6 +1092,7 @@ function renderControlTab() {
   }
 
   detailView.innerHTML = `
+    <div class="control-dashboard">
     <div class="detail-head">
       <div class="detail-title-block">
         <p class="detail-kicker">Dispositivo seleccionado</p>
@@ -1130,6 +1131,7 @@ function renderControlTab() {
     ${renderHistoryLaunchers(device)}
     ${renderActiveCardDetail(device)}
     ${renderCardCycle(device)}
+    </div>
   `;
 }
 
@@ -1481,6 +1483,7 @@ function renderModal() {
 
 function render() {
   document.body.classList.toggle("speeches-mode", state.selectedTab === "speeches");
+  document.body.classList.toggle("fintech-control-mode", state.selectedTab === "control");
   renderNoticeStrip();
 
   if (state.selectedTab === "speeches") {
