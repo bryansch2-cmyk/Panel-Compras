@@ -949,6 +949,28 @@ function renderCardNetworkMark(network) {
   return `<span class="card-network-mark card-network-generic" aria-label="Tarjeta">CARD</span>`;
 }
 
+function formatProductTryLabel(amount) {
+  const numeric = Number(amount || 0);
+  const hasDecimals = Math.abs(numeric - Math.trunc(numeric)) > 0.001;
+  const formatted = numeric.toLocaleString("en-US", {
+    minimumFractionDigits: hasDecimals ? 2 : 0,
+    maximumFractionDigits: 2,
+  });
+  return `${formatted} TRY`;
+}
+
+function getProductDisplayMeta(productKey, rule) {
+  const labels = {
+    epic: { label: "Epic Games", badge: "EG" },
+    xbox: { label: "Xbox", badge: "XB" },
+    nitro: { label: "Nitro Boost", badge: "NB" },
+    nitroYear: { label: "Nitro Boost 1Y", badge: "1Y" },
+    crunchy: { label: "Crunchyroll", badge: "CR" },
+  };
+
+  return labels[productKey] || { label: rule?.label || productKey, badge: "PG" };
+}
+
 function renderActiveProductStats(device, activeCard, isManualCooldown, isRejectedHold, rejectedUntil, manualCooldownUntil) {
   if (!activeCard) {
     return "";
@@ -964,15 +986,21 @@ function renderActiveProductStats(device, activeCard, isManualCooldown, isReject
     const isEpicBlocked = productKey === "epic" && (isManualCooldown || isRejectedHold);
     const productLockLabel = isRejectedHold ? "Bloqueado por rechazo" : "Bloqueado por 24h";
     const productLockUntil = isRejectedHold ? rejectedUntil : manualCooldownUntil;
+    const displayMeta = getProductDisplayMeta(productKey, rule);
 
     return `
       <div class="product-stat product-stat-${escapeHtml(productKey)} ${isEpicBlocked ? "is-disabled" : ""}">
-        <div class="product-stat-headline">
-          <strong>${escapeHtml(rule.label)}</strong>
-          <span class="product-price">${escapeHtml(formatMoney(rule.amount))}</span>
+        <div class="product-stat-body">
+          <span class="product-badge" aria-hidden="true">${escapeHtml(displayMeta.badge)}</span>
+          <div class="product-copy">
+            <div class="product-stat-headline">
+              <strong>${escapeHtml(displayMeta.label)}</strong>
+              <span class="product-price">${escapeHtml(formatProductTryLabel(rule.amount))}</span>
+            </div>
+            <span class="product-cap">${rule.maxCount ? `Max ${escapeHtml(rule.maxCount)}` : "Sin tope"}</span>
+            ${isEpicBlocked ? `<span class="product-lock" data-countdown-label="${escapeHtml(productLockLabel)}" data-countdown-until="${escapeHtml(productLockUntil)}">${escapeHtml(`${productLockLabel} ${formatCooldownCountdown(productLockUntil)}`.trim())}</span>` : ""}
+          </div>
         </div>
-        <span class="product-cap">${rule.maxCount ? `Max ${escapeHtml(rule.maxCount)}` : "Sin tope"}</span>
-        ${isEpicBlocked ? `<span class="product-lock" data-countdown-label="${escapeHtml(productLockLabel)}" data-countdown-until="${escapeHtml(productLockUntil)}">${escapeHtml(`${productLockLabel} ${formatCooldownCountdown(productLockUntil)}`.trim())}</span>` : ""}
         <div class="product-counter">
           <button type="button" data-action="update-product" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-product-key="${escapeHtml(productKey)}" data-delta="-1">-</button>
           <div class="product-stat-count">${escapeHtml(count)}</div>
@@ -987,10 +1015,18 @@ function renderActiveProductStats(device, activeCard, isManualCooldown, isReject
       <div class="product-stats-grid">
         ${productCards}
         <form class="product-stat custom-amount-form product-stat-custom" data-action="custom-amount" data-device-id="${escapeHtml(device.id)}">
-          <strong>Otro monto</strong>
-          <span class="product-cap">Compra libre</span>
           <button class="visually-hidden-submit" type="submit" tabindex="-1" aria-hidden="true">Agregar monto</button>
-          <div class="compact-action-row">
+          <div class="product-stat-body">
+            <span class="product-badge" aria-hidden="true">OT</span>
+            <div class="product-copy">
+              <div class="product-stat-headline">
+                <strong>Otro monto</strong>
+                <span class="product-price">Libre</span>
+              </div>
+              <span class="product-cap">Compra libre</span>
+            </div>
+          </div>
+          <div class="compact-action-row product-custom-row">
             <input class="custom-amount-input" name="amount" type="text" inputmode="decimal" placeholder="0.00" required>
             <button class="compact-icon-button" type="button" data-action="revert-custom" data-device-id="${escapeHtml(device.id)}" title="Revertir ultimo monto" aria-label="Revertir ultimo monto">&#8630;</button>
           </div>
@@ -1067,6 +1103,7 @@ function renderActiveCardDetail(device) {
 
             <div class="card-actions-under">
               <button class="icon-action" type="button" data-action="edit-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Editar" aria-label="Editar tarjeta">&#9998; <span>Editar</span></button>
+              <button class="icon-action ${hasNotes ? "has-note" : ""}" type="button" data-action="notes-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Notas" aria-label="Editar notas de la tarjeta">&#128221; <span>Notas</span></button>
               <button class="icon-action" type="button" data-action="replace-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Reemplazar" aria-label="Reemplazar tarjeta">&#8646; <span>Reemplazar</span></button>
               <button type="button" class="card-action-toggle ${isRejectedHold ? "is-active-toggle" : ""}" data-action="toggle-rejected" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-countdown-label="Rechazado" data-countdown-until="${escapeHtml(rejectedUntil)}">${escapeHtml(`Rechazado${isRejectedHold ? ` ${formatCooldownCountdown(rejectedUntil)}` : ""}`)}</button>
               <button type="button" class="card-action-toggle ${isManualCooldown ? "is-active-toggle" : ""}" data-action="toggle-cooldown" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-countdown-label="24h" data-countdown-until="${escapeHtml(manualCooldownUntil)}">${escapeHtml(`24h${isManualCooldown ? ` ${formatCooldownCountdown(manualCooldownUntil)}` : ""}`)}</button>
