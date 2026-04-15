@@ -911,27 +911,48 @@ function renderActiveCardCounts(card) {
   }).filter(Boolean).join(" / ");
 }
 
-function renderActiveCardDetail(device) {
-  const activeCard = getActiveCard(device);
-  if (!activeCard) {
-    return `<div class="empty">Este dispositivo no tiene tarjetas activas.</div>`;
+function getCardNetwork(number) {
+  const digits = String(number || "").replace(/\D/g, "");
+  if (!digits) {
+    return "";
   }
 
-  const sensitiveVisible = isSensitiveUnlocked(device.id);
-  const numberText = sensitiveVisible ? String(activeCard.number || "") : maskCardNumber(activeCard.number);
-  const cvvText = sensitiveVisible ? String(activeCard.cvv || "--") : "***";
-  const unlockLabel = sensitiveVisible ? "Ocultar datos" : "Desbloquear";
-  const cooldownLabel = getCooldownLabel(activeCard);
-  const confirmedPurchaseCount = getCardConfirmedPurchaseCount(activeCard);
-  const confirmedPurchaseLabel = formatConfirmedPurchaseLabel(confirmedPurchaseCount);
-  const purchaseSummary = renderActiveCardCounts(activeCard);
-  const isManualCooldown = isCooldownActive(activeCard);
-  const isRejectedHold = isRejectedHoldActive(activeCard);
-  const rejectedUntil = getCountdownTimestamp(activeCard.rejectedCooldownUntil);
-  const manualCooldownUntil = getCountdownTimestamp(activeCard.cooldownUntil);
-  const stateLabel = isRejectedHold ? "Rechazada" : "Sin estado";
-  const hasNotes = hasMeaningfulNotes(activeCard.notes);
-  const lowBalance = isLowBalance(device.availableBalance);
+  if (digits.startsWith("4")) {
+    return "visa";
+  }
+
+  const firstTwo = Number(digits.slice(0, 2));
+  const firstFour = Number(digits.slice(0, 4));
+  if ((firstTwo >= 51 && firstTwo <= 55) || (firstFour >= 2221 && firstFour <= 2720)) {
+    return "mastercard";
+  }
+
+  return "";
+}
+
+function renderCardNetworkMark(network) {
+  if (network === "visa") {
+    return `<span class="card-network-mark card-network-visa" aria-label="Visa">VISA</span>`;
+  }
+
+  if (network === "mastercard") {
+    return `
+      <span class="card-network-mark card-network-mastercard" aria-label="Mastercard">
+        <span class="card-network-mastercard-circles" aria-hidden="true">
+          <span></span><span></span>
+        </span>
+        <span>mastercard</span>
+      </span>
+    `;
+  }
+
+  return `<span class="card-network-mark card-network-generic" aria-label="Tarjeta">CARD</span>`;
+}
+
+function renderActiveProductStats(device, activeCard, isManualCooldown, isRejectedHold, rejectedUntil, manualCooldownUntil) {
+  if (!activeCard) {
+    return "";
+  }
 
   const productCards = PRODUCT_ORDER.map((productKey) => {
     const rule = getProductRule(productKey);
@@ -962,81 +983,108 @@ function renderActiveCardDetail(device) {
   }).join("");
 
   return `
-    <section class="cards-section">
+    <section class="cards-section cards-section-products">
+      <div class="product-stats-grid">
+        ${productCards}
+        <form class="product-stat custom-amount-form product-stat-custom" data-action="custom-amount" data-device-id="${escapeHtml(device.id)}">
+          <strong>Otro monto</strong>
+          <span class="product-cap">Compra libre</span>
+          <button class="visually-hidden-submit" type="submit" tabindex="-1" aria-hidden="true">Agregar monto</button>
+          <div class="compact-action-row">
+            <input class="custom-amount-input" name="amount" type="text" inputmode="decimal" placeholder="0.00" required>
+            <button class="compact-icon-button" type="button" data-action="revert-custom" data-device-id="${escapeHtml(device.id)}" title="Revertir ultimo monto" aria-label="Revertir ultimo monto">&#8630;</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  `;
+}
+
+function renderActiveCardDetail(device) {
+  const activeCard = getActiveCard(device);
+  if (!activeCard) {
+    return `<div class="empty">Este dispositivo no tiene tarjetas activas.</div>`;
+  }
+
+  const sensitiveVisible = isSensitiveUnlocked(device.id);
+  const numberText = sensitiveVisible ? String(activeCard.number || "") : maskCardNumber(activeCard.number);
+  const cvvText = sensitiveVisible ? String(activeCard.cvv || "--") : "***";
+  const unlockLabel = sensitiveVisible ? "Ocultar datos" : "Desbloquear";
+  const cooldownLabel = getCooldownLabel(activeCard);
+  const confirmedPurchaseCount = getCardConfirmedPurchaseCount(activeCard);
+  const confirmedPurchaseLabel = formatConfirmedPurchaseLabel(confirmedPurchaseCount);
+  const purchaseSummary = renderActiveCardCounts(activeCard);
+  const isManualCooldown = isCooldownActive(activeCard);
+  const isRejectedHold = isRejectedHoldActive(activeCard);
+  const rejectedUntil = getCountdownTimestamp(activeCard.rejectedCooldownUntil);
+  const manualCooldownUntil = getCountdownTimestamp(activeCard.cooldownUntil);
+  const stateLabel = isRejectedHold ? "Rechazada" : "Sin estado";
+  const hasNotes = hasMeaningfulNotes(activeCard.notes);
+  const lowBalance = isLowBalance(device.availableBalance);
+  const cardNetwork = getCardNetwork(activeCard.number);
+
+  return `
+    <section class="cards-section cards-section-active">
       <h3>Tarjeta activa</h3>
       <article class="selected-card">
-        <div class="selected-card-head">
+        <div class="selected-card-status">
+          <div class="status-row">
+            <span class="card-label">${escapeHtml(activeCard.orderLabel || "Tarjeta activa")}</span>
+            <span class="status-pill active">Activa</span>
+            <span class="status-pill ${isRejectedHold ? "danger" : ""}">${escapeHtml(stateLabel)}</span>
+            ${cooldownLabel ? `<span class="status-pill cooldown"><span class="cooldown-icon" aria-hidden="true">&#9201;</span><span data-countdown-label="Bloqueo" data-countdown-until="${escapeHtml(getPrimaryCooldownUntil(activeCard))}">${escapeHtml(`Bloqueo ${cooldownLabel}`)}</span></span>` : ""}
+            ${lowBalance ? '<span class="status-pill low-balance">Saldo bajo</span>' : ""}
+          </div>
+        </div>
+
+        <div class="selected-card-compact-layout">
           <div class="selected-card-primary">
-            <div class="status-row">
-              <span class="card-label">${escapeHtml(activeCard.orderLabel || "Tarjeta activa")}</span>
-              <span class="status-pill active">Activa</span>
-              <span class="status-pill ${isRejectedHold ? "danger" : ""}">${escapeHtml(stateLabel)}</span>
-              ${cooldownLabel ? `<span class="status-pill cooldown"><span class="cooldown-icon" aria-hidden="true">&#9201;</span><span data-countdown-label="Bloqueo" data-countdown-until="${escapeHtml(getPrimaryCooldownUntil(activeCard))}">${escapeHtml(`Bloqueo ${cooldownLabel}`)}</span></span>` : ""}
-              ${lowBalance ? '<span class="status-pill low-balance">Saldo bajo</span>' : ""}
-            </div>
-            <div class="card-face">
+            <div class="card-face card-face-network-${escapeHtml(cardNetwork || "generic")}">
+              <div class="card-face-wave" aria-hidden="true"></div>
               <div class="card-face-top">
                 <span class="card-face-brand">KIDSTORE SECURE</span>
-                <span class="card-face-chip" aria-hidden="true"></span>
+                <button class="card-visibility-button ${sensitiveVisible ? "is-open" : ""}" type="button" data-action="unlock-sensitive" data-device-id="${escapeHtml(device.id)}" title="${escapeHtml(unlockLabel)}" aria-label="${escapeHtml(unlockLabel)}">&#128065;</button>
+              </div>
+              <div class="card-network-slot">
+                ${renderCardNetworkMark(cardNetwork)}
               </div>
               <h3 class="card-number">${escapeHtml(numberText)}</h3>
-              <div class="card-face-meta">
-                <span>Creada ${escapeHtml(formatDate(activeCard.createdAt))}</span>
-                <span>Vence ${escapeHtml(activeCard.expiry || "--")}</span>
+              <div class="card-face-detail-grid">
+                <div class="card-face-detail">
+                  <span>MM/YY</span>
+                  <strong>${escapeHtml(activeCard.expiry || "--")}</strong>
+                </div>
+                <div class="card-face-detail">
+                  <span>CVV</span>
+                  <strong>${escapeHtml(cvvText)}</strong>
+                </div>
+                <div class="card-face-detail">
+                  <span>Creada</span>
+                  <strong>${escapeHtml(formatDate(activeCard.createdAt))}</strong>
+                </div>
               </div>
             </div>
+
+            <div class="card-actions-under">
+              <button class="icon-action" type="button" data-action="edit-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Editar" aria-label="Editar tarjeta">&#9998; <span>Editar</span></button>
+              <button class="icon-action" type="button" data-action="replace-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Reemplazar" aria-label="Reemplazar tarjeta">&#8646; <span>Reemplazar</span></button>
+              <button type="button" class="card-action-toggle ${isRejectedHold ? "is-active-toggle" : ""}" data-action="toggle-rejected" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-countdown-label="Rechazado" data-countdown-until="${escapeHtml(rejectedUntil)}">${escapeHtml(`Rechazado${isRejectedHold ? ` ${formatCooldownCountdown(rejectedUntil)}` : ""}`)}</button>
+              <button type="button" class="card-action-toggle ${isManualCooldown ? "is-active-toggle" : ""}" data-action="toggle-cooldown" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-countdown-label="24h" data-countdown-until="${escapeHtml(manualCooldownUntil)}">${escapeHtml(`24h${isManualCooldown ? ` ${formatCooldownCountdown(manualCooldownUntil)}` : ""}`)}</button>
+            </div>
           </div>
-          <div class="selected-card-topside">
+
+          <div class="selected-card-topside selected-card-aside">
             <div class="purchase-summary-shell">
               <span class="summary-kicker">Actividad acumulada</span>
               <strong class="purchase-total">${escapeHtml(confirmedPurchaseLabel)}</strong>
               <p class="purchase-summary">${escapeHtml(purchaseSummary)}</p>
             </div>
-            <div class="inline-actions-shell">
-              <span class="summary-kicker">Acciones y alertas</span>
-              <div class="inline-actions">
-                <button type="button" data-action="unlock-sensitive" data-device-id="${escapeHtml(device.id)}">${escapeHtml(unlockLabel)}</button>
-                <button class="icon-action" type="button" data-action="edit-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Editar" aria-label="Editar tarjeta">&#9998;</button>
-                <button class="icon-action" type="button" data-action="replace-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Reemplazar" aria-label="Reemplazar tarjeta">&#8646;</button>
-                <button class="icon-action ${hasNotes ? "has-note" : ""}" type="button" data-action="notes-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Notas" aria-label="Editar notas">&#128221;</button>
-                <button type="button" class="${isRejectedHold ? "is-active-toggle" : ""}" data-action="toggle-rejected" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-countdown-label="Rechazado" data-countdown-until="${escapeHtml(rejectedUntil)}">${escapeHtml(`Rechazado${isRejectedHold ? ` ${formatCooldownCountdown(rejectedUntil)}` : ""}`)}</button>
-                <button type="button" class="${isManualCooldown ? "is-active-toggle" : ""}" data-action="toggle-cooldown" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-countdown-label="24h" data-countdown-until="${escapeHtml(manualCooldownUntil)}">${escapeHtml(`24h${isManualCooldown ? ` ${formatCooldownCountdown(manualCooldownUntil)}` : ""}`)}</button>
-              </div>
+            <div class="info-tile info-tile-wide ${hasNotes ? "note-highlight" : ""}">
+              <span>Notas</span>
+              ${hasNotes ? '<em class="note-emphasis">Importante</em>' : ""}
+              <strong>${escapeHtml(activeCard.notes || "Sin notas")}</strong>
             </div>
           </div>
-        </div>
-
-        <div class="selected-card-grid">
-          <div class="info-tile secure-tile">
-            <span class="secure-tile-label">MM/YY</span>
-            <strong>${escapeHtml(activeCard.expiry || "--")}</strong>
-          </div>
-          <div class="info-tile secure-tile">
-            <span class="secure-tile-label">CVV</span>
-            <strong>${escapeHtml(cvvText)}</strong>
-          </div>
-          <div class="info-tile secure-tile">
-            <span class="secure-tile-label">Creada</span>
-            <strong>${escapeHtml(formatDate(activeCard.createdAt))}</strong>
-          </div>
-          <div class="info-tile info-tile-wide ${hasNotes ? "note-highlight" : ""}">
-            <span>Notas</span>
-            ${hasNotes ? '<em class="note-emphasis">Importante</em>' : ""}
-            <strong>${escapeHtml(activeCard.notes || "Sin notas")}</strong>
-          </div>
-        </div>
-
-        <div class="product-stats-grid">
-          ${productCards}
-          <form class="product-stat custom-amount-form product-stat-custom" data-action="custom-amount" data-device-id="${escapeHtml(device.id)}">
-            <strong>Otro monto</strong>
-            <span class="product-cap">Compra libre</span>
-            <button class="visually-hidden-submit" type="submit" tabindex="-1" aria-hidden="true">Agregar monto</button>
-            <div class="compact-action-row">
-              <input class="custom-amount-input" name="amount" type="text" inputmode="decimal" placeholder="0.00" required>
-              <button class="compact-icon-button" type="button" data-action="revert-custom" data-device-id="${escapeHtml(device.id)}" title="Revertir ultimo monto" aria-label="Revertir ultimo monto">&#8630;</button>
-            </div>
-          </form>
         </div>
       </article>
     </section>
@@ -1051,7 +1099,7 @@ function renderCardCycle(device) {
   }
 
   return `
-    <section class="cards-section">
+    <section class="cards-section cards-section-cycle">
       <div class="section-row">
         <h3>Ciclo de tarjetas</h3>
         <span class="readonly-chip">Solo la activa conserva acciones</span>
@@ -1091,6 +1139,12 @@ function renderControlTab() {
     return;
   }
 
+  const activeCard = getActiveCard(device);
+  const isManualCooldown = isCooldownActive(activeCard);
+  const isRejectedHold = isRejectedHoldActive(activeCard);
+  const rejectedUntil = getCountdownTimestamp(activeCard?.rejectedCooldownUntil);
+  const manualCooldownUntil = getCountdownTimestamp(activeCard?.cooldownUntil);
+
   detailView.innerHTML = `
     <div class="control-dashboard">
     <div class="detail-head">
@@ -1129,8 +1183,11 @@ function renderControlTab() {
     </section>
 
     ${renderHistoryLaunchers(device)}
-    ${renderActiveCardDetail(device)}
-    ${renderCardCycle(device)}
+    <div class="cards-overview-grid">
+      ${renderActiveCardDetail(device)}
+      ${renderCardCycle(device)}
+    </div>
+    ${renderActiveProductStats(device, activeCard, isManualCooldown, isRejectedHold, rejectedUntil, manualCooldownUntil)}
     </div>
   `;
 }

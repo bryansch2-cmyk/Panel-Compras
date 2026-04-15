@@ -1157,6 +1157,13 @@ body.speeches-mode .sidebar {
   gap: 12px;
 }
 
+.cards-overview-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.75fr);
+  gap: 16px;
+  align-items: start;
+}
+
 .selected-card {
   display: grid;
   gap: 18px;
@@ -1207,6 +1214,11 @@ body.speeches-mode .sidebar {
   letter-spacing: 0.02em;
 }
 
+.selected-card-status {
+  display: grid;
+  gap: 10px;
+}
+
 .card-number {
   font-variant-numeric: tabular-nums;
 }
@@ -1215,6 +1227,13 @@ body.speeches-mode .sidebar {
   display: grid;
   gap: 10px;
   align-content: start;
+}
+
+.selected-card-compact-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(220px, 0.7fr);
+  gap: 14px;
+  align-items: start;
 }
 
 .card-face {
@@ -1234,6 +1253,15 @@ body.speeches-mode .sidebar {
   overflow: hidden;
 }
 
+.card-face-wave {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.18), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.12), transparent 24%);
+  pointer-events: none;
+}
+
 .card-face::after {
   content: "";
   position: absolute;
@@ -1243,6 +1271,60 @@ body.speeches-mode .sidebar {
   border-radius: 50%;
   background: radial-gradient(circle, rgba(99, 199, 178, 0.18), transparent 64%);
   pointer-events: none;
+}
+
+.card-network-slot {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.card-network-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  backdrop-filter: blur(8px);
+}
+
+.card-network-visa {
+  font-style: italic;
+  letter-spacing: 0.06em;
+}
+
+.card-network-mastercard {
+  text-transform: none;
+}
+
+.card-network-mastercard-circles {
+  display: inline-flex;
+  align-items: center;
+}
+
+.card-network-mastercard-circles span {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+}
+
+.card-network-mastercard-circles span:first-child {
+  background: rgba(255, 116, 88, 0.96);
+}
+
+.card-network-mastercard-circles span:last-child {
+  margin-left: -5px;
+  background: rgba(255, 194, 96, 0.96);
+}
+
+.card-network-generic {
+  letter-spacing: 0.12em;
 }
 
 .card-face-top,
@@ -1260,37 +1342,53 @@ body.speeches-mode .sidebar {
   color: #e1c98b;
 }
 
-.card-face-chip {
-  width: 42px;
-  height: 30px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, rgba(217, 185, 118, 0.9), rgba(150, 124, 74, 0.9));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24), 0 8px 14px rgba(0, 0, 0, 0.12);
-  position: relative;
-}
-
-.card-face-chip::before,
-.card-face-chip::after {
-  content: "";
-  position: absolute;
-  top: 6px;
-  bottom: 6px;
-  width: 1px;
-  background: rgba(99, 72, 28, 0.34);
-}
-
-.card-face-chip::before {
-  left: 14px;
-}
-
-.card-face-chip::after {
-  right: 14px;
-}
-
 .card-face-meta {
   color: var(--muted);
   font-size: 0.84rem;
   letter-spacing: 0.02em;
+}
+
+.card-visibility-button {
+  width: 34px;
+  min-width: 34px;
+  height: 34px;
+  min-height: 34px;
+  padding: 0;
+  border-radius: 12px;
+  border: 0;
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 8px 16px rgba(0, 0, 0, 0.14);
+}
+
+.card-visibility-button.is-open {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.card-face-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.card-face-detail {
+  display: grid;
+  gap: 5px;
+}
+
+.card-face-detail span {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(232, 238, 255, 0.72);
+}
+
+.card-face-detail strong {
+  font-size: 0.95rem;
+  color: #ffffff;
 }
 
 .selected-card-topside {
@@ -1298,6 +1396,10 @@ body.speeches-mode .sidebar {
   gap: 12px;
   justify-items: end;
   align-content: start;
+}
+
+.selected-card-aside {
+  align-self: stretch;
 }
 
 .purchase-summary-shell,
@@ -1309,6 +1411,35 @@ body.speeches-mode .sidebar {
 
 .purchase-summary-shell {
   width: min(100%, 520px);
+}
+
+.card-actions-under {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.card-actions-under button {
+  min-height: 40px;
+  border-radius: 14px;
+}
+
+.card-actions-under .icon-action {
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.card-actions-under .icon-action span {
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.card-action-toggle {
+  min-width: 92px;
+  padding: 0 14px;
 }
 
 .summary-kicker {
@@ -3143,23 +3274,27 @@ body.fintech-control-mode .selected-card {
   padding: 24px;
 }
 
-body.fintech-control-mode .selected-card-head {
-  border: 0;
-  border-radius: 28px;
-  background: rgba(243, 245, 255, 0.96);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.96);
+body.fintech-control-mode .cards-overview-grid {
+  grid-template-columns: minmax(0, 1.35fr) minmax(310px, 0.75fr);
+  align-items: start;
 }
 
 body.fintech-control-mode .card-face {
   border: 0;
-  min-height: 210px;
+  min-height: 240px;
   align-content: space-between;
   background:
-    radial-gradient(circle at top right, rgba(255, 255, 255, 0.22), transparent 32%),
-    linear-gradient(145deg, #7e87ff, #6570ff 54%, #5148f2);
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.18), transparent 24%),
+    linear-gradient(140deg, #8f95ff 0%, #747dff 42%, #5861f1 100%);
   box-shadow:
     0 24px 38px rgba(92, 99, 255, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.24);
+}
+
+body.fintech-control-mode .card-face-wave {
+  background:
+    radial-gradient(circle at 18% 10%, rgba(255, 255, 255, 0.16), transparent 20%),
+    radial-gradient(circle at 100% 100%, rgba(255, 255, 255, 0.14), transparent 28%);
 }
 
 body.fintech-control-mode .card-face-brand,
@@ -3168,12 +3303,13 @@ body.fintech-control-mode .card-number {
   color: #ffffff;
 }
 
-body.fintech-control-mode .card-face-chip {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(214, 224, 255, 0.88));
+body.fintech-control-mode .selected-card-compact-layout {
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 280px);
+  gap: 18px;
 }
 
+body.fintech-control-mode .selected-card-aside,
 body.fintech-control-mode .purchase-summary,
-body.fintech-control-mode .inline-actions,
 body.fintech-control-mode .info-tile,
 body.fintech-control-mode .product-stat,
 body.fintech-control-mode .card-mini {
@@ -3188,17 +3324,14 @@ body.fintech-control-mode .purchase-total {
   font-size: clamp(1.4rem, 2vw, 1.95rem);
 }
 
-body.fintech-control-mode .inline-actions button {
-  border: 0;
-  color: #ffffff;
-  background: linear-gradient(135deg, #7d82ff, #5f67ff 58%, #4f47ef);
-  box-shadow:
-    0 12px 24px rgba(92, 99, 255, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+body.fintech-control-mode .card-face-detail span {
+  color: rgba(239, 242, 255, 0.74);
 }
 
-body.fintech-control-mode .inline-actions .icon-action {
-  min-width: 40px;
+body.fintech-control-mode .card-visibility-button,
+body.fintech-control-mode .card-actions-under .icon-action,
+body.fintech-control-mode .card-actions-under .card-action-toggle {
+  border: 0;
   color: #616b88;
   background: rgba(255, 255, 255, 0.96);
   box-shadow:
@@ -3206,10 +3339,21 @@ body.fintech-control-mode .inline-actions .icon-action {
     0 10px 18px rgba(104, 112, 151, 0.08);
 }
 
-body.fintech-control-mode .inline-actions .icon-action.has-note,
-body.fintech-control-mode .inline-actions .is-active-toggle {
+body.fintech-control-mode .card-visibility-button {
+  color: #5f66ff;
+}
+
+body.fintech-control-mode .card-actions-under .card-action-toggle.is-active-toggle {
   color: #ffffff;
   background: linear-gradient(135deg, #9589ff, #7266ff 58%, #5d4ce8);
+}
+
+body.fintech-control-mode .card-actions-under .icon-action {
+  color: #636d88;
+}
+
+body.fintech-control-mode .card-actions-under .icon-action span {
+  color: inherit;
 }
 
 body.fintech-control-mode .note-emphasis {
@@ -3266,6 +3410,20 @@ body.fintech-control-mode .compact-icon-button {
 
 body.fintech-control-mode .history-launcher + .cards-section + .cards-section {
   padding: 24px;
+}
+
+body.fintech-control-mode .cards-section-cycle .cards-mini-grid {
+  gap: 12px;
+}
+
+body.fintech-control-mode .cards-section-cycle .card-mini {
+  min-height: 150px;
+  grid-template-columns: 1fr;
+}
+
+body.fintech-control-mode .cards-section-cycle .card-mini-hint {
+  justify-items: start;
+  text-align: left;
 }
 
 body.fintech-control-mode .card-mini.active,
@@ -3378,6 +3536,10 @@ body.fintech-control-mode .history-item:hover {
 }
 
 @media (max-width: 1120px) {
+  .cards-overview-grid {
+    grid-template-columns: 1fr;
+  }
+
   .actions-grid,
   .selected-card-grid,
   .product-stats-grid,
@@ -3597,6 +3759,7 @@ body.fintech-control-mode .history-item:hover {
   }
 
   .hero,
+  .cards-overview-grid,
   .selected-card-head,
   .section-row,
   .modal-head {
@@ -3635,6 +3798,19 @@ body.fintech-control-mode .history-item:hover {
   .purchase-summary {
     justify-items: start;
     text-align: left;
+  }
+
+  .selected-card-compact-layout,
+  .card-face-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card-actions-under {
+    width: 100%;
+  }
+
+  .card-actions-under button {
+    flex: 1 1 calc(50% - 10px);
   }
 
   .purchase-summary-shell,
