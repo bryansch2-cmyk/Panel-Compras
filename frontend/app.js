@@ -745,6 +745,20 @@ function openDeviceFinancialsModal(device) {
   });
 }
 
+function openRechargeModal(device) {
+  openModal({
+    type: "recharge",
+    deviceId: device.id,
+    title: "Registrar recarga",
+    submitLabel: "Agregar recarga",
+    values: {
+      amount: "",
+    },
+    previewBalance: device.availableBalance,
+    error: "",
+  });
+}
+
 function getHistoryEntries(device, historyType) {
   if (!device) {
     return [];
@@ -1185,39 +1199,45 @@ function renderControlTab() {
   detailView.innerHTML = `
     <div class="control-dashboard">
     <div class="detail-head">
-      <div class="detail-title-block">
-        <p class="detail-kicker">Dispositivo seleccionado</p>
-        <h2>${escapeHtml(device.title)}</h2>
-        <p class="detail-summary">Saldo disponible ${escapeHtml(formatMoney(device.availableBalance))} - Saldo usado ${escapeHtml(formatMoney(device.pendingUsed))}</p>
+      <div class="finance-head-top">
+        <div class="detail-title-block">
+          <p class="detail-kicker">Dispositivo seleccionado</p>
+          <h2>${escapeHtml(device.title)}</h2>
+        </div>
+        <button class="meta-edit-button" type="button" data-action="edit-device-financials" data-device-id="${escapeHtml(device.id)}">Ajustar progreso</button>
       </div>
-      <div class="meta-strip">
+
+      <section class="finance-balance-card">
+        <span class="finance-balance-kicker">Saldo disponible</span>
+        <strong class="finance-balance-amount">${escapeHtml(formatMoney(device.availableBalance))}</strong>
+        <p class="finance-balance-note">Saldo usado ${escapeHtml(formatMoney(device.pendingUsed))}</p>
+      </section>
+
+      <div class="finance-action-grid">
+        <button class="finance-quick-action finance-recharge-action" type="button" data-action="open-recharge" data-device-id="${escapeHtml(device.id)}">
+          <span class="finance-action-icon" aria-hidden="true">+</span>
+          <span class="finance-action-copy">
+            <strong>Recargar saldo</strong>
+            <em>Abre una ventana para registrar la recarga.</em>
+          </span>
+        </button>
+
+        <section class="finance-quick-action finance-used-card">
+          <div class="finance-action-copy">
+            <strong>Saldo usado</strong>
+            <em>${escapeHtml(formatMoney(device.pendingUsed))} pendientes por restar</em>
+          </div>
+          <button type="button" data-action="deduct-pending" data-device-id="${escapeHtml(device.id)}">Restar saldo usado</button>
+        </section>
+      </div>
+
+      <div class="meta-strip finance-meta-strip">
         <span>Ultima recarga ${escapeHtml(formatMoney(device.lastRechargeAmount || 0))}</span>
         <span>Fecha ${escapeHtml(formatDate(device.lastRechargeAt))}</span>
         <span>Limite actual ${escapeHtml(formatMoney(device.balanceLimitCurrent))}</span>
         <span>Tope fijo ${escapeHtml(formatMoney(state.constants.deviceBalanceCap))}</span>
-        <button class="meta-edit-button" type="button" data-action="edit-device-financials" data-device-id="${escapeHtml(device.id)}">Ajustar progreso</button>
       </div>
     </div>
-
-    <section class="actions-grid control-actions-grid">
-      <form class="action-card compact-action-card" data-action="recharge" data-device-id="${escapeHtml(device.id)}">
-        <div class="card-header-row">
-          <h3>Agregar saldo</h3>
-          <strong class="balance-highlight">Disponible ${escapeHtml(formatMoney(device.availableBalance))}</strong>
-        </div>
-        <div class="compact-action-row">
-          <input name="amount" type="number" min="0" step="0.01" placeholder="Monto de recarga" required>
-          <button type="submit">Agregar</button>
-        </div>
-      </form>
-
-      <section class="action-card compact-action-card used-summary-card">
-        <h3>Saldo usado</h3>
-        <strong class="used-summary-amount">${escapeHtml(formatMoney(device.pendingUsed))}</strong>
-        <p>Este monto se descuenta y pasa al historial de compras.</p>
-        <button type="button" data-action="deduct-pending" data-device-id="${escapeHtml(device.id)}">Restar saldo usado</button>
-      </section>
-    </section>
 
     ${renderHistoryLaunchers(device)}
     <div class="cards-overview-grid">
@@ -1524,6 +1544,35 @@ function renderModal() {
     return;
   }
 
+  if (modal.type === "recharge") {
+    modalRoot.innerHTML = `
+      <div class="modal-backdrop" data-modal-backdrop>
+        <div class="modal-card" data-stop-modal>
+          <div class="modal-head">
+            <div>
+              <h3>${escapeHtml(modal.title)}</h3>
+              <p>Agrega una nueva recarga sin mover el resto del panel.</p>
+            </div>
+            <button class="modal-close" type="button" data-action="close-modal">&times;</button>
+          </div>
+          <form class="modal-form" data-modal-action="recharge" data-device-id="${escapeHtml(modal.deviceId)}">
+            <label class="modal-field">
+              <span>Monto de recarga</span>
+              <input name="amount" type="number" min="0" step="0.01" placeholder="Ej. 500" value="${escapeHtml(modal.values.amount)}" required>
+            </label>
+            <div class="modal-note">Saldo disponible actual: ${escapeHtml(formatMoney(modal.previewBalance || 0))}</div>
+            ${modal.error ? `<div class="modal-error">${escapeHtml(modal.error)}</div>` : ""}
+            <div class="modal-actions">
+              <button type="button" data-action="close-modal">Cancelar</button>
+              <button type="submit">${escapeHtml(modal.submitLabel)}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
   if (modal.type === "replace-card") {
     modalRoot.innerHTML = `
       <div class="modal-backdrop" data-modal-backdrop>
@@ -1730,6 +1779,14 @@ document.addEventListener("click", async (event) => {
     return;
   }
 
+  if (action === "open-recharge") {
+    const device = getDevices().find((entry) => entry.id === button.dataset.deviceId);
+    if (device) {
+      openRechargeModal(device);
+    }
+    return;
+  }
+
   if (action === "unlock-sensitive") {
     const deviceId = button.dataset.deviceId;
     if (isSensitiveUnlocked(deviceId)) {
@@ -1796,6 +1853,7 @@ document.addEventListener("click", async (event) => {
 
   if (action === "deduct-pending") {
     await sendMutation(`/api/devices/${button.dataset.deviceId}/deduct-pending`, {});
+    return;
   }
 });
 
@@ -1845,6 +1903,9 @@ document.addEventListener("submit", async (event) => {
       amount: Number(values.amount || 0),
     });
     form.reset();
+    if (form.dataset.modalAction === "recharge") {
+      closeModal();
+    }
     return;
   }
 

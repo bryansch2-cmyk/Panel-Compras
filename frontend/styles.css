@@ -901,6 +901,127 @@ body.speeches-mode .sidebar {
   max-width: 58ch;
 }
 
+.finance-head-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.finance-balance-card {
+  display: grid;
+  gap: 6px;
+  padding: 20px 22px;
+  border: 1px solid rgba(109, 153, 196, 0.16);
+  border-radius: 26px;
+  background:
+    linear-gradient(135deg, rgba(84, 142, 184, 0.18), transparent 44%),
+    linear-gradient(180deg, rgba(24, 42, 62, 0.92), rgba(16, 29, 43, 0.96));
+  box-shadow:
+    0 18px 34px rgba(7, 16, 27, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.finance-balance-kicker {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(223, 232, 246, 0.72);
+}
+
+.finance-balance-amount {
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+}
+
+.finance-balance-note {
+  margin: 0;
+  color: rgba(223, 232, 246, 0.74);
+  font-size: 0.95rem;
+}
+
+.finance-action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.finance-quick-action {
+  border: 1px solid rgba(122, 141, 166, 0.12);
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent),
+    color-mix(in srgb, var(--surface-soft) 94%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 14px 26px rgba(0, 0, 0, 0.05);
+}
+
+button.finance-quick-action {
+  width: 100%;
+  min-height: 116px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+}
+
+.finance-action-icon {
+  width: 46px;
+  height: 46px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 16px;
+  background: rgba(118, 208, 174, 0.12);
+  color: var(--green);
+  font-size: 1.3rem;
+  font-weight: 900;
+}
+
+.finance-action-copy {
+  display: grid;
+  gap: 5px;
+}
+
+.finance-action-copy strong {
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+}
+
+.finance-action-copy em {
+  font-style: normal;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.finance-used-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+}
+
+.finance-used-card button {
+  min-width: 172px;
+}
+
+.finance-meta-strip {
+  gap: 12px;
+}
+
+.modal-note {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
 .balance-highlight {
   display: inline-flex;
   align-items: center;
@@ -3260,6 +3381,62 @@ body.fintech-control-mode .detail-title-block h2 {
   line-height: 0.95;
 }
 
+body.fintech-control-mode .finance-balance-card {
+  border: 0;
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.2), transparent 28%),
+    linear-gradient(145deg, #8d92ff, #6b72ff 56%, #545ef1);
+  box-shadow:
+    0 24px 38px rgba(92, 99, 255, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+}
+
+body.fintech-control-mode .finance-balance-kicker,
+body.fintech-control-mode .finance-balance-note {
+  color: rgba(245, 247, 255, 0.78);
+}
+
+body.fintech-control-mode .finance-action-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+body.fintech-control-mode .finance-quick-action {
+  border: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(244, 246, 255, 0.94));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    0 18px 30px rgba(104, 112, 151, 0.08);
+}
+
+body.fintech-control-mode .finance-action-icon {
+  background: linear-gradient(135deg, #8d92ff, #6b72ff 56%, #545ef1);
+  color: #ffffff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    0 10px 18px rgba(92, 99, 255, 0.18);
+}
+
+body.fintech-control-mode .finance-action-copy strong {
+  color: #2d3550;
+}
+
+body.fintech-control-mode .finance-used-card button {
+  border: 0;
+  background: linear-gradient(135deg, #7e83ff, #5d66ff 58%, #4b47eb);
+  color: #ffffff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    0 12px 22px rgba(92, 99, 255, 0.16);
+}
+
+body.fintech-control-mode .finance-meta-strip span {
+  background: rgba(240, 242, 250, 0.96);
+  color: #7b84a0;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    0 8px 16px rgba(105, 114, 154, 0.06);
+}
+
 body.fintech-control-mode .meta-strip span,
 body.fintech-control-mode .meta-edit-button,
 body.fintech-control-mode .readonly-chip {
@@ -3627,6 +3804,10 @@ body.fintech-control-mode .history-item:hover {
     grid-template-columns: 1fr;
   }
 
+  .finance-action-grid {
+    grid-template-columns: 1fr;
+  }
+
   .actions-grid,
   .selected-card-grid,
   .cards-mini-grid {
@@ -3866,6 +4047,19 @@ body.fintech-control-mode .history-item:hover {
 
   .compact-action-row {
     grid-template-columns: 1fr;
+  }
+
+  .finance-head-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .finance-used-card {
+    grid-template-columns: 1fr;
+  }
+
+  .finance-used-card button {
+    width: 100%;
   }
 
   .product-stat {
