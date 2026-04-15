@@ -397,22 +397,35 @@ p {
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
+.loading-logo {
+  display: block;
+  width: min(100%, 320px);
+  height: auto;
+  margin: 0 auto 2px;
+  filter:
+    drop-shadow(0 12px 24px rgba(7, 18, 32, 0.22))
+    saturate(1.02);
+}
+
 .loading-kicker {
   color: var(--accent);
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
+  text-align: center;
 }
 
 .loading-title {
   font-size: clamp(1.6rem, 3vw, 2.2rem);
   letter-spacing: 0.02em;
+  text-align: center;
 }
 
 .loading-status {
   color: var(--muted);
   line-height: 1.6;
+  text-align: center;
 }
 
 .loading-bar {
@@ -1876,6 +1889,12 @@ body.speeches-mode .sidebar {
   box-shadow:
     0 26px 54px rgba(79, 112, 146, 0.14),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+:root[data-theme="light"] .loading-logo {
+  filter:
+    drop-shadow(0 10px 18px rgba(79, 112, 146, 0.12))
+    saturate(1.02);
 }
 
 :root[data-theme="light"] .device-item {

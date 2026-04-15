@@ -1,0 +1,38 @@
+<svg width="720" height="220" viewBox="0 0 720 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="kidstore-blue" x1="48" y1="24" x2="132" y2="144" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1A2D73"/>
+      <stop offset="0.52" stop-color="#143B94"/>
+      <stop offset="1" stop-color="#11A6E8"/>
+    </linearGradient>
+    <linearGradient id="kidstore-cyan" x1="72" y1="40" x2="132" y2="96" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5AE5FF"/>
+      <stop offset="1" stop-color="#1D79E6"/>
+    </linearGradient>
+    <linearGradient id="kidstore-warm" x1="110" y1="28" x2="224" y2="186" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FDB52C"/>
+      <stop offset="0.42" stop-color="#FF8217"/>
+      <stop offset="0.74" stop-color="#F05630"/>
+      <stop offset="1" stop-color="#8A224C"/>
+    </linearGradient>
+    <linearGradient id="kidstore-red" x1="84" y1="130" x2="188" y2="212" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FF8D2A"/>
+      <stop offset="0.42" stop-color="#EB5A2F"/>
+      <stop offset="1" stop-color="#4B215C"/>
+    </linearGradient>
+    <filter id="kidstore-shadow" x="10" y="8" width="700" height="204" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#071220" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+  <g filter="url(#kidstore-shadow)">
+    <path d="M40 182L70 28H122L100 94L158 28H214L144 102L206 182H152L102 118L86 132L76 182H40Z" fill="url(#kidstore-blue)"/>
+    <path d="M78 62L104 40H128L118 84H94L98 64L82 76L78 62Z" fill="url(#kidstore-cyan)"/>
+    <path d="M120 96L176 28H214L180 112L150 112L164 76L138 104L120 96Z" fill="url(#kidstore-warm)"/>
+    <path d="M104 118L154 182H208L142 182L104 118Z" fill="url(#kidstore-red)"/>
+    <path d="M206 60H240L236 82C246 66 262 56 282 56C314 56 338 82 338 120C338 163 308 194 264 194C245 194 230 188 220 176L212 188H182L206 60ZM260 164C284 164 302 146 302 121C302 100 288 86 268 86C244 86 226 104 226 129C226 150 240 164 260 164Z" fill="#162B73"/>
+    <path d="M346 60H382L358 188H322L346 60Z" fill="#162B73"/>
+    <path d="M370 188L394 60H430L406 188H370Z" fill="#162B73"/>
+    <path d="M438 60H474L470 82C480 66 498 56 520 56C557 56 580 79 580 115C580 119 579 126 578 132H466C469 152 482 164 503 164C519 164 532 158 544 147L562 171C545 187 522 196 497 196C449 196 418 169 418 126C418 86 448 56 492 56C524 56 548 72 556 98L562 60H598L574 188H540L544 167C531 185 513 196 488 196C454 196 432 176 432 145C432 113 454 86 487 78L490 60H438ZM530 115C528 97 515 86 497 86C478 86 463 97 458 115H530Z" fill="#162B73"/>
+    <path d="M582 188L606 60H642L638 86C651 67 669 56 691 56C728 56 750 79 750 115C750 119 749 126 748 132H636C639 152 652 164 673 164C689 164 702 158 714 147L732 171C715 187 692 196 667 196C619 196 588 169 588 126C588 86 618 56 662 56C694 56 718 72 726 98L732 60H768L744 188H708L712 167C699 185 681 196 656 196C622 196 600 176 600 145C600 113 622 86 655 78L658 60H606Z" fill="#162B73" transform="translate(-92 0)"/>
+  </g>
+</svg>
