@@ -45,7 +45,7 @@
 
 :root[data-theme="light"] {
   color-scheme: light;
-  --bg: #edf4f7;
+  --bg: #050608;
   --panel: #fbfcfd;
   --panel-soft: #eef4f8;
   --surface: rgba(252, 253, 254, 0.97);
@@ -98,9 +98,10 @@ body.is-loading {
 
 :root[data-theme="light"] body {
   background:
-    radial-gradient(circle at top left, rgba(145, 160, 180, 0.16), transparent 22%),
-    radial-gradient(circle at top right, rgba(175, 184, 194, 0.12), transparent 20%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.46), transparent 20%),
+    radial-gradient(circle at top left, rgba(84, 105, 160, 0.2), transparent 24%),
+    radial-gradient(circle at top right, rgba(98, 115, 168, 0.16), transparent 20%),
+    radial-gradient(circle at bottom right, rgba(76, 92, 145, 0.14), transparent 22%),
+    linear-gradient(180deg, rgba(16, 19, 27, 0.84), transparent 22%),
     var(--bg);
 }
 
@@ -3270,7 +3271,7 @@ body.is-busy button {
 
 body.fintech-control-mode {
   color-scheme: light;
-  --bg: #e3e4f1;
+  --bg: #050608;
   --panel: #ffffff;
   --panel-soft: #f2f3fb;
   --surface: rgba(255, 255, 255, 0.96);
@@ -3296,10 +3297,10 @@ body.fintech-control-mode {
   --section-cycle-soft: rgba(235, 237, 250, 0.74);
   --shadow: 0 18px 42px rgba(92, 104, 151, 0.12);
   background:
-    radial-gradient(circle at top left, rgba(121, 130, 255, 0.16), transparent 28%),
-    radial-gradient(circle at top right, rgba(143, 98, 255, 0.11), transparent 24%),
-    radial-gradient(circle at bottom left, rgba(92, 215, 255, 0.1), transparent 22%),
-    linear-gradient(180deg, #e8e8f7 0%, #dddff0 100%);
+    radial-gradient(circle at top left, rgba(101, 113, 226, 0.22), transparent 28%),
+    radial-gradient(circle at top right, rgba(88, 98, 196, 0.16), transparent 24%),
+    radial-gradient(circle at bottom left, rgba(66, 122, 210, 0.16), transparent 22%),
+    linear-gradient(180deg, #0a0d15 0%, #050608 100%);
 }
 
 body.fintech-control-mode .app-shell {
