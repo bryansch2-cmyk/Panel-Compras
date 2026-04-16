@@ -1199,49 +1199,52 @@ function renderControlTab() {
 
   detailView.innerHTML = `
     <div class="control-dashboard">
-    <div class="detail-head">
-      <div class="finance-head-top">
-        <div class="detail-title-block">
-          <p class="detail-kicker">Dispositivo seleccionado</p>
-          <h2>${escapeHtml(device.title)}</h2>
+      <div class="dashboard-columns">
+        <div class="dashboard-main-column">
+          <div class="detail-head">
+            <div class="finance-head-top">
+              <div class="detail-title-block">
+                <p class="detail-kicker">Dispositivo seleccionado</p>
+                <h2>${escapeHtml(device.title)}</h2>
+              </div>
+              <button class="meta-edit-button" type="button" data-action="edit-device-financials" data-device-id="${escapeHtml(device.id)}">Ajustar progreso</button>
+            </div>
+
+            <section class="finance-balance-card">
+              <button class="finance-balance-circle finance-recharge-circle" type="button" data-action="open-recharge" data-device-id="${escapeHtml(device.id)}" title="Registrar recarga" aria-label="Registrar recarga">
+                <span class="finance-balance-circle-symbol">₺</span>
+                <span class="finance-balance-circle-label">Recargar</span>
+              </button>
+
+              <div class="finance-balance-center">
+                <span class="finance-balance-kicker">Saldo disponible</span>
+                <strong class="finance-balance-amount">${escapeHtml(formatMoney(device.availableBalance))}</strong>
+                <p class="finance-balance-note">Disponible para nuevas compras en este dispositivo.</p>
+              </div>
+
+              <button class="finance-balance-circle finance-used-circle ${hasPendingUsed ? "" : "is-empty"}" type="button" data-action="deduct-pending" data-device-id="${escapeHtml(device.id)}" title="Restar saldo usado" aria-label="Restar saldo usado" ${hasPendingUsed ? "" : "disabled"}>
+                <span class="finance-used-circle-amount">${escapeHtml(formatMoney(device.pendingUsed))}</span>
+                <span class="finance-balance-circle-label">Restar</span>
+              </button>
+            </section>
+
+            <div class="meta-strip finance-meta-strip">
+              <span>Ultima recarga ${escapeHtml(formatMoney(device.lastRechargeAmount || 0))}</span>
+              <span>Fecha ${escapeHtml(formatDate(device.lastRechargeAt))}</span>
+              <span>Limite actual ${escapeHtml(formatMoney(device.balanceLimitCurrent))}</span>
+              <span>Tope fijo ${escapeHtml(formatMoney(state.constants.deviceBalanceCap))}</span>
+            </div>
+          </div>
+
+          ${renderHistoryLaunchers(device)}
+          ${renderActiveCardDetail(device)}
+          ${renderActiveProductStats(device, activeCard, isManualCooldown, isRejectedHold, rejectedUntil, manualCooldownUntil)}
         </div>
-        <button class="meta-edit-button" type="button" data-action="edit-device-financials" data-device-id="${escapeHtml(device.id)}">Ajustar progreso</button>
+
+        <aside class="dashboard-side-column">
+          ${renderCardCycle(device)}
+        </aside>
       </div>
-
-      <section class="finance-balance-card">
-        <button class="finance-balance-circle finance-recharge-circle" type="button" data-action="open-recharge" data-device-id="${escapeHtml(device.id)}" title="Registrar recarga" aria-label="Registrar recarga">
-          <span class="finance-balance-circle-symbol">₺</span>
-          <span class="finance-balance-circle-label">Recargar</span>
-        </button>
-
-        <div class="finance-balance-center">
-          <span class="finance-balance-kicker">Saldo disponible</span>
-          <strong class="finance-balance-amount">${escapeHtml(formatMoney(device.availableBalance))}</strong>
-          <p class="finance-balance-note">Disponible para nuevas compras en este dispositivo.</p>
-        </div>
-
-        <button class="finance-balance-circle finance-used-circle ${hasPendingUsed ? "" : "is-empty"}" type="button" data-action="deduct-pending" data-device-id="${escapeHtml(device.id)}" title="Restar saldo usado" aria-label="Restar saldo usado" ${hasPendingUsed ? "" : "disabled"}>
-          <span class="finance-used-circle-amount">${escapeHtml(formatMoney(device.pendingUsed))}</span>
-          <span class="finance-balance-circle-label">Restar</span>
-        </button>
-      </section>
-
-      <div class="meta-strip finance-meta-strip">
-        <span>Ultima recarga ${escapeHtml(formatMoney(device.lastRechargeAmount || 0))}</span>
-        <span>Fecha ${escapeHtml(formatDate(device.lastRechargeAt))}</span>
-        <span>Limite actual ${escapeHtml(formatMoney(device.balanceLimitCurrent))}</span>
-        <span>Tope fijo ${escapeHtml(formatMoney(state.constants.deviceBalanceCap))}</span>
-      </div>
-    </div>
-
-    ${renderHistoryLaunchers(device)}
-    <div class="cards-overview-grid">
-      <div class="cards-main-column">
-        ${renderActiveCardDetail(device)}
-        ${renderActiveProductStats(device, activeCard, isManualCooldown, isRejectedHold, rejectedUntil, manualCooldownUntil)}
-      </div>
-      ${renderCardCycle(device)}
-    </div>
     </div>
   `;
 }

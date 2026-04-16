@@ -897,6 +897,20 @@ body.speeches-mode .sidebar {
   gap: 18px;
 }
 
+.dashboard-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(290px, 0.72fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.dashboard-main-column,
+.dashboard-side-column {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
 .detail-view > * {
   animation: none;
 }
@@ -3656,13 +3670,13 @@ body.fintech-control-mode .selected-card {
   padding: 18px;
 }
 
-body.fintech-control-mode .cards-overview-grid {
-  grid-template-columns: minmax(0, 1.08fr) minmax(290px, 0.72fr);
-  gap: 16px;
-  align-items: start;
+body.fintech-control-mode .dashboard-columns {
+  grid-template-columns: minmax(0, 1.04fr) minmax(300px, 0.7fr);
+  gap: 18px;
 }
 
-body.fintech-control-mode .cards-main-column {
+body.fintech-control-mode .dashboard-main-column,
+body.fintech-control-mode .dashboard-side-column {
   gap: 14px;
 }
 
@@ -3941,7 +3955,7 @@ body.fintech-control-mode .history-item:hover {
 }
 
 @media (max-width: 1120px) {
-  .cards-overview-grid {
+  .dashboard-columns {
     grid-template-columns: 1fr;
   }
 
@@ -4163,7 +4177,6 @@ body.fintech-control-mode .history-item:hover {
   }
 
   .hero,
-  .cards-overview-grid,
   .selected-card-head,
   .section-row,
   .modal-head {
