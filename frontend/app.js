@@ -943,7 +943,7 @@ function renderCardNetworkMark(network) {
     return `
       <span class="card-network-mark card-network-mastercard" aria-label="Mastercard">
         <span class="card-network-mastercard-circles" aria-hidden="true">
-          <span></span><span class="card-network-mastercard-overlap"></span><span></span>
+          <span></span><span></span>
         </span>
       </span>
     `;
@@ -1119,9 +1119,9 @@ function renderActiveCardDetail(device) {
                         <div class="card-face-wave" aria-hidden="true"></div>
                         <div class="card-face-top">
                           <span class="card-face-brand">KIDSTORE SECURE</span>
-                        </div>
-                        <div class="card-network-slot">
-                          ${renderCardNetworkMark(cardNetwork)}
+                          <div class="card-network-slot">
+                            ${renderCardNetworkMark(cardNetwork)}
+                          </div>
                         </div>
                         <h3 class="card-number">${escapeHtml(numberText)}</h3>
                         <div class="card-face-detail-grid">
