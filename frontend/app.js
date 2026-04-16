@@ -734,6 +734,15 @@ function openSensitiveCardModal(deviceId, card) {
   });
 }
 
+function openCycleCardModal(deviceId, card) {
+  openModal({
+    type: "cycle-card",
+    deviceId,
+    cardId: card.id,
+    title: card.orderLabel || "Tarjeta inactiva",
+  });
+}
+
 function openSensitiveFlow(deviceId, cardId) {
   const { device, card } = findDeviceAndCardByIds(deviceId, cardId);
   if (!device || !card) {
@@ -1045,6 +1054,40 @@ function formatProductTryLabel(amount) {
   return `${formatted} TRY`;
 }
 
+function renderReadonlyCardFace(card, options = {}) {
+  const cardNetwork = getCardNetwork(card?.number);
+  const masked = options.masked !== false;
+  const numberText = masked ? maskCardNumber(card?.number) : String(card?.number || "");
+  const cvvText = masked ? "***" : String(card?.cvv || "--");
+
+  return `
+    <div class="card-face card-face-network-${escapeHtml(cardNetwork || "generic")} ${escapeHtml(options.className || "")}">
+      <div class="card-face-wave" aria-hidden="true"></div>
+      <div class="card-face-top">
+        <span class="card-face-brand">KIDSTORE SECURE</span>
+        <div class="card-network-slot">
+          ${renderCardNetworkMark(cardNetwork)}
+        </div>
+      </div>
+      <h3 class="card-number">${escapeHtml(numberText)}</h3>
+      <div class="card-face-detail-grid">
+        <div class="card-face-detail">
+          <span>MM/YY</span>
+          <strong>${escapeHtml(card?.expiry || "--")}</strong>
+        </div>
+        <div class="card-face-detail">
+          <span>CVV</span>
+          <strong>${escapeHtml(cvvText)}</strong>
+        </div>
+        <div class="card-face-detail">
+          <span>Creada</span>
+          <strong>${escapeHtml(formatDate(card?.createdAt))}</strong>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 function getProductDisplayMeta(productKey, rule) {
   const labels = {
     epic: { label: "Epic Games", badge: "EG" },
@@ -1136,7 +1179,7 @@ function renderActiveProductStats(device, activeCard, isManualCooldown, isReject
 
     const count = getCardDisplayedCount(activeCard, productKey);
     const isEpicBlocked = productKey === "epic" && (isManualCooldown || isRejectedHold);
-    const productLockLabel = isRejectedHold ? "Bloqueado por rechazo" : "Bloqueado por 24h";
+    const productLockLabel = isRejectedHold ? "Rechazo" : "24h";
     const productLockUntil = isRejectedHold ? rejectedUntil : manualCooldownUntil;
     const displayMeta = getProductDisplayMeta(productKey, rule);
 
@@ -1149,7 +1192,6 @@ function renderActiveProductStats(device, activeCard, isManualCooldown, isReject
               <strong>${escapeHtml(displayMeta.label)}</strong>
               <span class="product-price">${escapeHtml(formatProductTryLabel(rule.amount))}</span>
             </div>
-            <span class="product-cap">${rule.maxCount ? `Max ${escapeHtml(rule.maxCount)}` : "Sin tope"}</span>
             ${isEpicBlocked ? `<span class="product-lock" data-countdown-label="${escapeHtml(productLockLabel)}" data-countdown-until="${escapeHtml(productLockUntil)}">${escapeHtml(`${productLockLabel} ${formatCooldownCountdown(productLockUntil)}`.trim())}</span>` : ""}
           </div>
         </div>
@@ -1171,11 +1213,10 @@ function renderActiveProductStats(device, activeCard, isManualCooldown, isReject
           <div class="product-stat-body">
             <span class="product-badge" aria-hidden="true">OT</span>
             <div class="product-copy">
-              <div class="product-stat-headline">
-                <strong>Otro monto</strong>
-                <span class="product-price">Libre</span>
-              </div>
-              <span class="product-cap">Compra libre</span>
+            <div class="product-stat-headline">
+              <strong>Otro monto</strong>
+              <span class="product-price">Libre</span>
+            </div>
             </div>
           </div>
           <div class="compact-action-row product-custom-row">
@@ -1206,7 +1247,6 @@ function renderActiveCardDetail(device) {
   const stateLabel = isRejectedHold ? "Rechazada" : "Sin estado";
   const hasNotes = hasMeaningfulNotes(activeCard.notes);
   const lowBalance = isLowBalance(device.availableBalance);
-  const cardNetwork = getCardNetwork(activeCard.number);
   const sensitiveAction = sensitiveVisible ? "lock-sensitive" : "unlock-sensitive";
   return `
     <section class="cards-section cards-section-active">
@@ -1226,29 +1266,10 @@ function renderActiveCardDetail(device) {
           <div class="selected-card-primary">
             <div class="card-flip-stage">
               <div class="card-flip-frame">
-                <div class="card-face card-face-network-${escapeHtml(cardNetwork || "generic")}">
-                  <div class="card-face-wave" aria-hidden="true"></div>
-                  <div class="card-face-top">
-                    <span class="card-face-brand">KIDSTORE SECURE</span>
-                    <div class="card-network-slot">
-                      ${renderCardNetworkMark(cardNetwork)}
-                    </div>
-                  </div>
-                  <h3 class="card-number">${escapeHtml(numberText)}</h3>
-                  <div class="card-face-detail-grid">
-                    <div class="card-face-detail">
-                      <span>MM/YY</span>
-                      <strong>${escapeHtml(activeCard.expiry || "--")}</strong>
-                    </div>
-                    <div class="card-face-detail">
-                      <span>CVV</span>
-                      <strong>${escapeHtml(cvvText)}</strong>
-                    </div>
-                    <div class="card-face-detail">
-                      <span>Creada</span>
-                      <strong>${escapeHtml(formatDate(activeCard.createdAt))}</strong>
-                    </div>
-                  </div>
+                ${renderReadonlyCardFace(activeCard, {
+                  masked: !sensitiveVisible,
+                })}
+                <div class="card-visibility-overlay">
                   <button class="card-visibility-button card-visibility-floating ${sensitiveVisible ? "is-open" : ""}" type="button" data-action="${escapeHtml(sensitiveAction)}" data-device-id="${escapeHtml(device.id)}" title="${escapeHtml(unlockLabel)}" aria-label="${escapeHtml(unlockLabel)}">&#128065;</button>
                 </div>
               </div>
@@ -1272,6 +1293,7 @@ function renderCardCycle(device) {
   const cards = getCycleCards(device);
   const activeCard = getActiveCard(device);
   const hasNotes = hasMeaningfulNotes(activeCard?.notes);
+  const inactiveCards = cards.filter((card) => !activeCard || card.id !== activeCard.id);
   if (!cards.length) {
     return "";
   }
@@ -1282,20 +1304,21 @@ function renderCardCycle(device) {
         <h3>Ciclo de tarjetas</h3>
       </div>
       <div class="cards-mini-grid">
-        ${cards.map((card, index) => {
-          const isActive = activeCard && card.id === activeCard.id;
-          const last4 = String(card.number || "").replace(/\D/g, "").slice(-4) || "----";
+        ${!inactiveCards.length ? '<div class="empty-inline">No hay tarjetas inactivas disponibles.</div>' : ""}
+        ${inactiveCards.map((card, index) => {
           return `
-            <article class="card-mini ${isActive ? "active is-cycle-active" : "is-cycle-inactive"}" style="animation-delay:${index * 70}ms">
-              <div class="card-mini-main">
+            <button class="cycle-card-preview card-mini is-cycle-inactive" type="button" data-action="open-cycle-card-modal" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(card.id)}" style="animation-delay:${index * 70}ms">
+              <div class="card-mini-main cycle-card-preview-head">
                 <div class="status-row">
                   <span class="card-label">${escapeHtml(card.orderLabel || "Tarjeta")}</span>
-                  <span class="status-pill ${isActive ? "active" : ""}">${escapeHtml(isActive ? "Activa" : "Inactiva")}</span>
+                  <span class="status-pill">Inactiva</span>
                 </div>
-                <strong class="card-mini-digits">${escapeHtml(last4)}</strong>
-                <span class="card-mini-date">${isActive ? `Creada ${escapeHtml(formatDate(card.createdAt))}` : `${escapeHtml(formatDate(card.createdAt))} - Solo lectura`}</span>
+                <span class="card-mini-date">Creada ${escapeHtml(formatDate(card.createdAt))}</span>
               </div>
-            </article>
+              <div class="cycle-card-preview-shell">
+                ${renderReadonlyCardFace(card, { masked: true, className: "card-face-compact" })}
+              </div>
+            </button>
           `;
         }).join("")}
       </div>
@@ -1579,6 +1602,41 @@ function renderModal() {
           <div class="modal-note sensitive-modal-note" data-countdown-label="Sesion visible" data-countdown-until="${escapeHtml(unlockUntil)}">Sesion visible ${escapeHtml(unlockCountdown)}</div>
           <div class="modal-actions">
             <button type="button" data-action="close-sensitive-view" data-device-id="${escapeHtml(modal.deviceId)}">Ocultar datos</button>
+            <button type="button" data-action="close-modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  if (modal.type === "cycle-card") {
+    const { card } = findDeviceAndCardByIds(modal.deviceId, modal.cardId);
+    if (!card) {
+      closeModal(true);
+      return;
+    }
+
+    modalRoot.innerHTML = `
+      <div class="modal-backdrop" data-modal-backdrop>
+        <div class="modal-card modal-card-cycle modal-card-wide" data-stop-modal>
+          <div class="modal-head">
+            <div>
+              <h3>${escapeHtml(modal.title)}</h3>
+            </div>
+            <button class="modal-close" type="button" data-action="close-modal">&times;</button>
+          </div>
+          <div class="cycle-card-modal-head">
+            <div class="status-row">
+              <span class="card-label">${escapeHtml(card.orderLabel || "Tarjeta")}</span>
+              <span class="status-pill">Inactiva</span>
+            </div>
+            <span class="cycle-card-modal-date">Creada ${escapeHtml(formatDate(card.createdAt))}</span>
+          </div>
+          <div class="cycle-card-modal-preview">
+            ${renderReadonlyCardFace(card, { masked: true })}
+          </div>
+          <div class="modal-actions">
             <button type="button" data-action="close-modal">Cerrar</button>
           </div>
         </div>
@@ -1999,6 +2057,14 @@ document.addEventListener("click", async (event) => {
     const { device, card } = findDeviceAndCardFromDataset(button);
     if (device && card) {
       openNotesModal(device.id, card);
+    }
+    return;
+  }
+
+  if (action === "open-cycle-card-modal") {
+    const { device, card } = findDeviceAndCardFromDataset(button);
+    if (device && card) {
+      openCycleCardModal(device.id, card);
     }
     return;
   }

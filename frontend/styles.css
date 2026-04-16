@@ -1460,6 +1460,13 @@ body.speeches-mode .sidebar {
   min-width: 0;
 }
 
+.card-visibility-overlay {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 3;
+}
+
 .card-flip-shell {
   position: relative;
   width: 100%;
@@ -1774,6 +1781,29 @@ body.speeches-mode .sidebar {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
+}
+
+.card-face-compact {
+  min-height: 176px;
+  padding: 18px 18px 16px;
+  border-radius: 24px;
+  gap: 10px;
+}
+
+.card-face-compact .card-number {
+  font-size: clamp(1.75rem, 2.2vw, 2.2rem);
+}
+
+.card-face-compact .card-face-brand {
+  font-size: 0.72rem;
+}
+
+.card-face-compact .card-face-detail span {
+  font-size: 0.62rem;
+}
+
+.card-face-compact .card-face-detail strong {
+  font-size: 0.88rem;
 }
 
 .card-face-detail {
@@ -2258,7 +2288,7 @@ body.speeches-mode .sidebar {
 
 .product-copy {
   display: grid;
-  gap: 4px;
+  gap: 2px;
   min-width: 0;
 }
 
@@ -2293,13 +2323,13 @@ body.speeches-mode .sidebar {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 28px;
+  min-height: 24px;
   width: fit-content;
-  padding: 0 10px;
+  padding: 0 9px;
   border-radius: 999px;
   background: rgba(169, 118, 126, 0.14);
   color: var(--red);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 700;
   justify-self: start;
 }
@@ -2959,7 +2989,7 @@ body.speeches-mode .sidebar {
 :root[data-theme="light"] .card-mini.is-cycle-inactive {
   border-color: rgba(170, 122, 50, 0.16);
   background:
-    linear-gradient(180deg, rgba(255, 252, 248, 0.98), rgba(232, 227, 220, 0.94)),
+    linear-gradient(180deg, rgba(255, 252, 248, 0.98), rgba(241, 235, 227, 0.96)),
     rgba(249, 245, 239, 0.96);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.84),
@@ -3282,6 +3312,26 @@ body.speeches-mode .sidebar {
   border-radius: 18px;
 }
 
+.cycle-card-preview {
+  grid-template-columns: 1fr;
+  align-items: stretch;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.cycle-card-preview .cycle-card-preview-head {
+  gap: 8px;
+}
+
+.cycle-card-preview-shell {
+  width: 100%;
+}
+
+.cards-section-cycle .card-mini {
+  min-height: auto;
+  grid-template-columns: 1fr;
+}
+
 .cards-section-products {
   padding: 18px;
   border: 1px solid rgba(191, 151, 78, 0.16);
@@ -3314,15 +3364,15 @@ body.speeches-mode .sidebar {
 }
 
 .card-mini.is-cycle-inactive {
-  opacity: 0.82;
-  filter: saturate(0.7);
-  transform: scale(0.992);
+  opacity: 1;
+  filter: none;
+  transform: none;
   border-style: solid;
   background:
-    linear-gradient(150deg, rgba(114, 125, 140, 0.82), rgba(88, 99, 114, 0.8) 52%, rgba(63, 73, 88, 0.8));
+    linear-gradient(180deg, rgba(54, 58, 65, 0.3), rgba(36, 40, 46, 0.26));
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.26),
-    0 8px 18px rgba(0, 0, 0, 0.08);
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 10px 18px rgba(0, 0, 0, 0.08);
 }
 
 .card-mini strong,
@@ -3346,7 +3396,7 @@ body.speeches-mode .sidebar {
 .card-mini.is-cycle-inactive .status-pill,
 .card-mini.is-cycle-inactive strong,
 .card-mini.is-cycle-inactive span {
-  color: rgba(242, 247, 255, 0.88);
+  color: rgba(242, 247, 255, 0.94);
 }
 
 .card-mini-main {
@@ -3574,6 +3624,25 @@ body.speeches-mode .sidebar {
 
 .modal-card-sensitive {
   width: min(100%, 560px);
+}
+
+.modal-card-cycle {
+  width: min(100%, 840px);
+}
+
+.cycle-card-modal-head {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.cycle-card-modal-date {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.cycle-card-modal-preview .card-face {
+  min-height: 236px;
 }
 
 .sensitive-preview-card {
@@ -4883,7 +4952,7 @@ body.fintech-control-mode .card-mini.is-cycle-inactive {
   transform: none;
   border-style: solid;
   border-color: rgba(201, 163, 92, 0.18);
-  background: linear-gradient(150deg, rgba(114, 125, 140, 0.82), rgba(88, 99, 114, 0.8) 50%, rgba(63, 73, 88, 0.8));
+  background: linear-gradient(180deg, rgba(55, 59, 65, 0.46), rgba(38, 42, 48, 0.42));
   backdrop-filter: blur(16px) saturate(1.14);
 }
 
