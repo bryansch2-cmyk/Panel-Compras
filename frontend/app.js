@@ -943,7 +943,7 @@ function renderCardNetworkMark(network) {
     return `
       <span class="card-network-mark card-network-mastercard" aria-label="Mastercard">
         <span class="card-network-mastercard-circles" aria-hidden="true">
-          <span></span><span></span>
+          <span></span><span class="card-network-mastercard-overlap"></span><span></span>
         </span>
       </span>
     `;
