@@ -1336,20 +1336,10 @@ function renderControlTab() {
             </div>
 
             <section class="finance-balance-card">
-              <button class="finance-balance-circle finance-recharge-circle" type="button" data-action="open-recharge" data-device-id="${escapeHtml(device.id)}" title="Registrar recarga" aria-label="Registrar recarga">
-                <span class="finance-balance-circle-symbol">₺</span>
-                <span class="finance-balance-circle-label">Recargar</span>
-              </button>
-
               <div class="finance-balance-center">
                 <span class="finance-balance-kicker">Saldo disponible</span>
                 <strong class="finance-balance-amount">${escapeHtml(formatMoney(device.availableBalance))}</strong>
               </div>
-
-              <button class="finance-balance-circle finance-used-circle ${hasPendingUsed ? "" : "is-empty"}" type="button" data-action="deduct-pending" data-device-id="${escapeHtml(device.id)}" title="Restar saldo usado" aria-label="Restar saldo usado" ${hasPendingUsed ? "" : "disabled"}>
-                <span class="finance-used-circle-amount">${escapeHtml(formatMoney(device.pendingUsed))}</span>
-                <span class="finance-balance-circle-label">Restar</span>
-              </button>
             </section>
 
             <div class="meta-strip finance-meta-strip">
@@ -1357,6 +1347,8 @@ function renderControlTab() {
               <span>Fecha ${escapeHtml(formatDate(device.lastRechargeAt))}</span>
               <span>Limite actual ${escapeHtml(formatMoney(device.balanceLimitCurrent))}</span>
               <span>Tope fijo ${escapeHtml(formatMoney(state.constants.deviceBalanceCap))}</span>
+              <button class="finance-meta-action" type="button" data-action="open-recharge" data-device-id="${escapeHtml(device.id)}" title="Registrar recarga" aria-label="Registrar recarga">Recargar</button>
+              <button class="finance-meta-action finance-meta-action-secondary ${hasPendingUsed ? "" : "is-empty"}" type="button" data-action="deduct-pending" data-device-id="${escapeHtml(device.id)}" title="Restar saldo usado" aria-label="Restar saldo usado" ${hasPendingUsed ? "" : "disabled"}>Restar ${escapeHtml(formatMoney(device.pendingUsed || 0))}</button>
             </div>
           </div>
 
