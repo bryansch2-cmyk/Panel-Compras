@@ -83,7 +83,7 @@ html {
 
 body {
   margin: 0;
-  font-family: "Corbel", "Segoe UI", sans-serif;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
   background:
     radial-gradient(circle at top left, rgba(96, 160, 186, 0.16), transparent 24%),
     radial-gradient(circle at top right, rgba(214, 168, 95, 0.08), transparent 18%),
@@ -105,10 +105,10 @@ body.is-loading {
 }
 
 .brand-mark {
-  font-family: "Franklin Gothic Medium", "Arial Narrow", "Segoe UI", sans-serif;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
   font-size: clamp(3.2rem, 5.6vw, 5.4rem);
   line-height: 0.9;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.015em;
   text-transform: uppercase;
   text-shadow: 0 12px 26px rgba(0, 0, 0, 0.14);
   font-weight: 800;
@@ -1908,7 +1908,7 @@ body.speeches-mode .sidebar {
 
 .product-stats-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
 }
 
@@ -2098,10 +2098,10 @@ body.speeches-mode .sidebar {
 }
 
 .custom-amount-form .compact-action-row {
-  grid-template-columns: minmax(160px, 220px) auto;
+  grid-template-columns: minmax(120px, 1fr) auto;
   gap: 8px;
   align-items: center;
-  justify-content: end;
+  justify-content: stretch;
 }
 
 .custom-amount-form .compact-action-row button {
@@ -2109,7 +2109,8 @@ body.speeches-mode .sidebar {
 }
 
 .product-custom-row {
-  justify-self: end;
+  width: 100%;
+  justify-self: stretch;
 }
 
 .custom-amount-input {
@@ -3323,9 +3324,9 @@ body.fintech-control-mode .hero::after {
 }
 
 body.fintech-control-mode .brand-mark {
-  font-family: "Franklin Gothic Medium", "Arial Narrow", "Segoe UI", sans-serif;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
   font-size: clamp(2.8rem, 4.6vw, 4.6rem);
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
   line-height: 0.95;
   text-transform: none;
   color: #222a42;
@@ -3728,7 +3729,7 @@ body.fintech-control-mode .note-emphasis {
 }
 
 body.fintech-control-mode .product-stats-grid {
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
 }
 
