@@ -4609,6 +4609,110 @@ body.fintech-control-mode .cards-section-cycle .cards-mini-grid {
   gap: 10px;
 }
 
+:root[data-theme="light"] body.fintech-control-mode .control-dashboard .detail-head,
+:root[data-theme="light"] body.fintech-control-mode .control-dashboard .history-launcher,
+:root[data-theme="light"] body.fintech-control-mode .control-dashboard .selected-card,
+:root[data-theme="light"] body.fintech-control-mode .control-dashboard .cards-section-products {
+  border: 1px solid rgba(170, 122, 50, 0.16);
+  background:
+    linear-gradient(180deg, rgba(255, 252, 247, 0.99), rgba(242, 236, 229, 0.97));
+  box-shadow:
+    0 20px 34px rgba(100, 89, 74, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.76);
+  backdrop-filter: none;
+}
+
+:root[data-theme="light"] body.fintech-control-mode .detail-head {
+  color: #1f2f4f;
+}
+
+:root[data-theme="light"] body.fintech-control-mode .history-launcher {
+  background:
+    linear-gradient(135deg, rgba(214, 184, 124, 0.08), transparent 55%),
+    rgba(252, 248, 242, 0.98);
+}
+
+:root[data-theme="light"] body.fintech-control-mode .selected-card {
+  background:
+    linear-gradient(180deg, rgba(253, 249, 244, 0.98), rgba(242, 236, 229, 0.96));
+}
+
+:root[data-theme="light"] body.fintech-control-mode .purchase-summary-card,
+:root[data-theme="light"] body.fintech-control-mode .selected-card-aside,
+:root[data-theme="light"] body.fintech-control-mode .purchase-summary,
+:root[data-theme="light"] body.fintech-control-mode .info-tile,
+:root[data-theme="light"] body.fintech-control-mode .product-stat,
+:root[data-theme="light"] body.fintech-control-mode .card-mini {
+  border: 1px solid rgba(170, 122, 50, 0.14);
+  background: rgba(250, 246, 241, 0.99);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    0 12px 22px rgba(100, 89, 74, 0.08);
+  backdrop-filter: none;
+}
+
+:root[data-theme="light"] body.fintech-control-mode .history-icon-button,
+:root[data-theme="light"] body.fintech-control-mode .card-actions-under .icon-action,
+:root[data-theme="light"] body.fintech-control-mode .card-actions-under .card-action-toggle,
+:root[data-theme="light"] body.fintech-control-mode .product-counter button,
+:root[data-theme="light"] body.fintech-control-mode .compact-icon-button {
+  border: 1px solid rgba(182, 171, 154, 0.22);
+  color: #1f2f4f;
+  background:
+    linear-gradient(180deg, rgba(255, 251, 246, 0.96), rgba(246, 241, 234, 0.9) 44%, rgba(232, 225, 216, 0.96)),
+    rgba(246, 241, 235, 0.96);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -1px 0 rgba(188, 175, 158, 0.42),
+    0 8px 14px rgba(100, 89, 74, 0.12);
+  backdrop-filter: none;
+}
+
+:root[data-theme="light"] body.fintech-control-mode .product-stat {
+  background: rgba(250, 246, 241, 0.99);
+}
+
+:root[data-theme="light"] body.fintech-control-mode .dashboard-main-column > .cards-section > h3,
+:root[data-theme="light"] body.fintech-control-mode .dashboard-side-column > .cards-section > .section-row h3,
+:root[data-theme="light"] body.fintech-control-mode .dashboard-side-column > .history-launcher h3,
+:root[data-theme="light"] body.fintech-control-mode .history-launcher h3,
+:root[data-theme="light"] body.fintech-control-mode .detail-title-block h2,
+:root[data-theme="light"] body.fintech-control-mode .detail-kicker,
+:root[data-theme="light"] body.fintech-control-mode .summary-kicker,
+:root[data-theme="light"] body.fintech-control-mode .product-stat strong,
+:root[data-theme="light"] body.fintech-control-mode .product-price,
+:root[data-theme="light"] body.fintech-control-mode .card-label,
+:root[data-theme="light"] body.fintech-control-mode .status-pill.active,
+:root[data-theme="light"] body.fintech-control-mode .history-icon-button,
+:root[data-theme="light"] body.fintech-control-mode .card-actions-under .icon-action,
+:root[data-theme="light"] body.fintech-control-mode .card-actions-under .card-action-toggle {
+  color: #1f2f4f;
+}
+
+:root[data-theme="light"] body.fintech-control-mode .product-stat span,
+:root[data-theme="light"] body.fintech-control-mode .status-pill,
+:root[data-theme="light"] body.fintech-control-mode .product-lock,
+:root[data-theme="light"] body.fintech-control-mode .history-launcher h3 + p {
+  color: #5a6985;
+}
+
+:root[data-theme="light"] body.fintech-control-mode .card-label,
+:root[data-theme="light"] body.fintech-control-mode .status-pill,
+:root[data-theme="light"] body.fintech-control-mode .product-lock {
+  border: 1px solid rgba(170, 122, 50, 0.16);
+  background: rgba(244, 239, 233, 0.96);
+}
+
+:root[data-theme="light"] body.fintech-control-mode .product-stat-count {
+  border: 1px solid rgba(182, 171, 154, 0.22);
+  color: #1f2f4f;
+  background:
+    linear-gradient(180deg, rgba(255, 251, 246, 0.96), rgba(238, 232, 224, 0.96));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    0 8px 14px rgba(100, 89, 74, 0.1);
+}
+
 body.fintech-control-mode .cards-section-cycle .card-mini {
   min-height: 128px;
   grid-template-columns: 1fr;
