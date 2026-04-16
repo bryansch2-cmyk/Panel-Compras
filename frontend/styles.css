@@ -4702,6 +4702,37 @@ body.fintech-control-mode .cards-section-cycle .cards-mini-grid {
     0 10px 16px rgba(100, 89, 74, 0.1);
 }
 
+:root[data-theme="light"] .sidebar {
+  scrollbar-color: rgba(180, 164, 141, 0.9) rgba(246, 240, 232, 0.96);
+  scrollbar-width: thin;
+}
+
+:root[data-theme="light"] .sidebar::-webkit-scrollbar {
+  width: 12px;
+}
+
+:root[data-theme="light"] .sidebar::-webkit-scrollbar-track {
+  background:
+    linear-gradient(180deg, rgba(252, 248, 242, 0.98), rgba(236, 229, 220, 0.96));
+  border-left: 1px solid rgba(170, 122, 50, 0.08);
+  border-radius: 999px;
+}
+
+:root[data-theme="light"] .sidebar::-webkit-scrollbar-thumb {
+  background:
+    linear-gradient(180deg, rgba(208, 196, 179, 0.98), rgba(176, 161, 139, 0.96));
+  border: 2px solid rgba(248, 243, 236, 0.98);
+  border-radius: 999px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.58),
+    0 4px 10px rgba(100, 89, 74, 0.08);
+}
+
+:root[data-theme="light"] .sidebar::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(180deg, rgba(198, 184, 164, 0.98), rgba(164, 149, 128, 0.96));
+}
+
 :root[data-theme="light"] body.fintech-control-mode .detail-head {
   color: #1f2f4f;
 }
