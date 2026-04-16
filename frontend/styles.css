@@ -363,6 +363,56 @@ p {
   justify-content: flex-end;
 }
 
+#themeToggle {
+  position: relative;
+  width: 72px;
+  min-width: 72px;
+  padding: 0;
+  border-radius: 999px;
+  color: transparent;
+  font-size: 0;
+  line-height: 0;
+  text-indent: -9999px;
+  overflow: hidden;
+}
+
+#themeToggle::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(58, 63, 70, 0.8), rgba(33, 37, 43, 0.78));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+#themeToggle::after {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.92), rgba(215, 220, 228, 0.94) 58%, rgba(156, 164, 176, 0.96));
+  box-shadow:
+    0 8px 14px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.84);
+  transition:
+    transform 220ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+#themeToggle[data-theme-mode="dark"]::after {
+  transform: translateX(32px);
+  background:
+    radial-gradient(circle at 35% 35%, rgba(255, 244, 223, 0.96), rgba(225, 196, 135, 0.94) 58%, rgba(172, 130, 66, 0.96));
+  box-shadow:
+    0 8px 14px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.46);
+}
+
 .badge {
   padding: 11px 15px;
   border-radius: 999px;
@@ -5046,6 +5096,123 @@ body.fintech-control-mode .history-item:hover {
   box-shadow:
     0 18px 30px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.status-pill.active {
+  background: linear-gradient(180deg, rgba(136, 178, 148, 0.18), rgba(88, 126, 99, 0.16));
+  color: #b9ddc2;
+  border-color: rgba(130, 174, 143, 0.32);
+}
+
+.status-pill.danger,
+.status-pill.rejection-hold {
+  background: linear-gradient(180deg, rgba(170, 88, 102, 0.18), rgba(117, 49, 62, 0.16));
+  color: #e7b2ba;
+  border-color: rgba(177, 99, 112, 0.28);
+}
+
+.card-actions-under .card-action-toggle.is-danger-toggle,
+.product-lock.is-danger {
+  color: #f0bec5;
+  border-color: rgba(177, 99, 112, 0.28);
+  background:
+    linear-gradient(180deg, rgba(255, 238, 241, 0.08), rgba(255, 255, 255, 0.02) 42%, transparent),
+    linear-gradient(180deg, rgba(109, 45, 57, 0.94), rgba(76, 29, 40, 0.96));
+}
+
+:root[data-theme="light"] #themeToggle {
+  border-color: rgba(170, 122, 50, 0.18);
+  background:
+    linear-gradient(180deg, rgba(255, 252, 248, 0.98), rgba(232, 227, 220, 0.94)),
+    rgba(247, 242, 236, 0.96);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -1px 0 rgba(188, 175, 158, 0.28),
+    0 12px 22px rgba(100, 89, 74, 0.12);
+}
+
+:root[data-theme="light"] #themeToggle::before {
+  background: linear-gradient(180deg, rgba(235, 227, 217, 0.96), rgba(214, 205, 194, 0.92));
+}
+
+:root[data-theme="light"] #themeToggle::after {
+  background:
+    radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.96), rgba(243, 236, 226, 0.96) 58%, rgba(204, 190, 172, 0.96));
+  box-shadow:
+    0 8px 14px rgba(100, 89, 74, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+:root[data-theme="light"] #themeToggle[data-theme-mode="dark"]::after {
+  background:
+    radial-gradient(circle at 35% 35%, rgba(255, 246, 223, 0.98), rgba(232, 205, 149, 0.96) 58%, rgba(191, 150, 85, 0.98));
+}
+
+:root[data-theme="light"] .status-pill.active {
+  background: linear-gradient(180deg, rgba(223, 238, 226, 0.96), rgba(205, 228, 212, 0.92));
+  color: #557763;
+  border-color: rgba(125, 161, 135, 0.3);
+}
+
+:root[data-theme="light"] .status-pill.danger,
+:root[data-theme="light"] .status-pill.rejection-hold {
+  background: linear-gradient(180deg, rgba(244, 224, 226, 0.96), rgba(232, 204, 208, 0.92));
+  color: #9e5964;
+  border-color: rgba(183, 118, 128, 0.28);
+}
+
+:root[data-theme="light"] .card-actions-under .card-action-toggle.is-danger-toggle,
+:root[data-theme="light"] .product-lock.is-danger {
+  color: #9e5964;
+  border-color: rgba(183, 118, 128, 0.28);
+  background:
+    linear-gradient(180deg, rgba(255, 251, 248, 0.98), rgba(248, 234, 236, 0.96) 44%, rgba(239, 216, 219, 0.96)),
+    rgba(248, 236, 238, 0.96);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.94),
+    0 10px 18px rgba(166, 122, 130, 0.16);
+}
+
+body.fintech-control-mode .status-pill.active {
+  color: #c7e6cf;
+  border-color: rgba(123, 170, 136, 0.28);
+  background: linear-gradient(180deg, rgba(70, 103, 78, 0.56), rgba(44, 67, 50, 0.5));
+}
+
+body.fintech-control-mode .status-pill.danger,
+body.fintech-control-mode .status-pill.rejection-hold {
+  color: #f0bec5;
+  border-color: rgba(177, 99, 112, 0.26);
+  background: linear-gradient(180deg, rgba(108, 50, 60, 0.56), rgba(72, 30, 38, 0.52));
+}
+
+body.fintech-control-mode .card-actions-under .card-action-toggle.is-danger-toggle,
+body.fintech-control-mode .product-lock.is-danger {
+  color: #ffffff;
+  border-color: rgba(185, 108, 120, 0.3);
+  background: linear-gradient(135deg, rgba(140, 63, 77, 0.94), rgba(104, 42, 54, 0.92) 58%, rgba(72, 27, 37, 0.94));
+}
+
+:root[data-theme="light"] body.fintech-control-mode .status-pill.active {
+  color: #557763;
+  border-color: rgba(125, 161, 135, 0.28);
+  background: linear-gradient(180deg, rgba(223, 238, 226, 0.96), rgba(205, 228, 212, 0.92));
+}
+
+:root[data-theme="light"] body.fintech-control-mode .status-pill.danger,
+:root[data-theme="light"] body.fintech-control-mode .status-pill.rejection-hold {
+  color: #9e5964;
+  border-color: rgba(183, 118, 128, 0.28);
+  background: linear-gradient(180deg, rgba(244, 224, 226, 0.96), rgba(232, 204, 208, 0.92));
+}
+
+:root[data-theme="light"] body.fintech-control-mode .card-actions-under .card-action-toggle.is-danger-toggle,
+:root[data-theme="light"] body.fintech-control-mode .product-lock.is-danger {
+  color: #9e5964;
+  border-color: rgba(183, 118, 128, 0.28);
+  background:
+    linear-gradient(180deg, rgba(255, 251, 248, 0.98), rgba(248, 234, 236, 0.96) 44%, rgba(239, 216, 219, 0.96)),
+    rgba(248, 236, 238, 0.96);
 }
 
 @keyframes fade-up {

@@ -295,7 +295,13 @@ function getStoredTheme() {
 function applyTheme(theme) {
   const nextTheme = theme === "light" ? "light" : "dark";
   document.documentElement.dataset.theme = nextTheme;
-  themeToggle.textContent = nextTheme === "light" ? "Tema oscuro" : "Tema claro";
+  if (themeToggle) {
+    const nextLabel = nextTheme === "light" ? "Activar modo oscuro" : "Activar modo claro";
+    themeToggle.dataset.themeMode = nextTheme;
+    themeToggle.setAttribute("aria-label", nextLabel);
+    themeToggle.setAttribute("title", nextLabel);
+    themeToggle.setAttribute("aria-pressed", nextTheme === "dark" ? "true" : "false");
+  }
 }
 
 function renderNoticeStrip() {
@@ -1207,8 +1213,8 @@ function renderActiveProductStats(device, activeCard, isManualCooldown, isReject
 
     const count = getCardDisplayedCount(activeCard, productKey);
     const isEpicBlocked = productKey === "epic" && (isManualCooldown || isRejectedHold);
-    const productLockLabel = isRejectedHold ? "Rechazo" : "24h";
     const productLockUntil = isRejectedHold ? rejectedUntil : manualCooldownUntil;
+    const productLockClass = isRejectedHold ? "is-danger" : "is-cooldown";
     const displayMeta = getProductDisplayMeta(productKey, rule);
 
     return `
@@ -1220,7 +1226,7 @@ function renderActiveProductStats(device, activeCard, isManualCooldown, isReject
               <strong>${escapeHtml(displayMeta.label)}</strong>
               <span class="product-price">${escapeHtml(formatProductTryLabel(rule.amount))}</span>
             </div>
-            ${isEpicBlocked ? `<span class="product-lock" data-countdown-label="${escapeHtml(productLockLabel)}" data-countdown-until="${escapeHtml(productLockUntil)}">${escapeHtml(`${productLockLabel} ${formatCooldownCountdown(productLockUntil)}`.trim())}</span>` : ""}
+            ${isEpicBlocked ? `<span class="product-lock ${productLockClass}" data-countdown-label="" data-countdown-until="${escapeHtml(productLockUntil)}">${escapeHtml(formatCooldownCountdown(productLockUntil))}</span>` : ""}
           </div>
         </div>
         <div class="product-counter">
@@ -1267,7 +1273,6 @@ function renderActiveCardDetail(device) {
   const numberText = sensitiveVisible ? String(activeCard.number || "") : maskCardNumber(activeCard.number);
   const cvvText = sensitiveVisible ? String(activeCard.cvv || "--") : "***";
   const unlockLabel = sensitiveVisible ? "Ocultar datos" : "Desbloquear";
-  const cooldownLabel = getCooldownLabel(activeCard);
   const isManualCooldown = isCooldownActive(activeCard);
   const isRejectedHold = isRejectedHoldActive(activeCard);
   const rejectedUntil = getCountdownTimestamp(activeCard.rejectedCooldownUntil);
@@ -1285,7 +1290,6 @@ function renderActiveCardDetail(device) {
             <span class="card-label">${escapeHtml(activeCard.orderLabel || "Tarjeta activa")}</span>
             <span class="status-pill active">Activa</span>
             <span class="status-pill ${isRejectedHold ? "danger" : ""}">${escapeHtml(stateLabel)}</span>
-            ${cooldownLabel ? `<span class="status-pill cooldown"><span class="cooldown-icon" aria-hidden="true">&#9201;</span><span data-countdown-label="Bloqueo" data-countdown-until="${escapeHtml(getPrimaryCooldownUntil(activeCard))}">${escapeHtml(`Bloqueo ${cooldownLabel}`)}</span></span>` : ""}
             ${lowBalance ? '<span class="status-pill low-balance">Saldo bajo</span>' : ""}
           </div>
         </div>
@@ -1307,7 +1311,7 @@ function renderActiveCardDetail(device) {
               <button class="icon-action icon-only" type="button" data-action="edit-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Editar" aria-label="Editar tarjeta"><span class="icon-action-glyph" aria-hidden="true">&#9998;</span></button>
               <button class="icon-action icon-only ${hasNotes ? "has-note" : ""}" type="button" data-action="notes-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Notas" aria-label="Editar notas de la tarjeta"><span class="icon-action-glyph" aria-hidden="true">&#128221;</span></button>
               <button class="icon-action icon-only" type="button" data-action="replace-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Reemplazar" aria-label="Reemplazar tarjeta"><span class="icon-action-glyph" aria-hidden="true">&#8646;</span></button>
-              <button type="button" class="card-action-toggle ${isRejectedHold ? "is-active-toggle" : ""}" data-action="toggle-rejected" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-countdown-label="Rechazado" data-countdown-until="${escapeHtml(rejectedUntil)}">${escapeHtml(`Rechazado${isRejectedHold ? ` ${formatCooldownCountdown(rejectedUntil)}` : ""}`)}</button>
+              <button type="button" class="card-action-toggle ${isRejectedHold ? "is-active-toggle is-danger-toggle" : ""}" data-action="toggle-rejected" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-countdown-label="" data-countdown-fallback="Rechazar" data-countdown-until="${escapeHtml(rejectedUntil)}">${escapeHtml(isRejectedHold ? formatCooldownCountdown(rejectedUntil) : "Rechazar")}</button>
               <button type="button" class="card-action-toggle ${isManualCooldown ? "is-active-toggle" : ""}" data-action="toggle-cooldown" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-countdown-label="24h" data-countdown-until="${escapeHtml(manualCooldownUntil)}">${escapeHtml(`24h${isManualCooldown ? ` ${formatCooldownCountdown(manualCooldownUntil)}` : ""}`)}</button>
             </div>
           </div>
@@ -1906,9 +1910,10 @@ function updateCountdownLabels() {
 
   countdownElements.forEach((element) => {
     const label = String(element.dataset.countdownLabel || "").trim();
+    const fallback = String(element.dataset.countdownFallback || label).trim();
     const until = Number(element.dataset.countdownUntil || 0);
     if (!until || until <= now) {
-      element.textContent = label;
+      element.textContent = fallback;
       if (until) {
         shouldSync = true;
       }
