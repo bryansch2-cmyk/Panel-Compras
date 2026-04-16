@@ -83,7 +83,7 @@ html {
 
 body {
   margin: 0;
-  font-family: "Bahnschrift", "Segoe UI", sans-serif;
+  font-family: "Corbel", "Segoe UI", sans-serif;
   background:
     radial-gradient(circle at top left, rgba(96, 160, 186, 0.16), transparent 24%),
     radial-gradient(circle at top right, rgba(214, 168, 95, 0.08), transparent 18%),
@@ -105,10 +105,10 @@ body.is-loading {
 }
 
 .brand-mark {
-  font-family: "Bahnschrift", "Segoe UI", sans-serif;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", "Segoe UI", sans-serif;
   font-size: clamp(3.2rem, 5.6vw, 5.4rem);
   line-height: 0.9;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   text-transform: uppercase;
   text-shadow: 0 12px 26px rgba(0, 0, 0, 0.14);
   font-weight: 800;
@@ -3323,9 +3323,9 @@ body.fintech-control-mode .hero::after {
 }
 
 body.fintech-control-mode .brand-mark {
-  font-family: "Bahnschrift", "Segoe UI", sans-serif;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", "Segoe UI", sans-serif;
   font-size: clamp(2.8rem, 4.6vw, 4.6rem);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   line-height: 0.95;
   text-transform: none;
   color: #222a42;
