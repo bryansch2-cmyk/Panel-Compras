@@ -1806,6 +1806,84 @@ body.speeches-mode .sidebar {
   font-size: 0.88rem;
 }
 
+.card-face-cycle-inactive {
+  border-color: rgba(201, 163, 92, 0.18);
+  background:
+    radial-gradient(circle at 14% 12%, rgba(255, 255, 255, 0.18), transparent 22%),
+    linear-gradient(145deg, rgba(166, 174, 184, 0.84), rgba(123, 133, 145, 0.82) 48%, rgba(82, 92, 104, 0.84));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    inset 0 -1px 0 rgba(20, 28, 38, 0.26),
+    0 18px 28px rgba(0, 0, 0, 0.18);
+}
+
+.card-face-cycle-inactive .card-face-wave {
+  opacity: 0.62;
+}
+
+.card-face-cycle-inactive .card-number,
+.card-face-cycle-inactive .card-face-brand,
+.card-face-cycle-inactive .card-face-cycle-label,
+.card-face-cycle-inactive .card-face-cycle-created-label,
+.card-face-cycle-inactive .card-face-cycle-created-value {
+  color: rgba(233, 238, 244, 0.82);
+  text-shadow: none;
+}
+
+.card-face-cycle-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.card-face-cycle-copy,
+.card-face-cycle-side,
+.card-face-cycle-footer {
+  display: grid;
+  gap: 6px;
+}
+
+.card-face-cycle-side {
+  justify-items: end;
+}
+
+.card-face-cycle-label,
+.card-face-cycle-created-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(220, 228, 238, 0.56);
+}
+
+.card-face-cycle-created-value {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.card-face-cycle-footer {
+  align-self: end;
+  justify-self: end;
+  text-align: right;
+}
+
+.cycle-status-pill {
+  min-height: 28px;
+  padding: 0 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(226, 232, 240, 0.14);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(229, 234, 241, 0.72);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.card-face-cycle-compact {
+  min-height: 192px;
+}
+
 .card-face-detail {
   display: grid;
   gap: 5px;
@@ -2996,6 +3074,12 @@ body.speeches-mode .sidebar {
     0 14px 24px rgba(100, 89, 74, 0.08);
 }
 
+:root[data-theme="light"] .cycle-card-preview.card-mini.is-cycle-inactive {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
 :root[data-theme="light"] .card-mini.active strong,
 :root[data-theme="light"] .card-mini.active span,
 :root[data-theme="light"] .card-mini.is-cycle-active strong,
@@ -3275,7 +3359,8 @@ body.speeches-mode .sidebar {
 .cards-mini-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 14px;
+  gap: 0;
+  padding-top: 6px;
 }
 
 @media (min-width: 1440px) {
@@ -3315,12 +3400,14 @@ body.speeches-mode .sidebar {
 .cycle-card-preview {
   grid-template-columns: 1fr;
   align-items: stretch;
-  gap: 12px;
+  gap: 0;
   cursor: pointer;
+  margin-top: calc(var(--cycle-index, 0) * -118px);
+  transform-origin: top center;
 }
 
-.cycle-card-preview .cycle-card-preview-head {
-  gap: 8px;
+.cycle-card-preview:first-of-type {
+  margin-top: 0;
 }
 
 .cycle-card-preview-shell {
@@ -3330,6 +3417,10 @@ body.speeches-mode .sidebar {
 .cards-section-cycle .card-mini {
   min-height: auto;
   grid-template-columns: 1fr;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .cards-section-products {
@@ -3367,12 +3458,9 @@ body.speeches-mode .sidebar {
   opacity: 1;
   filter: none;
   transform: none;
-  border-style: solid;
-  background:
-    linear-gradient(180deg, rgba(54, 58, 65, 0.3), rgba(36, 40, 46, 0.26));
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.18),
-    0 10px 18px rgba(0, 0, 0, 0.08);
+  border-style: none;
+  background: transparent;
+  box-shadow: none;
 }
 
 .card-mini strong,
@@ -3390,13 +3478,6 @@ body.speeches-mode .sidebar {
 
 .card-mini .status-pill.active {
   color: #ffffff;
-}
-
-.card-mini.is-cycle-inactive .card-label,
-.card-mini.is-cycle-inactive .status-pill,
-.card-mini.is-cycle-inactive strong,
-.card-mini.is-cycle-inactive span {
-  color: rgba(242, 247, 255, 0.94);
 }
 
 .card-mini-main {
@@ -4954,6 +5035,13 @@ body.fintech-control-mode .card-mini.is-cycle-inactive {
   border-color: rgba(201, 163, 92, 0.18);
   background: linear-gradient(180deg, rgba(55, 59, 65, 0.46), rgba(38, 42, 48, 0.42));
   backdrop-filter: blur(16px) saturate(1.14);
+}
+
+body.fintech-control-mode .cycle-card-preview.card-mini.is-cycle-inactive {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
 }
 
 body.fintech-control-mode .card-mini:hover,

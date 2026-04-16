@@ -1088,6 +1088,34 @@ function renderReadonlyCardFace(card, options = {}) {
   `;
 }
 
+function renderCycleCardFace(card, options = {}) {
+  const cardNetwork = getCardNetwork(card?.number);
+  const maskedNumber = maskCardNumber(card?.number);
+
+  return `
+    <div class="card-face card-face-cycle-inactive card-face-network-${escapeHtml(cardNetwork || "generic")} ${escapeHtml(options.className || "")}">
+      <div class="card-face-wave" aria-hidden="true"></div>
+      <div class="card-face-cycle-top">
+        <div class="card-face-cycle-copy">
+          <span class="card-face-brand">KIDSTORE SECURE</span>
+          <span class="card-face-cycle-label">${escapeHtml(card?.orderLabel || "Tarjeta")}</span>
+        </div>
+        <div class="card-face-cycle-side">
+          <span class="status-pill cycle-status-pill">Inactiva</span>
+          <div class="card-network-slot">
+            ${renderCardNetworkMark(cardNetwork)}
+          </div>
+        </div>
+      </div>
+      <h3 class="card-number">${escapeHtml(maskedNumber)}</h3>
+      <div class="card-face-cycle-footer">
+        <span class="card-face-cycle-created-label">Creada</span>
+        <strong class="card-face-cycle-created-value">${escapeHtml(formatDate(card?.createdAt))}</strong>
+      </div>
+    </div>
+  `;
+}
+
 function getProductDisplayMeta(productKey, rule) {
   const labels = {
     epic: { label: "Epic Games", badge: "EG" },
@@ -1307,16 +1335,9 @@ function renderCardCycle(device) {
         ${!inactiveCards.length ? '<div class="empty-inline">No hay tarjetas inactivas disponibles.</div>' : ""}
         ${inactiveCards.map((card, index) => {
           return `
-            <button class="cycle-card-preview card-mini is-cycle-inactive" type="button" data-action="open-cycle-card-modal" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(card.id)}" style="animation-delay:${index * 70}ms">
-              <div class="card-mini-main cycle-card-preview-head">
-                <div class="status-row">
-                  <span class="card-label">${escapeHtml(card.orderLabel || "Tarjeta")}</span>
-                  <span class="status-pill">Inactiva</span>
-                </div>
-                <span class="card-mini-date">Creada ${escapeHtml(formatDate(card.createdAt))}</span>
-              </div>
+            <button class="cycle-card-preview card-mini is-cycle-inactive" type="button" data-action="open-cycle-card-modal" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(card.id)}" style="animation-delay:${index * 70}ms; --cycle-index:${index}; z-index:${Math.max(1, inactiveCards.length - index)};">
               <div class="cycle-card-preview-shell">
-                ${renderReadonlyCardFace(card, { masked: true, className: "card-face-compact" })}
+                ${renderCycleCardFace(card, { className: "card-face-compact card-face-cycle-compact" })}
               </div>
             </button>
           `;
@@ -1627,14 +1648,10 @@ function renderModal() {
             <button class="modal-close" type="button" data-action="close-modal">&times;</button>
           </div>
           <div class="cycle-card-modal-head">
-            <div class="status-row">
-              <span class="card-label">${escapeHtml(card.orderLabel || "Tarjeta")}</span>
-              <span class="status-pill">Inactiva</span>
-            </div>
-            <span class="cycle-card-modal-date">Creada ${escapeHtml(formatDate(card.createdAt))}</span>
+            <span class="cycle-card-modal-date">Tarjeta inactiva</span>
           </div>
           <div class="cycle-card-modal-preview">
-            ${renderReadonlyCardFace(card, { masked: true })}
+            ${renderCycleCardFace(card)}
           </div>
           <div class="modal-actions">
             <button type="button" data-action="close-modal">Cerrar</button>
