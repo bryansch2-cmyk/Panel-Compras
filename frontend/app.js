@@ -169,6 +169,7 @@ const state = {
   selectedTab: "control",
   selectedDeviceId: "",
   sensitiveUnlockedUntilByDevice: {},
+  flippedCardByDevice: {},
   modal: null,
   requestPending: false,
   initialLoadComplete: false,
@@ -973,6 +974,36 @@ function getProductDisplayMeta(productKey, rule) {
   return labels[productKey] || { label: rule?.label || productKey, badge: "PG" };
 }
 
+function isCardFlipped(deviceId, cardId) {
+  return Boolean(deviceId && cardId && state.flippedCardByDevice[deviceId] === cardId);
+}
+
+function renderCardActivityBack(activeCard, confirmedPurchaseLabel) {
+  const activityItems = PRODUCT_ORDER.map((productKey) => {
+    const rule = getProductRule(productKey);
+    const displayMeta = getProductDisplayMeta(productKey, rule);
+    const count = getCardConfirmedCount(activeCard, productKey);
+    return `
+      <div class="card-activity-item">
+        <span>${escapeHtml(displayMeta.label)}</span>
+        <strong>${escapeHtml(count)}</strong>
+      </div>
+    `;
+  }).join("");
+
+  return `
+    <div class="card-face card-face-back">
+      <div class="card-face-back-head">
+        <span class="summary-kicker">Actividad acumulada</span>
+        <strong class="card-activity-total">${escapeHtml(confirmedPurchaseLabel)}</strong>
+      </div>
+      <div class="card-activity-grid">
+        ${activityItems}
+      </div>
+    </div>
+  `;
+}
+
 function renderActiveProductStats(device, activeCard, isManualCooldown, isRejectedHold, rejectedUntil, manualCooldownUntil) {
   if (!activeCard) {
     return "";
@@ -1059,6 +1090,8 @@ function renderActiveCardDetail(device) {
   const hasNotes = hasMeaningfulNotes(activeCard.notes);
   const lowBalance = isLowBalance(device.availableBalance);
   const cardNetwork = getCardNetwork(activeCard.number);
+  const cardFlipped = isCardFlipped(device.id, activeCard.id);
+  const flipLabel = cardFlipped ? "Mostrar frente de la tarjeta" : "Mostrar actividad acumulada";
 
   return `
     <section class="cards-section cards-section-active">
@@ -1076,30 +1109,43 @@ function renderActiveCardDetail(device) {
 
         <div class="selected-card-compact-layout">
           <div class="selected-card-primary">
-            <div class="card-face card-face-network-${escapeHtml(cardNetwork || "generic")}">
-              <div class="card-face-wave" aria-hidden="true"></div>
-              <div class="card-face-top">
-                <span class="card-face-brand">KIDSTORE SECURE</span>
-                <button class="card-visibility-button ${sensitiveVisible ? "is-open" : ""}" type="button" data-action="unlock-sensitive" data-device-id="${escapeHtml(device.id)}" title="${escapeHtml(unlockLabel)}" aria-label="${escapeHtml(unlockLabel)}">&#128065;</button>
-              </div>
-              <div class="card-network-slot">
-                ${renderCardNetworkMark(cardNetwork)}
-              </div>
-              <h3 class="card-number">${escapeHtml(numberText)}</h3>
-              <div class="card-face-detail-grid">
-                <div class="card-face-detail">
-                  <span>MM/YY</span>
-                  <strong>${escapeHtml(activeCard.expiry || "--")}</strong>
+            <div class="card-flip-stage">
+              <div class="card-flip-shell ${cardFlipped ? "is-flipped" : ""}">
+                <div class="card-flip-inner">
+                  <div class="card-flip-face card-flip-face-front">
+                    <div class="card-face card-face-network-${escapeHtml(cardNetwork || "generic")}">
+                      <div class="card-face-wave" aria-hidden="true"></div>
+                      <div class="card-face-top">
+                        <span class="card-face-brand">KIDSTORE SECURE</span>
+                        <button class="card-visibility-button ${sensitiveVisible ? "is-open" : ""}" type="button" data-action="unlock-sensitive" data-device-id="${escapeHtml(device.id)}" title="${escapeHtml(unlockLabel)}" aria-label="${escapeHtml(unlockLabel)}">&#128065;</button>
+                      </div>
+                      <div class="card-network-slot">
+                        ${renderCardNetworkMark(cardNetwork)}
+                      </div>
+                      <h3 class="card-number">${escapeHtml(numberText)}</h3>
+                      <div class="card-face-detail-grid">
+                        <div class="card-face-detail">
+                          <span>MM/YY</span>
+                          <strong>${escapeHtml(activeCard.expiry || "--")}</strong>
+                        </div>
+                        <div class="card-face-detail">
+                          <span>CVV</span>
+                          <strong>${escapeHtml(cvvText)}</strong>
+                        </div>
+                        <div class="card-face-detail">
+                          <span>Creada</span>
+                          <strong>${escapeHtml(formatDate(activeCard.createdAt))}</strong>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-flip-face card-flip-face-back">
+                    ${renderCardActivityBack(activeCard, confirmedPurchaseLabel)}
+                  </div>
                 </div>
-                <div class="card-face-detail">
-                  <span>CVV</span>
-                  <strong>${escapeHtml(cvvText)}</strong>
-                </div>
-                <div class="card-face-detail">
-                  <span>Creada</span>
-                  <strong>${escapeHtml(formatDate(activeCard.createdAt))}</strong>
-                </div>
               </div>
+
+              <button class="card-flip-toggle ${cardFlipped ? "is-active-toggle" : ""}" type="button" data-action="toggle-card-flip" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="${escapeHtml(flipLabel)}" aria-label="${escapeHtml(flipLabel)}">&#8646;</button>
             </div>
 
             <div class="card-actions-under">
@@ -1108,17 +1154,6 @@ function renderActiveCardDetail(device) {
               <button class="icon-action icon-only" type="button" data-action="replace-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Reemplazar" aria-label="Reemplazar tarjeta"><span class="icon-action-glyph" aria-hidden="true">&#8646;</span></button>
               <button type="button" class="card-action-toggle ${isRejectedHold ? "is-active-toggle" : ""}" data-action="toggle-rejected" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-countdown-label="Rechazado" data-countdown-until="${escapeHtml(rejectedUntil)}">${escapeHtml(`Rechazado${isRejectedHold ? ` ${formatCooldownCountdown(rejectedUntil)}` : ""}`)}</button>
               <button type="button" class="card-action-toggle ${isManualCooldown ? "is-active-toggle" : ""}" data-action="toggle-cooldown" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-countdown-label="24h" data-countdown-until="${escapeHtml(manualCooldownUntil)}">${escapeHtml(`24h${isManualCooldown ? ` ${formatCooldownCountdown(manualCooldownUntil)}` : ""}`)}</button>
-            </div>
-          </div>
-
-          <div class="selected-card-topside selected-card-aside">
-            <div class="purchase-summary-shell">
-              <span class="summary-kicker">Actividad acumulada</span>
-              <strong class="purchase-total">${escapeHtml(confirmedPurchaseLabel)}</strong>
-            </div>
-            <div class="info-tile info-tile-wide ${hasNotes ? "note-highlight" : ""}">
-              <span>Notas</span>
-              <strong>${escapeHtml(activeCard.notes || "Sin notas")}</strong>
             </div>
           </div>
         </div>
@@ -1130,6 +1165,7 @@ function renderActiveCardDetail(device) {
 function renderCardCycle(device) {
   const cards = getCycleCards(device);
   const activeCard = getActiveCard(device);
+  const hasNotes = hasMeaningfulNotes(activeCard?.notes);
   if (!cards.length) {
     return "";
   }
@@ -1156,6 +1192,10 @@ function renderCardCycle(device) {
             </article>
           `;
         }).join("")}
+      </div>
+      <div class="cycle-notes-card info-tile ${hasNotes ? "note-highlight" : ""}">
+        <span>Notas</span>
+        <strong>${escapeHtml(activeCard?.notes || "Sin notas")}</strong>
       </div>
     </section>
   `;
@@ -1790,6 +1830,17 @@ document.addEventListener("click", async (event) => {
     if (device && card) {
       openNotesModal(device.id, card);
     }
+    return;
+  }
+
+  if (action === "toggle-card-flip") {
+    const { deviceId, cardId } = button.dataset;
+    if (isCardFlipped(deviceId, cardId)) {
+      delete state.flippedCardByDevice[deviceId];
+    } else if (deviceId && cardId) {
+      state.flippedCardByDevice[deviceId] = cardId;
+    }
+    render();
     return;
   }
 
