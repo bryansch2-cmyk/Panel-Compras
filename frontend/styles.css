@@ -2511,6 +2511,7 @@ body.speeches-mode .sidebar {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.92),
     0 10px 16px rgba(100, 89, 74, 0.1);
+  color: #1f2f4f;
 }
 
 :root[data-theme="light"] .actions > button {
@@ -2918,6 +2919,17 @@ body.speeches-mode .sidebar {
   color: #1d2f50;
 }
 
+:root[data-theme="light"] .product-badge {
+  background:
+    linear-gradient(180deg, rgba(255, 251, 246, 0.98), rgba(228, 220, 210, 0.96)),
+    rgba(244, 239, 233, 0.98);
+  color: #6c7384;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.94),
+    inset 0 -1px 0 rgba(188, 175, 158, 0.28),
+    0 10px 18px rgba(100, 89, 74, 0.12);
+}
+
 :root[data-theme="light"] .product-stat-epic {
   background: rgba(250, 246, 241, 0.99);
 }
@@ -2992,6 +3004,24 @@ body.speeches-mode .sidebar {
     0 26px 54px rgba(100, 89, 74, 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
   border-color: rgba(167, 143, 103, 0.16);
+}
+
+:root[data-theme="light"] .modal-close {
+  border-color: rgba(182, 171, 154, 0.22);
+  background:
+    linear-gradient(180deg, rgba(255, 251, 246, 0.96), rgba(239, 233, 226, 0.92)),
+    rgba(246, 241, 235, 0.98);
+  color: #68748b;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -1px 0 rgba(188, 175, 158, 0.34),
+    0 10px 18px rgba(100, 89, 74, 0.12);
+}
+
+:root[data-theme="light"] .modal-head p,
+:root[data-theme="light"] .modal-field span,
+:root[data-theme="light"] .modal-section-title {
+  color: #6b7892;
 }
 
 :root[data-theme="light"] .meta-strip span,
@@ -4622,6 +4652,56 @@ body.fintech-control-mode .cards-section-cycle .cards-mini-grid {
   backdrop-filter: none;
 }
 
+:root[data-theme="light"] body.fintech-control-mode {
+  background:
+    radial-gradient(circle at top left, rgba(214, 201, 183, 0.16), transparent 28%),
+    radial-gradient(circle at top right, rgba(205, 171, 113, 0.08), transparent 24%),
+    linear-gradient(180deg, #f4efe8 0%, #e6ded5 100%);
+}
+
+:root[data-theme="light"] body.fintech-control-mode .sidebar,
+:root[data-theme="light"] body.fintech-control-mode .panel {
+  background:
+    linear-gradient(180deg, rgba(255, 252, 247, 0.98), rgba(241, 235, 227, 0.95));
+  box-shadow:
+    0 20px 34px rgba(100, 89, 74, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  backdrop-filter: none;
+}
+
+:root[data-theme="light"] body.fintech-control-mode .sidebar .panel-head {
+  background:
+    linear-gradient(180deg, rgba(255, 252, 248, 0.99), rgba(243, 237, 230, 0.96));
+  border-bottom: 1px solid rgba(170, 122, 50, 0.14);
+  box-shadow: 0 12px 20px rgba(100, 89, 74, 0.08);
+  backdrop-filter: none;
+}
+
+:root[data-theme="light"] body.fintech-control-mode .top-tabs {
+  background: rgba(244, 239, 233, 0.96);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 10px 16px rgba(100, 89, 74, 0.08);
+  backdrop-filter: none;
+}
+
+:root[data-theme="light"] body.fintech-control-mode .top-tab {
+  color: #64738c;
+  background: rgba(255, 251, 246, 0.58);
+  border: 1px solid rgba(170, 122, 50, 0.08);
+}
+
+:root[data-theme="light"] body.fintech-control-mode .top-tab.active {
+  color: #1f2f4f;
+  background:
+    linear-gradient(180deg, rgba(255, 252, 248, 0.98), rgba(234, 229, 223, 0.94)),
+    rgba(247, 242, 236, 0.96);
+  border-color: rgba(170, 122, 50, 0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    0 10px 16px rgba(100, 89, 74, 0.1);
+}
+
 :root[data-theme="light"] body.fintech-control-mode .detail-head {
   color: #1f2f4f;
 }
@@ -4672,6 +4752,17 @@ body.fintech-control-mode .cards-section-cycle .cards-mini-grid {
   background: rgba(250, 246, 241, 0.99);
 }
 
+:root[data-theme="light"] body.fintech-control-mode .product-badge {
+  color: #6c7384;
+  background:
+    linear-gradient(180deg, rgba(255, 251, 246, 0.98), rgba(228, 220, 210, 0.96)),
+    rgba(244, 239, 233, 0.98);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.94),
+    inset 0 -1px 0 rgba(188, 175, 158, 0.28),
+    0 10px 18px rgba(100, 89, 74, 0.12);
+}
+
 :root[data-theme="light"] body.fintech-control-mode .dashboard-main-column > .cards-section > h3,
 :root[data-theme="light"] body.fintech-control-mode .dashboard-side-column > .cards-section > .section-row h3,
 :root[data-theme="light"] body.fintech-control-mode .dashboard-side-column > .history-launcher h3,
@@ -4701,6 +4792,18 @@ body.fintech-control-mode .cards-section-cycle .cards-mini-grid {
 :root[data-theme="light"] body.fintech-control-mode .product-lock {
   border: 1px solid rgba(170, 122, 50, 0.16);
   background: rgba(244, 239, 233, 0.96);
+}
+
+:root[data-theme="light"] body.fintech-control-mode .modal-close {
+  border-color: rgba(182, 171, 154, 0.22);
+  color: #68748b;
+  background:
+    linear-gradient(180deg, rgba(255, 251, 246, 0.96), rgba(239, 233, 226, 0.92)),
+    rgba(246, 241, 235, 0.98);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -1px 0 rgba(188, 175, 158, 0.34),
+    0 10px 18px rgba(100, 89, 74, 0.12);
 }
 
 :root[data-theme="light"] body.fintech-control-mode .product-stat-count {
