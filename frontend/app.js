@@ -1092,6 +1092,7 @@ function renderActiveCardDetail(device) {
   const cardNetwork = getCardNetwork(activeCard.number);
   const cardFlipped = isCardFlipped(device.id, activeCard.id);
   const flipLabel = cardFlipped ? "Mostrar frente de la tarjeta" : "Mostrar actividad acumulada";
+  const sensitiveAction = sensitiveVisible ? "lock-sensitive" : "unlock-sensitive";
 
   return `
     <section class="cards-section cards-section-active">
@@ -1117,7 +1118,7 @@ function renderActiveCardDetail(device) {
                       <div class="card-face-wave" aria-hidden="true"></div>
                       <div class="card-face-top">
                         <span class="card-face-brand">KIDSTORE SECURE</span>
-                        <button class="card-visibility-button ${sensitiveVisible ? "is-open" : ""}" type="button" data-action="unlock-sensitive" data-device-id="${escapeHtml(device.id)}" title="${escapeHtml(unlockLabel)}" aria-label="${escapeHtml(unlockLabel)}">&#128065;</button>
+                        <button class="card-visibility-button ${sensitiveVisible ? "is-open" : ""}" type="button" data-action="${escapeHtml(sensitiveAction)}" data-device-id="${escapeHtml(device.id)}" title="${escapeHtml(unlockLabel)}" aria-label="${escapeHtml(unlockLabel)}">&#128065;</button>
                       </div>
                       <div class="card-network-slot">
                         ${renderCardNetworkMark(cardNetwork)}
@@ -1796,15 +1797,16 @@ document.addEventListener("click", async (event) => {
     return;
   }
 
+  if (action === "lock-sensitive") {
+    const deviceId = button.dataset.deviceId;
+    delete state.sensitiveUnlockedUntilByDevice[deviceId];
+    scheduleUnlockExpiryCheck();
+    render();
+    return;
+  }
+
   if (action === "unlock-sensitive") {
     const deviceId = button.dataset.deviceId;
-    if (isSensitiveUnlocked(deviceId)) {
-      delete state.sensitiveUnlockedUntilByDevice[deviceId];
-      scheduleUnlockExpiryCheck();
-      render();
-      return;
-    }
-
     openPinModal(deviceId);
     return;
   }

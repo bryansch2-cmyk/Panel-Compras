@@ -1652,6 +1652,8 @@ body.speeches-mode .sidebar {
 }
 
 .card-visibility-button {
+  position: relative;
+  z-index: 3;
   width: 34px;
   min-width: 34px;
   height: 34px;
