@@ -2483,12 +2483,12 @@ body.speeches-mode .sidebar {
 }
 
 :root[data-theme="light"] .brand-mark {
-  color: #24406e;
-  text-shadow: 0 10px 20px rgba(100, 89, 74, 0.08);
+  color: #1b2d4f;
+  text-shadow: 0 10px 20px rgba(100, 89, 74, 0.1);
 }
 
 :root[data-theme="light"] .kicker {
-  color: #5f6f8f;
+  color: #4e6287;
 }
 
 :root[data-theme="light"] .top-tabs {
@@ -2602,13 +2602,36 @@ body.speeches-mode .sidebar {
 
 :root[data-theme="light"] .device-item.active {
   border-color: rgba(170, 122, 50, 0.22);
-  background: rgba(241, 235, 227, 0.98);
+  background: rgba(232, 224, 214, 0.99);
+  color: #1d2e4c;
 }
 
 :root[data-theme="light"] .device-item.active .device-item-badge {
-  border-color: rgba(170, 122, 50, 0.18);
-  background: rgba(255, 248, 240, 0.72);
-  color: #1f2f4f;
+  border-color: rgba(170, 122, 50, 0.24);
+  background: rgba(255, 248, 240, 0.9);
+  color: #203458;
+}
+
+:root[data-theme="light"] .device-item.active strong,
+:root[data-theme="light"] .device-item.active b,
+:root[data-theme="light"] .device-item.active h3,
+:root[data-theme="light"] .device-item.active .device-item-title,
+:root[data-theme="light"] .device-item.active .device-item-name {
+  color: #1a2d4e;
+}
+
+:root[data-theme="light"] .device-item.active span,
+:root[data-theme="light"] .device-item.active small,
+:root[data-theme="light"] .device-item.active .device-item-stats span,
+:root[data-theme="light"] .device-item.active .device-profile-item span,
+:root[data-theme="light"] .device-item.active .device-profile-bank span {
+  color: rgba(38, 56, 89, 0.84);
+}
+
+:root[data-theme="light"] .device-item.active .device-profile-item,
+:root[data-theme="light"] .device-item.active .device-profile-bank {
+  background: rgba(245, 239, 232, 0.66);
+  border-color: rgba(170, 122, 50, 0.16);
 }
 
 :root[data-theme="light"] .device-expanded::before {
@@ -2746,7 +2769,13 @@ body.speeches-mode .sidebar {
 :root[data-theme="light"] .finance-balance-kicker,
 :root[data-theme="light"] .finance-balance-note,
 :root[data-theme="light"] .finance-balance-circle-label {
-  color: rgba(31, 47, 79, 0.82);
+  color: rgba(27, 45, 79, 0.9);
+}
+
+:root[data-theme="light"] .hero-action-button,
+:root[data-theme="light"] .summary-edit-button,
+:root[data-theme="light"] .meta-edit-button {
+  color: #1b2d4f;
 }
 
 :root[data-theme="light"] .finance-balance-circle {
