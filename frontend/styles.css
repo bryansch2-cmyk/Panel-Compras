@@ -1697,7 +1697,7 @@ body.speeches-mode .sidebar {
 
 .card-visibility-floating {
   position: absolute;
-  top: 16px;
+  top: 58px;
   right: 16px;
   z-index: 6;
 }
