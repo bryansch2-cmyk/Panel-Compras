@@ -1454,10 +1454,20 @@ body.speeches-mode .sidebar {
 
 .card-flip-face-front {
   transform: rotateY(0deg) translateZ(1px);
+  pointer-events: auto;
 }
 
 .card-flip-face-back {
   transform: rotateY(180deg) translateZ(1px);
+  pointer-events: none;
+}
+
+.card-flip-shell.is-flipped .card-flip-face-front {
+  pointer-events: none;
+}
+
+.card-flip-shell.is-flipped .card-flip-face-back {
+  pointer-events: auto;
 }
 
 .card-face {
