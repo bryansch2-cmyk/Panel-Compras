@@ -1111,39 +1111,41 @@ function renderActiveCardDetail(device) {
         <div class="selected-card-compact-layout">
           <div class="selected-card-primary">
             <div class="card-flip-stage">
-              <div class="card-flip-shell ${cardFlipped ? "is-flipped" : ""}">
-                <div class="card-flip-inner">
-                  <div class="card-flip-face card-flip-face-front">
-                    <div class="card-face card-face-network-${escapeHtml(cardNetwork || "generic")}">
-                      <div class="card-face-wave" aria-hidden="true"></div>
-                      <div class="card-face-top">
-                        <span class="card-face-brand">KIDSTORE SECURE</span>
-                        <button class="card-visibility-button ${sensitiveVisible ? "is-open" : ""}" type="button" data-action="${escapeHtml(sensitiveAction)}" data-device-id="${escapeHtml(device.id)}" title="${escapeHtml(unlockLabel)}" aria-label="${escapeHtml(unlockLabel)}">&#128065;</button>
-                      </div>
-                      <div class="card-network-slot">
-                        ${renderCardNetworkMark(cardNetwork)}
-                      </div>
-                      <h3 class="card-number">${escapeHtml(numberText)}</h3>
-                      <div class="card-face-detail-grid">
-                        <div class="card-face-detail">
-                          <span>MM/YY</span>
-                          <strong>${escapeHtml(activeCard.expiry || "--")}</strong>
+              <div class="card-flip-frame">
+                <div class="card-flip-shell ${cardFlipped ? "is-flipped" : ""}">
+                  <div class="card-flip-inner">
+                    <div class="card-flip-face card-flip-face-front">
+                      <div class="card-face card-face-network-${escapeHtml(cardNetwork || "generic")}">
+                        <div class="card-face-wave" aria-hidden="true"></div>
+                        <div class="card-face-top">
+                          <span class="card-face-brand">KIDSTORE SECURE</span>
                         </div>
-                        <div class="card-face-detail">
-                          <span>CVV</span>
-                          <strong>${escapeHtml(cvvText)}</strong>
+                        <div class="card-network-slot">
+                          ${renderCardNetworkMark(cardNetwork)}
                         </div>
-                        <div class="card-face-detail">
-                          <span>Creada</span>
-                          <strong>${escapeHtml(formatDate(activeCard.createdAt))}</strong>
+                        <h3 class="card-number">${escapeHtml(numberText)}</h3>
+                        <div class="card-face-detail-grid">
+                          <div class="card-face-detail">
+                            <span>MM/YY</span>
+                            <strong>${escapeHtml(activeCard.expiry || "--")}</strong>
+                          </div>
+                          <div class="card-face-detail">
+                            <span>CVV</span>
+                            <strong>${escapeHtml(cvvText)}</strong>
+                          </div>
+                          <div class="card-face-detail">
+                            <span>Creada</span>
+                            <strong>${escapeHtml(formatDate(activeCard.createdAt))}</strong>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="card-flip-face card-flip-face-back">
-                    ${renderCardActivityBack(activeCard, confirmedPurchaseLabel)}
+                    <div class="card-flip-face card-flip-face-back">
+                      ${renderCardActivityBack(activeCard, confirmedPurchaseLabel)}
+                    </div>
                   </div>
                 </div>
+                <button class="card-visibility-button card-visibility-floating ${sensitiveVisible ? "is-open" : ""}" type="button" data-action="${escapeHtml(sensitiveAction)}" data-device-id="${escapeHtml(device.id)}" title="${escapeHtml(unlockLabel)}" aria-label="${escapeHtml(unlockLabel)}">&#128065;</button>
               </div>
 
               <button class="card-flip-toggle ${cardFlipped ? "is-active-toggle" : ""}" type="button" data-action="toggle-card-flip" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="${escapeHtml(flipLabel)}" aria-label="${escapeHtml(flipLabel)}">&#8646;</button>

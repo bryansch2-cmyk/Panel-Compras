@@ -1419,6 +1419,11 @@ body.speeches-mode .sidebar {
   align-items: start;
 }
 
+.card-flip-frame {
+  position: relative;
+  min-width: 0;
+}
+
 .card-flip-shell {
   position: relative;
   width: 100%;
@@ -1676,6 +1681,13 @@ body.speeches-mode .sidebar {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.18),
     0 8px 16px rgba(0, 0, 0, 0.14);
+}
+
+.card-visibility-floating {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 6;
 }
 
 .card-visibility-button.is-open {
