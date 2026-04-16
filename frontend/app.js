@@ -1254,13 +1254,13 @@ function renderControlTab() {
             </div>
           </div>
 
-          ${renderHistoryLaunchers(device)}
           ${renderActiveCardDetail(device)}
           ${renderActiveProductStats(device, activeCard, isManualCooldown, isRejectedHold, rejectedUntil, manualCooldownUntil)}
         </div>
 
         <aside class="dashboard-side-column">
           ${renderCardCycle(device)}
+          ${renderHistoryLaunchers(device)}
         </aside>
       </div>
     </div>
