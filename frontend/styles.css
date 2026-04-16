@@ -45,32 +45,32 @@
 
 :root[data-theme="light"] {
   color-scheme: light;
-  --bg: #edf1f5;
-  --panel: rgba(252, 253, 255, 0.94);
-  --panel-soft: rgba(242, 245, 250, 0.9);
-  --surface: rgba(251, 252, 255, 0.94);
-  --surface-soft: rgba(242, 245, 250, 0.9);
-  --surface-strong: rgba(255, 255, 255, 0.98);
-  --surface-frost: rgba(246, 248, 252, 0.92);
-  --panel-tint: linear-gradient(180deg, rgba(175, 188, 208, 0.1), rgba(253, 252, 249, 0.99));
-  --line: rgba(167, 131, 67, 0.2);
-  --line-hot: rgba(92, 169, 150, 0.28);
-  --text: #1f2b39;
-  --muted: #5f6d7f;
-  --accent: #476988;
-  --green: #2f8a77;
-  --red: #a56570;
-  --gold: #aa7a32;
-  --panel-info: rgba(247, 249, 252, 0.94);
-  --panel-highlight: rgba(244, 247, 251, 0.94);
-  --panel-active-device: rgba(217, 232, 243, 0.9);
-  --section-recharge: rgba(246, 248, 252, 0.96);
-  --section-recharge-soft: rgba(237, 242, 248, 0.92);
-  --section-card: rgba(246, 248, 252, 0.96);
-  --section-card-soft: rgba(233, 239, 246, 0.92);
-  --section-cycle: rgba(248, 246, 241, 0.96);
-  --section-cycle-soft: rgba(221, 205, 173, 0.34);
-  --shadow: 0 20px 40px rgba(72, 92, 120, 0.12);
+  --bg: #efebe4;
+  --panel: rgba(251, 248, 243, 0.95);
+  --panel-soft: rgba(240, 235, 228, 0.92);
+  --surface: rgba(248, 244, 238, 0.95);
+  --surface-soft: rgba(238, 233, 226, 0.9);
+  --surface-strong: rgba(255, 252, 247, 0.98);
+  --surface-frost: rgba(244, 239, 233, 0.94);
+  --panel-tint: linear-gradient(180deg, rgba(192, 176, 151, 0.14), rgba(249, 245, 239, 0.99));
+  --line: rgba(168, 137, 87, 0.22);
+  --line-hot: rgba(128, 146, 131, 0.22);
+  --text: #2f3338;
+  --muted: #706c67;
+  --accent: #727069;
+  --green: #647563;
+  --red: #8c5e63;
+  --gold: #a97b39;
+  --panel-info: rgba(245, 240, 233, 0.95);
+  --panel-highlight: rgba(238, 233, 226, 0.96);
+  --panel-active-device: rgba(225, 220, 213, 0.94);
+  --section-recharge: rgba(245, 240, 233, 0.96);
+  --section-recharge-soft: rgba(236, 230, 223, 0.93);
+  --section-card: rgba(244, 239, 233, 0.96);
+  --section-card-soft: rgba(233, 227, 220, 0.93);
+  --section-cycle: rgba(247, 242, 236, 0.96);
+  --section-cycle-soft: rgba(208, 188, 154, 0.32);
+  --shadow: 0 20px 40px rgba(92, 84, 74, 0.12);
 }
 
 * {
@@ -98,10 +98,10 @@ body.is-loading {
 
 :root[data-theme="light"] body {
   background:
-    radial-gradient(circle at top left, rgba(150, 166, 196, 0.18), transparent 26%),
+    radial-gradient(circle at top left, rgba(188, 181, 170, 0.18), transparent 26%),
     radial-gradient(circle at top right, rgba(214, 184, 124, 0.12), transparent 24%),
-    radial-gradient(circle at bottom right, rgba(164, 181, 204, 0.14), transparent 26%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.72), transparent 26%),
+    radial-gradient(circle at bottom right, rgba(171, 166, 160, 0.14), transparent 26%),
+    linear-gradient(180deg, rgba(255, 251, 246, 0.74), transparent 26%),
     var(--bg);
 }
 
@@ -1485,12 +1485,12 @@ body.speeches-mode .sidebar {
   border: 1px solid rgba(201, 163, 92, 0.28);
   border-radius: 28px;
   background:
-    radial-gradient(circle at 16% 12%, rgba(255, 255, 255, 0.42), transparent 24%),
-    linear-gradient(145deg, rgba(222, 229, 235, 0.98), rgba(176, 186, 197, 0.98) 42%, rgba(120, 132, 145, 0.98) 78%, rgba(89, 101, 115, 0.98));
+    radial-gradient(circle at 16% 12%, rgba(255, 255, 255, 0.3), transparent 22%),
+    linear-gradient(145deg, rgba(197, 206, 214, 0.98), rgba(132, 145, 157, 0.98) 42%, rgba(80, 92, 107, 0.98) 78%, rgba(50, 60, 74, 0.98));
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.54),
-    inset 0 -1px 0 rgba(63, 72, 86, 0.24),
-    0 18px 34px rgba(0, 0, 0, 0.18);
+    inset 0 1px 0 rgba(255, 255, 255, 0.34),
+    inset 0 -1px 0 rgba(22, 30, 40, 0.38),
+    0 18px 34px rgba(0, 0, 0, 0.24);
   position: relative;
   overflow: hidden;
 }
@@ -1568,8 +1568,8 @@ body.speeches-mode .sidebar {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(120deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.08) 18%, transparent 34%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 42%);
+    linear-gradient(120deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.05) 18%, transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 42%);
   pointer-events: none;
 }
 
@@ -1577,9 +1577,9 @@ body.speeches-mode .sidebar {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(110% 78% at 100% 100%, rgba(20, 45, 68, 0.34) 0%, rgba(20, 45, 68, 0.2) 28%, transparent 62%),
-    radial-gradient(96% 58% at 102% 96%, transparent 0 38%, rgba(246, 233, 201, 0.28) 39%, rgba(246, 233, 201, 0.1) 40%, transparent 41%, transparent 49%, rgba(255, 255, 255, 0.16) 50%, rgba(255, 255, 255, 0.05) 51%, transparent 52%, transparent 60%, rgba(255, 255, 255, 0.1) 61%, rgba(255, 255, 255, 0.03) 62%, transparent 63%),
-    linear-gradient(180deg, transparent 58%, rgba(15, 32, 52, 0.18) 100%);
+    radial-gradient(110% 78% at 100% 100%, rgba(12, 28, 44, 0.42) 0%, rgba(12, 28, 44, 0.28) 30%, transparent 64%),
+    radial-gradient(96% 58% at 102% 96%, transparent 0 38%, rgba(233, 215, 177, 0.2) 39%, rgba(233, 215, 177, 0.08) 40%, transparent 41%, transparent 49%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0.03) 51%, transparent 52%, transparent 60%, rgba(255, 255, 255, 0.07) 61%, rgba(255, 255, 255, 0.02) 62%, transparent 63%),
+    linear-gradient(180deg, transparent 54%, rgba(10, 22, 36, 0.24) 100%);
   pointer-events: none;
 }
 
@@ -1677,7 +1677,7 @@ body.speeches-mode .sidebar {
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.12em;
-  color: #111820;
+  color: #f4f7fb;
 }
 
 .card-face-meta {
@@ -2601,24 +2601,24 @@ body.speeches-mode .sidebar {
 :root[data-theme="light"] .cards-section-products {
   border-color: rgba(170, 122, 50, 0.16);
   background:
-    linear-gradient(135deg, rgba(214, 184, 124, 0.12), transparent 46%),
-    linear-gradient(180deg, rgba(252, 253, 255, 0.98), rgba(240, 244, 248, 0.94));
+    linear-gradient(135deg, rgba(206, 187, 151, 0.14), transparent 46%),
+    linear-gradient(180deg, rgba(252, 248, 242, 0.98), rgba(234, 229, 223, 0.95));
 }
 
 :root[data-theme="light"] .card-face {
   border-color: rgba(170, 122, 50, 0.2);
   background:
-    radial-gradient(circle at top left, rgba(255, 255, 255, 0.62), transparent 28%),
-    linear-gradient(150deg, rgba(244, 247, 250, 0.98), rgba(204, 211, 220, 0.96) 50%, rgba(145, 155, 169, 0.96)),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(243, 246, 250, 0.94));
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.42), transparent 26%),
+    linear-gradient(150deg, rgba(228, 222, 214, 0.98), rgba(182, 178, 173, 0.96) 48%, rgba(116, 119, 124, 0.96)),
+    linear-gradient(180deg, rgba(249, 245, 239, 0.96), rgba(230, 225, 219, 0.94));
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.64),
-    inset 0 -1px 0 rgba(122, 99, 52, 0.14),
-    0 18px 34px rgba(79, 112, 146, 0.1);
+    inset 0 1px 0 rgba(255, 255, 255, 0.54),
+    inset 0 -1px 0 rgba(104, 90, 67, 0.16),
+    0 18px 34px rgba(100, 89, 74, 0.12);
 }
 
 :root[data-theme="light"] .card-face-brand {
-  color: #111820;
+  color: #2c3136;
 }
 
 :root[data-theme="light"] .card-visibility-button,
@@ -2635,19 +2635,19 @@ body.speeches-mode .sidebar {
 }
 
 :root[data-theme="light"] .card-face-detail span {
-  color: rgba(243, 247, 255, 0.76);
+  color: rgba(255, 251, 246, 0.82);
 }
 
 :root[data-theme="light"] .card-face-detail strong,
 :root[data-theme="light"] .card-number {
-  color: #f8fbff;
+  color: #fffdfa;
 }
 
 :root[data-theme="light"] .finance-balance-card {
   background:
     radial-gradient(circle at 16% 28%, rgba(255, 255, 255, 0.18), transparent 16%),
-    radial-gradient(circle at 84% 26%, rgba(255, 255, 255, 0.16), transparent 14%),
-    linear-gradient(145deg, #8d92ff, #6b72ff 56%, #545ef1);
+    radial-gradient(circle at 84% 26%, rgba(255, 255, 255, 0.14), transparent 14%),
+    linear-gradient(145deg, #92857a, #6d6761 56%, #4c4e53);
 }
 
 :root[data-theme="light"] .finance-balance-kicker,
@@ -2697,36 +2697,38 @@ body.speeches-mode .sidebar {
 :root[data-theme="light"] .info-tile,
 :root[data-theme="light"] .card-mini {
   border-color: rgba(170, 122, 50, 0.14);
-  background: rgba(250, 252, 255, 0.98);
+  background:
+    linear-gradient(180deg, rgba(255, 251, 246, 0.94), rgba(236, 231, 224, 0.9)),
+    rgba(250, 247, 242, 0.98);
 }
 
 :root[data-theme="light"] .purchase-summary-card {
   border-color: rgba(170, 122, 50, 0.16);
   background:
-    linear-gradient(135deg, rgba(214, 184, 124, 0.08), transparent 42%),
-    linear-gradient(180deg, rgba(252, 253, 255, 0.98), rgba(239, 243, 248, 0.95));
+    linear-gradient(135deg, rgba(205, 186, 153, 0.1), transparent 42%),
+    linear-gradient(180deg, rgba(252, 248, 242, 0.98), rgba(232, 227, 220, 0.95));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.78),
-    0 16px 28px rgba(69, 96, 129, 0.08);
+    0 16px 28px rgba(100, 89, 74, 0.08);
 }
 
 :root[data-theme="light"] .purchase-summary-card .summary-kicker,
 :root[data-theme="light"] .purchase-summary-card .card-activity-item span {
-  color: #5d6c7f;
+  color: #6e6962;
 }
 
 :root[data-theme="light"] .purchase-summary-card .card-activity-total,
 :root[data-theme="light"] .purchase-summary-card .card-activity-item strong {
-  color: #223041;
+  color: #2f3338;
   text-shadow: none;
 }
 
 :root[data-theme="light"] .purchase-summary-card .card-activity-item {
   border-color: rgba(170, 122, 50, 0.12);
-  background: rgba(255, 255, 255, 0.76);
+  background: rgba(255, 251, 246, 0.76);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.72),
-    0 10px 16px rgba(69, 96, 129, 0.05);
+    0 10px 16px rgba(100, 89, 74, 0.05);
 }
 
 :root[data-theme="light"] .info-tile,
@@ -2735,7 +2737,7 @@ body.speeches-mode .sidebar {
 :root[data-theme="light"] .product-stat {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.72),
-    0 12px 22px rgba(69, 96, 129, 0.06);
+    0 12px 22px rgba(100, 89, 74, 0.06);
 }
 
 :root[data-theme="light"] .device-item strong,
@@ -2748,7 +2750,7 @@ body.speeches-mode .sidebar {
 :root[data-theme="light"] .card-mini span,
 :root[data-theme="light"] .card-mini .card-label,
 :root[data-theme="light"] .card-mini .status-pill {
-  color: #233142;
+  color: #303439;
 }
 
 :root[data-theme="light"] .device-item span,
@@ -2756,75 +2758,75 @@ body.speeches-mode .sidebar {
 :root[data-theme="light"] .history-item span,
 :root[data-theme="light"] .history-launcher h3 + p,
 :root[data-theme="light"] .section-row p {
-  color: #5e6d7f;
+  color: #706b65;
 }
 
 :root[data-theme="light"] .product-stat-epic {
   background:
-    linear-gradient(135deg, rgba(126, 194, 218, 0.16), transparent 48%),
-    rgba(245, 249, 250, 0.94);
+    linear-gradient(135deg, rgba(191, 197, 202, 0.18), transparent 48%),
+    rgba(247, 243, 238, 0.94);
 }
 
 :root[data-theme="light"] .product-stat-xbox {
   background:
-    linear-gradient(135deg, rgba(99, 199, 178, 0.14), transparent 48%),
-    rgba(245, 249, 250, 0.94);
+    linear-gradient(135deg, rgba(162, 174, 160, 0.16), transparent 48%),
+    rgba(247, 243, 238, 0.94);
 }
 
 :root[data-theme="light"] .product-stat-nitro,
 :root[data-theme="light"] .product-stat-nitroYear {
   background:
-    linear-gradient(135deg, rgba(214, 168, 95, 0.14), transparent 48%),
-    rgba(245, 249, 250, 0.94);
+    linear-gradient(135deg, rgba(214, 184, 124, 0.14), transparent 48%),
+    rgba(247, 243, 238, 0.94);
 }
 
 :root[data-theme="light"] .product-stat-custom {
   background:
-    linear-gradient(135deg, rgba(212, 168, 156, 0.08), transparent 44%),
-    rgba(245, 249, 250, 0.94);
+    linear-gradient(135deg, rgba(173, 155, 151, 0.12), transparent 44%),
+    rgba(247, 243, 238, 0.94);
 }
 
 :root[data-theme="light"] .history-item,
 :root[data-theme="light"] .history-launcher {
   background:
-    linear-gradient(135deg, rgba(105, 130, 119, 0.1), transparent 55%),
-    rgba(246, 249, 251, 0.94);
+    linear-gradient(135deg, rgba(196, 187, 172, 0.12), transparent 55%),
+    rgba(247, 243, 238, 0.94);
 }
 
 :root[data-theme="light"] .modal-backdrop {
-  background: rgba(193, 208, 226, 0.28);
+  background: rgba(176, 167, 154, 0.24);
 }
 
 :root[data-theme="light"] .modal-card {
   background:
-    linear-gradient(180deg, rgba(250, 252, 253, 0.97), rgba(235, 240, 244, 0.94)),
-    rgba(255, 255, 255, 0.92);
+    linear-gradient(180deg, rgba(252, 248, 242, 0.97), rgba(233, 227, 220, 0.94)),
+    rgba(255, 251, 246, 0.92);
   box-shadow:
-    0 26px 54px rgba(79, 112, 146, 0.16),
+    0 26px 54px rgba(100, 89, 74, 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  border-color: rgba(105, 130, 119, 0.14);
+  border-color: rgba(167, 143, 103, 0.16);
 }
 
 :root[data-theme="light"] .meta-strip span,
 :root[data-theme="light"] .history-icon-button,
 :root[data-theme="light"] .badge,
 :root[data-theme="light"] .readonly-chip {
-  background: rgba(239, 244, 246, 0.96);
-  border-color: color-mix(in srgb, var(--gold) 26%, rgba(137, 164, 192, 0.18));
+  background: rgba(244, 239, 233, 0.96);
+  border-color: color-mix(in srgb, var(--gold) 26%, rgba(176, 165, 150, 0.18));
 }
 
 :root[data-theme="light"] .history-icon-button,
 :root[data-theme="light"] .inline-actions button,
 :root[data-theme="light"] .product-counter button,
 :root[data-theme="light"] .compact-icon-button {
-  border-color: rgba(137, 164, 192, 0.22);
+  border-color: rgba(182, 171, 154, 0.22);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(249, 251, 253, 0.86) 44%, rgba(229, 236, 243, 0.94)),
-    rgba(244, 248, 251, 0.96);
+    linear-gradient(180deg, rgba(255, 251, 246, 0.92), rgba(249, 244, 238, 0.86) 44%, rgba(230, 223, 214, 0.94)),
+    rgba(244, 239, 233, 0.96);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    inset 0 -1px 0 rgba(177, 193, 209, 0.46),
-    0 8px 14px rgba(79, 112, 146, 0.12);
+    inset 0 -1px 0 rgba(188, 175, 158, 0.46),
+    0 8px 14px rgba(100, 89, 74, 0.12);
 }
 
 :root[data-theme="light"] .history-icon-button:hover,
@@ -2835,30 +2837,30 @@ body.speeches-mode .sidebar {
 :root[data-theme="light"] .inline-actions button:focus-visible,
 :root[data-theme="light"] .product-counter button:focus-visible,
 :root[data-theme="light"] .compact-icon-button:focus-visible {
-  border-color: rgba(116, 150, 182, 0.28);
+  border-color: rgba(160, 145, 118, 0.28);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.94),
-    inset 0 -1px 0 rgba(177, 193, 209, 0.34),
-    0 10px 16px rgba(79, 112, 146, 0.16);
+    inset 0 -1px 0 rgba(188, 175, 158, 0.34),
+    0 10px 16px rgba(100, 89, 74, 0.16);
 }
 
 :root[data-theme="light"] .meta-edit-button {
   border-color: rgba(105, 130, 119, 0.16);
   background:
-    linear-gradient(180deg, rgba(250, 252, 253, 0.98), rgba(232, 238, 241, 0.94)),
-    rgba(241, 245, 248, 0.98);
+    linear-gradient(180deg, rgba(255, 251, 246, 0.98), rgba(232, 225, 217, 0.94)),
+    rgba(243, 237, 230, 0.98);
 }
 
 :root[data-theme="light"] .device-note-flag {
-  background: rgba(214, 184, 124, 0.16);
-  border-color: rgba(191, 151, 78, 0.22);
-  color: #8d6830;
+  background: rgba(219, 198, 158, 0.22);
+  border-color: rgba(173, 141, 82, 0.22);
+  color: #7a5f34;
 }
 
 :root[data-theme="light"] .device-low-flag {
-  background: rgba(212, 168, 156, 0.18);
-  border-color: rgba(180, 126, 112, 0.2);
-  color: #8f5648;
+  background: linear-gradient(180deg, rgba(203, 186, 183, 0.24), rgba(186, 164, 160, 0.18));
+  border-color: rgba(145, 108, 108, 0.2);
+  color: #7c5055;
 }
 
 :root[data-theme="light"] .device-note-dot {
@@ -2867,8 +2869,8 @@ body.speeches-mode .sidebar {
 }
 
 :root[data-theme="light"] .device-low-dot {
-  background: #b46d5f;
-  box-shadow: 0 0 0 4px rgba(180, 126, 112, 0.12);
+  background: #986267;
+  box-shadow: 0 0 0 4px rgba(145, 108, 108, 0.12);
 }
 
 :root[data-theme="light"] .inline-actions .icon-action.has-note {
@@ -2896,9 +2898,9 @@ body.speeches-mode .sidebar {
 }
 
 :root[data-theme="light"] .status-pill.danger {
-  background: rgba(212, 168, 156, 0.18);
-  border-color: rgba(180, 126, 112, 0.2);
-  color: #8f5648;
+  background: linear-gradient(180deg, rgba(206, 187, 184, 0.26), rgba(188, 165, 161, 0.2));
+  border-color: rgba(145, 108, 108, 0.2);
+  color: #7c5055;
 }
 
 :root[data-theme="light"] .status-pill.cooldown {
@@ -2915,21 +2917,21 @@ body.speeches-mode .sidebar {
 }
 
 :root[data-theme="light"] .status-pill.rejection-hold {
-  background: rgba(212, 168, 156, 0.18);
-  border-color: rgba(180, 126, 112, 0.2);
-  color: #8f5648;
+  background: linear-gradient(180deg, rgba(206, 187, 184, 0.26), rgba(188, 165, 161, 0.2));
+  border-color: rgba(145, 108, 108, 0.2);
+  color: #7c5055;
 }
 
 :root[data-theme="light"] .status-pill.low-balance {
-  background: rgba(212, 168, 156, 0.18);
-  border-color: rgba(180, 126, 112, 0.2);
-  color: #8f5648;
+  background: linear-gradient(180deg, rgba(206, 187, 184, 0.26), rgba(188, 165, 161, 0.2));
+  border-color: rgba(145, 108, 108, 0.2);
+  color: #7c5055;
 }
 
 :root[data-theme="light"] .note-highlight {
   background:
-    linear-gradient(135deg, rgba(214, 184, 124, 0.12), transparent 42%),
-    rgba(255, 255, 255, 0.94);
+    linear-gradient(135deg, rgba(212, 195, 165, 0.14), transparent 42%),
+    rgba(255, 251, 246, 0.94);
   border-color: rgba(191, 151, 78, 0.2);
 }
 
@@ -2939,13 +2941,13 @@ body.speeches-mode .sidebar {
 }
 
 :root[data-theme="light"] .custom-amount-input {
-  background: rgba(255, 255, 255, 0.98);
+  background: rgba(255, 251, 246, 0.98);
 }
 
 :root[data-theme="light"] .account-card {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.72), transparent),
-    rgba(255, 255, 255, 0.94);
+    linear-gradient(180deg, rgba(255, 251, 246, 0.72), transparent),
+    rgba(248, 243, 237, 0.94);
 }
 
 :root[data-theme="light"] .accounts-summary-pill,
@@ -4231,19 +4233,19 @@ body.fintech-control-mode .card-face {
   min-height: 214px;
   align-content: space-between;
   background:
-    radial-gradient(circle at 16% 12%, rgba(255, 255, 255, 0.42), transparent 24%),
-    linear-gradient(145deg, rgba(222, 229, 235, 0.98), rgba(176, 186, 197, 0.98) 42%, rgba(120, 132, 145, 0.98) 78%, rgba(89, 101, 115, 0.98));
+    radial-gradient(circle at 16% 12%, rgba(255, 255, 255, 0.28), transparent 22%),
+    linear-gradient(145deg, rgba(196, 204, 212, 0.98), rgba(132, 145, 158, 0.98) 42%, rgba(79, 92, 107, 0.98) 78%, rgba(49, 60, 74, 0.98));
   box-shadow:
-    0 22px 34px rgba(0, 0, 0, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.54),
-    inset 0 -1px 0 rgba(63, 72, 86, 0.24);
+    0 22px 34px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.32),
+    inset 0 -1px 0 rgba(20, 29, 39, 0.4);
 }
 
 body.fintech-control-mode .card-face-wave {
   background:
-    radial-gradient(110% 78% at 100% 100%, rgba(20, 45, 68, 0.34) 0%, rgba(20, 45, 68, 0.2) 28%, transparent 62%),
-    radial-gradient(96% 58% at 102% 96%, transparent 0 38%, rgba(246, 233, 201, 0.28) 39%, rgba(246, 233, 201, 0.1) 40%, transparent 41%, transparent 49%, rgba(255, 255, 255, 0.16) 50%, rgba(255, 255, 255, 0.05) 51%, transparent 52%, transparent 60%, rgba(255, 255, 255, 0.1) 61%, rgba(255, 255, 255, 0.03) 62%, transparent 63%),
-    linear-gradient(180deg, transparent 58%, rgba(15, 32, 52, 0.18) 100%);
+    radial-gradient(110% 78% at 100% 100%, rgba(12, 28, 44, 0.44) 0%, rgba(12, 28, 44, 0.3) 30%, transparent 64%),
+    radial-gradient(96% 58% at 102% 96%, transparent 0 38%, rgba(233, 215, 177, 0.2) 39%, rgba(233, 215, 177, 0.08) 40%, transparent 41%, transparent 49%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0.03) 51%, transparent 52%, transparent 60%, rgba(255, 255, 255, 0.07) 61%, rgba(255, 255, 255, 0.02) 62%, transparent 63%),
+    linear-gradient(180deg, transparent 54%, rgba(10, 22, 36, 0.24) 100%);
 }
 
 body.fintech-control-mode .card-face-brand,
