@@ -55,9 +55,9 @@
   --panel-tint: linear-gradient(180deg, rgba(192, 176, 151, 0.14), rgba(249, 245, 239, 0.99));
   --line: rgba(168, 137, 87, 0.22);
   --line-hot: rgba(128, 146, 131, 0.22);
-  --text: #2f3338;
-  --muted: #706c67;
-  --accent: #727069;
+  --text: #1f2f4f;
+  --muted: #5f6f8f;
+  --accent: #31456f;
   --green: #647563;
   --red: #8c5e63;
   --gold: #a97b39;
@@ -98,10 +98,10 @@ body.is-loading {
 
 :root[data-theme="light"] body {
   background:
-    radial-gradient(circle at top left, rgba(188, 181, 170, 0.18), transparent 26%),
-    radial-gradient(circle at top right, rgba(214, 184, 124, 0.12), transparent 24%),
-    radial-gradient(circle at bottom right, rgba(171, 166, 160, 0.14), transparent 26%),
-    linear-gradient(180deg, rgba(255, 251, 246, 0.74), transparent 26%),
+    radial-gradient(circle at top left, rgba(218, 213, 205, 0.22), transparent 26%),
+    radial-gradient(circle at top right, rgba(214, 184, 124, 0.1), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(208, 203, 197, 0.16), transparent 26%),
+    linear-gradient(180deg, rgba(255, 252, 248, 0.82), transparent 26%),
     var(--bg);
 }
 
@@ -2427,49 +2427,82 @@ body.speeches-mode .sidebar {
 :root[data-theme="light"] .selected-card,
 :root[data-theme="light"] .history-launcher {
   border-color: rgba(170, 122, 50, 0.18);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(244, 247, 251, 0.96));
+  background: linear-gradient(180deg, rgba(255, 252, 248, 0.99), rgba(243, 238, 232, 0.96));
   box-shadow:
-    0 20px 40px rgba(69, 96, 129, 0.08),
+    0 20px 40px rgba(100, 89, 74, 0.08),
     0 0 0 1px rgba(170, 122, 50, 0.06);
 }
 
 :root[data-theme="light"] .device-item.active,
 :root[data-theme="light"] .selected-card,
 :root[data-theme="light"] .used-summary-card {
-  box-shadow: 0 18px 34px rgba(79, 112, 146, 0.12);
+  box-shadow: 0 18px 34px rgba(100, 89, 74, 0.12);
 }
 
 :root[data-theme="light"] .hero {
   background:
-    linear-gradient(135deg, rgba(123, 148, 136, 0.12), transparent 42%),
-    linear-gradient(180deg, rgba(248, 250, 252, 0.96), rgba(230, 236, 240, 0.94));
-  border-color: rgba(105, 130, 119, 0.14);
+    linear-gradient(135deg, rgba(214, 201, 183, 0.16), transparent 42%),
+    linear-gradient(180deg, rgba(255, 252, 248, 0.98), rgba(239, 234, 227, 0.94));
+  border-color: rgba(167, 143, 103, 0.14);
+}
+
+:root[data-theme="light"] .top-tabs {
+  background: rgba(241, 236, 230, 0.94);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.86),
+    0 12px 22px rgba(100, 89, 74, 0.08);
+}
+
+:root[data-theme="light"] .top-tab {
+  background: rgba(255, 252, 248, 0.54);
+  border-color: rgba(170, 122, 50, 0.08);
+}
+
+:root[data-theme="light"] .top-tab.active {
+  background:
+    linear-gradient(180deg, rgba(255, 252, 248, 0.98), rgba(234, 229, 223, 0.94)),
+    rgba(247, 242, 236, 0.96);
+  border-color: rgba(170, 122, 50, 0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    0 10px 16px rgba(100, 89, 74, 0.1);
+}
+
+:root[data-theme="light"] .actions > button {
+  border-color: rgba(170, 122, 50, 0.18);
+  background:
+    linear-gradient(180deg, rgba(255, 252, 248, 0.98), rgba(232, 227, 220, 0.94)),
+    rgba(247, 242, 236, 0.96);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -1px 0 rgba(188, 175, 158, 0.3),
+    0 10px 16px rgba(100, 89, 74, 0.1);
 }
 
 :root[data-theme="light"] .notice-strip {
-  border-color: rgba(115, 146, 182, 0.16);
+  border-color: rgba(167, 143, 103, 0.16);
   background:
-    linear-gradient(135deg, rgba(140, 175, 204, 0.14), transparent 42%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(245, 248, 251, 0.96));
+    linear-gradient(135deg, rgba(221, 214, 203, 0.14), transparent 42%),
+    linear-gradient(180deg, rgba(255, 252, 248, 0.98), rgba(246, 241, 235, 0.96));
 }
 
 :root[data-theme="light"] .notice-strip::before {
-  background: linear-gradient(90deg, rgba(237, 244, 247, 0.96), transparent);
+  background: linear-gradient(90deg, rgba(247, 242, 236, 0.96), transparent);
 }
 
 :root[data-theme="light"] .notice-strip::after {
-  background: linear-gradient(270deg, rgba(237, 244, 247, 0.96), transparent);
+  background: linear-gradient(270deg, rgba(247, 242, 236, 0.96), transparent);
 }
 
 :root[data-theme="light"] .notice-pill {
   border-color: rgba(137, 164, 192, 0.16);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(247, 250, 253, 0.9)),
-    rgba(250, 252, 253, 0.96);
-  color: #516477;
+    linear-gradient(180deg, rgba(255, 252, 248, 0.94), rgba(247, 241, 235, 0.9)),
+    rgba(250, 246, 241, 0.96);
+  color: #4f6289;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.94),
-    0 8px 16px rgba(79, 112, 146, 0.08);
+    0 8px 16px rgba(100, 89, 74, 0.08);
 }
 
 :root[data-theme="light"] .notice-pill-recommendation .notice-pill-icon {
@@ -2516,85 +2549,85 @@ body.speeches-mode .sidebar {
 :root[data-theme="light"] .device-item {
   border-color: rgba(170, 122, 50, 0.16);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(241, 245, 249, 0.94)),
-    rgba(255, 255, 255, 0.9);
+    linear-gradient(180deg, rgba(255, 252, 248, 0.98), rgba(239, 234, 227, 0.94)),
+    rgba(255, 251, 246, 0.92);
 }
 
 :root[data-theme="light"] .device-profile-item {
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 251, 246, 0.92);
 }
 
 :root[data-theme="light"] .device-item.active {
-  border-color: rgba(47, 138, 119, 0.26);
+  border-color: rgba(170, 122, 50, 0.22);
   background:
-    linear-gradient(135deg, rgba(147, 204, 224, 0.28), rgba(211, 236, 244, 0.98)),
+    linear-gradient(135deg, rgba(223, 214, 200, 0.26), rgba(255, 252, 248, 0.98)),
     var(--panel-active-device);
 }
 
 :root[data-theme="light"] .device-item.active .device-item-badge {
-  border-color: rgba(47, 138, 119, 0.2);
-  background: rgba(47, 138, 119, 0.12);
-  color: #256d5e;
+  border-color: rgba(170, 122, 50, 0.18);
+  background: rgba(255, 248, 240, 0.72);
+  color: #1f2f4f;
 }
 
 :root[data-theme="light"] .device-expanded::before {
-  background: linear-gradient(90deg, rgba(191, 151, 78, 0.82), rgba(129, 156, 138, 0.24), transparent 82%);
+  background: linear-gradient(90deg, rgba(191, 151, 78, 0.7), rgba(214, 201, 183, 0.3), transparent 82%);
 }
 
 :root[data-theme="light"] .device-profile-bank {
   background:
-    linear-gradient(135deg, rgba(214, 184, 124, 0.14), transparent 48%),
-    rgba(255, 255, 255, 0.94);
+    linear-gradient(135deg, rgba(214, 184, 124, 0.12), transparent 48%),
+    rgba(255, 251, 246, 0.94);
   border-color: rgba(191, 151, 78, 0.18);
 }
 
 :root[data-theme="light"] .sidebar .panel-head {
   background:
-    linear-gradient(180deg, rgba(250, 252, 253, 0.98), rgba(236, 242, 245, 0.9));
-  border-bottom-color: rgba(105, 130, 119, 0.12);
+    linear-gradient(180deg, rgba(255, 252, 248, 0.98), rgba(241, 236, 230, 0.9));
+  border-bottom-color: rgba(167, 143, 103, 0.12);
 }
 
 :root[data-theme="light"] .inline-actions {
-  background: rgba(236, 243, 251, 0.9);
+  background: rgba(246, 241, 235, 0.9);
 }
 
 :root[data-theme="light"] .selected-card-head {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(244, 248, 252, 0.88));
+    linear-gradient(180deg, rgba(255, 252, 248, 0.72), rgba(244, 239, 233, 0.88));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.5),
-    0 12px 24px rgba(79, 112, 146, 0.06);
+    0 12px 24px rgba(100, 89, 74, 0.06);
 }
 
 :root[data-theme="light"] .control-actions-grid {
-  border-color: rgba(115, 146, 182, 0.16);
+  border-color: rgba(167, 143, 103, 0.16);
   background:
-    linear-gradient(135deg, rgba(140, 175, 204, 0.16), transparent 46%),
+    linear-gradient(135deg, rgba(220, 212, 201, 0.16), transparent 46%),
     linear-gradient(180deg, var(--section-recharge-soft), var(--section-recharge));
 }
 
 :root[data-theme="light"] .control-actions-grid > .action-card {
   background:
-    linear-gradient(180deg, rgba(250, 252, 253, 0.84), rgba(234, 240, 244, 0.94)),
-    rgba(247, 250, 252, 0.92);
+    linear-gradient(180deg, rgba(255, 252, 248, 0.84), rgba(237, 231, 224, 0.94)),
+    rgba(248, 243, 237, 0.92);
 }
 
 :root[data-theme="light"] .control-actions-grid > .action-card:first-child {
   background:
-    linear-gradient(135deg, rgba(124, 158, 145, 0.12), transparent 44%),
-    rgba(246, 249, 251, 0.96);
+    linear-gradient(135deg, rgba(213, 203, 190, 0.12), transparent 44%),
+    rgba(248, 243, 237, 0.96);
 }
 
 :root[data-theme="light"] .purchase-summary {
   background:
     linear-gradient(135deg, rgba(214, 184, 124, 0.08), transparent 55%),
-    rgba(245, 249, 250, 0.94);
+    rgba(248, 243, 237, 0.94);
 }
 
 :root[data-theme="light"] .history-launcher {
   background:
     linear-gradient(135deg, rgba(214, 184, 124, 0.08), transparent 55%),
-    rgba(249, 250, 252, 0.98);
+    rgba(252, 248, 242, 0.98);
   border-color: rgba(170, 122, 50, 0.16);
 }
 
@@ -2608,17 +2641,17 @@ body.speeches-mode .sidebar {
 :root[data-theme="light"] .card-face {
   border-color: rgba(170, 122, 50, 0.2);
   background:
-    radial-gradient(circle at top left, rgba(255, 255, 255, 0.42), transparent 26%),
-    linear-gradient(150deg, rgba(228, 222, 214, 0.98), rgba(182, 178, 173, 0.96) 48%, rgba(116, 119, 124, 0.96)),
-    linear-gradient(180deg, rgba(249, 245, 239, 0.96), rgba(230, 225, 219, 0.94));
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.34), transparent 24%),
+    linear-gradient(150deg, rgba(202, 84, 92, 0.98), rgba(166, 57, 67, 0.96) 48%, rgba(111, 28, 41, 0.98)),
+    linear-gradient(180deg, rgba(219, 112, 118, 0.96), rgba(150, 48, 58, 0.94));
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.54),
-    inset 0 -1px 0 rgba(104, 90, 67, 0.16),
-    0 18px 34px rgba(100, 89, 74, 0.12);
+    inset 0 1px 0 rgba(255, 240, 240, 0.36),
+    inset 0 -1px 0 rgba(92, 18, 28, 0.3),
+    0 18px 34px rgba(120, 40, 50, 0.18);
 }
 
 :root[data-theme="light"] .card-face-brand {
-  color: #2c3136;
+  color: #fff8f8;
 }
 
 :root[data-theme="light"] .card-visibility-button,
@@ -2635,31 +2668,44 @@ body.speeches-mode .sidebar {
 }
 
 :root[data-theme="light"] .card-face-detail span {
-  color: rgba(255, 251, 246, 0.82);
+  color: rgba(255, 240, 240, 0.82);
 }
 
 :root[data-theme="light"] .card-face-detail strong,
 :root[data-theme="light"] .card-number {
-  color: #fffdfa;
+  color: #fffdfd;
+}
+
+:root[data-theme="light"] .card-face-wave {
+  background:
+    radial-gradient(110% 78% at 100% 100%, rgba(62, 8, 18, 0.36) 0%, rgba(62, 8, 18, 0.24) 30%, transparent 64%),
+    radial-gradient(96% 58% at 102% 96%, transparent 0 38%, rgba(244, 220, 188, 0.16) 39%, rgba(244, 220, 188, 0.06) 40%, transparent 41%, transparent 49%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.03) 51%, transparent 52%, transparent 60%, rgba(255, 255, 255, 0.06) 61%, rgba(255, 255, 255, 0.02) 62%, transparent 63%),
+    linear-gradient(180deg, transparent 54%, rgba(64, 10, 20, 0.22) 100%);
 }
 
 :root[data-theme="light"] .finance-balance-card {
   background:
-    radial-gradient(circle at 16% 28%, rgba(255, 255, 255, 0.18), transparent 16%),
-    radial-gradient(circle at 84% 26%, rgba(255, 255, 255, 0.14), transparent 14%),
-    linear-gradient(145deg, #92857a, #6d6761 56%, #4c4e53);
+    radial-gradient(circle at 16% 28%, rgba(255, 255, 255, 0.28), transparent 16%),
+    radial-gradient(circle at 84% 26%, rgba(255, 255, 255, 0.18), transparent 14%),
+    linear-gradient(145deg, #e3ddd5, #c2bbb3 56%, #9d9a98);
+  box-shadow:
+    0 18px 32px rgba(100, 89, 74, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.74);
 }
 
 :root[data-theme="light"] .finance-balance-kicker,
 :root[data-theme="light"] .finance-balance-note,
 :root[data-theme="light"] .finance-balance-circle-label {
-  color: rgba(245, 247, 255, 0.82);
+  color: rgba(31, 47, 79, 0.82);
 }
 
 :root[data-theme="light"] .finance-balance-circle {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.06) 42%, transparent),
-    rgba(255, 255, 255, 0.12);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.54), rgba(255, 255, 255, 0.12) 42%, transparent),
+    rgba(255, 252, 248, 0.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    0 10px 18px rgba(100, 89, 74, 0.08);
 }
 
 :root[data-theme="light"] .modal-card input,
@@ -2690,7 +2736,7 @@ body.speeches-mode .sidebar {
 :root[data-theme="light"] .info-tile strong,
 :root[data-theme="light"] .modal-head h3,
 :root[data-theme="light"] .modal-field strong {
-  color: #23324a;
+  color: #1f2f4f;
 }
 
 :root[data-theme="light"] .product-stat,
@@ -2750,7 +2796,7 @@ body.speeches-mode .sidebar {
 :root[data-theme="light"] .card-mini span,
 :root[data-theme="light"] .card-mini .card-label,
 :root[data-theme="light"] .card-mini .status-pill {
-  color: #303439;
+  color: #1f2f4f;
 }
 
 :root[data-theme="light"] .device-item span,
@@ -2758,7 +2804,7 @@ body.speeches-mode .sidebar {
 :root[data-theme="light"] .history-item span,
 :root[data-theme="light"] .history-launcher h3 + p,
 :root[data-theme="light"] .section-row p {
-  color: #706b65;
+  color: #5f6f8f;
 }
 
 :root[data-theme="light"] .product-stat-epic {
@@ -2791,6 +2837,44 @@ body.speeches-mode .sidebar {
   background:
     linear-gradient(135deg, rgba(196, 187, 172, 0.12), transparent 55%),
     rgba(247, 243, 238, 0.94);
+}
+
+:root[data-theme="light"] .card-mini.active,
+:root[data-theme="light"] .card-mini.is-cycle-active,
+:root[data-theme="light"] .card-mini.is-cycle-inactive {
+  border-color: rgba(170, 122, 50, 0.16);
+  background:
+    linear-gradient(180deg, rgba(255, 252, 248, 0.98), rgba(232, 227, 220, 0.94)),
+    rgba(249, 245, 239, 0.96);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.84),
+    0 14px 24px rgba(100, 89, 74, 0.08);
+}
+
+:root[data-theme="light"] .card-mini.active strong,
+:root[data-theme="light"] .card-mini.active span,
+:root[data-theme="light"] .card-mini.is-cycle-active strong,
+:root[data-theme="light"] .card-mini.is-cycle-active span,
+:root[data-theme="light"] .card-mini.is-cycle-active .card-label,
+:root[data-theme="light"] .card-mini.is-cycle-active .status-pill,
+:root[data-theme="light"] .card-mini.is-cycle-inactive strong,
+:root[data-theme="light"] .card-mini.is-cycle-inactive span,
+:root[data-theme="light"] .card-mini.is-cycle-inactive .card-label,
+:root[data-theme="light"] .card-mini.is-cycle-inactive .status-pill {
+  color: #1f2f4f;
+}
+
+:root[data-theme="light"] .dashboard-main-column > .cards-section > h3,
+:root[data-theme="light"] .dashboard-side-column > .cards-section > .section-row h3,
+:root[data-theme="light"] .dashboard-side-column > .history-launcher h3,
+:root[data-theme="light"] .history-launcher h3,
+:root[data-theme="light"] .detail-title-block h2,
+:root[data-theme="light"] .panel-head,
+:root[data-theme="light"] .detail-kicker,
+:root[data-theme="light"] .summary-kicker,
+:root[data-theme="light"] .top-tab,
+:root[data-theme="light"] .actions > button {
+  color: #1f2f4f;
 }
 
 :root[data-theme="light"] .modal-backdrop {
