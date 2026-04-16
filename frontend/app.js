@@ -171,6 +171,7 @@ const state = {
   sensitiveUnlockedUntilByDevice: {},
   flippedCardByDevice: {},
   modal: null,
+  modalClosing: false,
   requestPending: false,
   initialLoadComplete: false,
 };
@@ -178,6 +179,7 @@ const state = {
 let unlockExpiryTimer = null;
 let cooldownTimer = null;
 let countdownSyncPending = false;
+let modalCloseTimer = null;
 
 function formatMoney(value) {
   return moneyFormatter.format(Number(value || 0));
@@ -418,10 +420,25 @@ function scheduleUnlockExpiryCheck() {
   }, Math.max(0, nextUnlock[1] - Date.now()) + 40);
 }
 
-function unlockSensitive(deviceId) {
+function unlockSensitive(deviceId, afterUnlock = null) {
   state.sensitiveUnlockedUntilByDevice[deviceId] = Date.now() + SENSITIVE_UNLOCK_MS;
-  closeModal();
   scheduleUnlockExpiryCheck();
+  if (afterUnlock?.type === "sensitive-card" && afterUnlock.cardId) {
+    const { card } = findDeviceAndCardByIds(deviceId, afterUnlock.cardId);
+    if (card) {
+      openSensitiveCardModal(deviceId, card);
+      return;
+    }
+  }
+
+  closeModal(true);
+  render();
+}
+
+function closeSensitiveView(deviceId) {
+  delete state.sensitiveUnlockedUntilByDevice[deviceId];
+  scheduleUnlockExpiryCheck();
+  closeModal(true);
   render();
 }
 
@@ -643,13 +660,44 @@ function getErrorMessage(code) {
 }
 
 function openModal(config) {
+  if (modalCloseTimer) {
+    clearTimeout(modalCloseTimer);
+    modalCloseTimer = null;
+  }
+  state.modalClosing = false;
   state.modal = config;
   renderModal();
 }
 
-function closeModal() {
-  state.modal = null;
+function closeModal(immediate = false) {
+  if (!state.modal) {
+    return;
+  }
+
+  if (modalCloseTimer) {
+    clearTimeout(modalCloseTimer);
+    modalCloseTimer = null;
+  }
+
+  if (immediate) {
+    state.modalClosing = false;
+    state.modal = null;
+    renderModal();
+    return;
+  }
+
+  if (state.modalClosing) {
+    return;
+  }
+
+  state.modalClosing = true;
   renderModal();
+  modalCloseTimer = window.setTimeout(() => {
+    state.modalClosing = false;
+    state.modal = null;
+    modalCloseTimer = null;
+    renderModal();
+  }, 180);
 }
 
 function openHistoryModal(deviceId, historyType) {
@@ -660,13 +708,48 @@ function openHistoryModal(deviceId, historyType) {
   });
 }
 
-function openPinModal(deviceId) {
+function openPinModal(deviceId, options = {}) {
   const storedPin = getStoredSensitivePin();
   openModal({
     type: "pin",
     deviceId,
     needsCreate: !storedPin,
     error: "",
+    afterUnlock: options.afterUnlock || null,
+  });
+}
+
+function findDeviceAndCardByIds(deviceId, cardId) {
+  const device = getDevices().find((entry) => entry.id === deviceId) || null;
+  const card = getVisibleCards(device).find((entry) => entry.id === cardId) || null;
+  return { device, card };
+}
+
+function openSensitiveCardModal(deviceId, card) {
+  openModal({
+    type: "sensitive-card",
+    deviceId,
+    cardId: card.id,
+    title: "Datos sensibles de la tarjeta",
+  });
+}
+
+function openSensitiveFlow(deviceId, cardId) {
+  const { device, card } = findDeviceAndCardByIds(deviceId, cardId);
+  if (!device || !card) {
+    return;
+  }
+
+  if (isSensitiveUnlocked(deviceId)) {
+    openSensitiveCardModal(deviceId, card);
+    return;
+  }
+
+  openPinModal(deviceId, {
+    afterUnlock: {
+      type: "sensitive-card",
+      cardId,
+    },
   });
 }
 
@@ -1075,10 +1158,9 @@ function renderActiveCardDetail(device) {
     return `<div class="empty">Este dispositivo no tiene tarjetas activas.</div>`;
   }
 
-  const sensitiveVisible = isSensitiveUnlocked(device.id);
-  const numberText = sensitiveVisible ? String(activeCard.number || "") : maskCardNumber(activeCard.number);
-  const cvvText = sensitiveVisible ? String(activeCard.cvv || "--") : "***";
-  const unlockLabel = sensitiveVisible ? "Ocultar datos" : "Desbloquear";
+  const numberText = maskCardNumber(activeCard.number);
+  const cvvText = "***";
+  const sensitiveLabel = "Ver datos sensibles";
   const cooldownLabel = getCooldownLabel(activeCard);
   const confirmedPurchaseCount = getCardConfirmedPurchaseCount(activeCard);
   const confirmedPurchaseLabel = formatConfirmedPurchaseLabel(confirmedPurchaseCount);
@@ -1092,8 +1174,6 @@ function renderActiveCardDetail(device) {
   const cardNetwork = getCardNetwork(activeCard.number);
   const cardFlipped = isCardFlipped(device.id, activeCard.id);
   const flipLabel = cardFlipped ? "Mostrar frente de la tarjeta" : "Mostrar actividad acumulada";
-  const sensitiveAction = sensitiveVisible ? "lock-sensitive" : "unlock-sensitive";
-
   return `
     <section class="cards-section cards-section-active">
       <h3>Tarjeta activa</h3>
@@ -1145,13 +1225,13 @@ function renderActiveCardDetail(device) {
                     </div>
                   </div>
                 </div>
-                <button class="card-visibility-button card-visibility-floating ${sensitiveVisible ? "is-open" : ""}" type="button" data-action="${escapeHtml(sensitiveAction)}" data-device-id="${escapeHtml(device.id)}" title="${escapeHtml(unlockLabel)}" aria-label="${escapeHtml(unlockLabel)}">&#128065;</button>
               </div>
 
               <button class="card-flip-toggle ${cardFlipped ? "is-active-toggle" : ""}" type="button" data-action="toggle-card-flip" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="${escapeHtml(flipLabel)}" aria-label="${escapeHtml(flipLabel)}">&#8646;</button>
             </div>
 
             <div class="card-actions-under">
+              <button class="icon-action icon-only" type="button" data-action="view-sensitive-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="${escapeHtml(sensitiveLabel)}" aria-label="${escapeHtml(sensitiveLabel)}"><span class="icon-action-glyph" aria-hidden="true">&#128065;</span></button>
               <button class="icon-action icon-only" type="button" data-action="edit-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Editar" aria-label="Editar tarjeta"><span class="icon-action-glyph" aria-hidden="true">&#9998;</span></button>
               <button class="icon-action icon-only ${hasNotes ? "has-note" : ""}" type="button" data-action="notes-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Notas" aria-label="Editar notas de la tarjeta"><span class="icon-action-glyph" aria-hidden="true">&#128221;</span></button>
               <button class="icon-action icon-only" type="button" data-action="replace-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Reemplazar" aria-label="Reemplazar tarjeta"><span class="icon-action-glyph" aria-hidden="true">&#8646;</span></button>
@@ -1363,6 +1443,7 @@ function renderSpeechTab() {
 }
 
 function renderModal() {
+  modalRoot.classList.toggle("is-closing", Boolean(state.modalClosing));
   if (!state.modal) {
     modalRoot.innerHTML = "";
     return;
@@ -1425,6 +1506,65 @@ function renderModal() {
               <button type="submit">${escapeHtml(modal.needsCreate ? "Crear PIN" : "Desbloquear")}</button>
             </div>
           </form>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  if (modal.type === "sensitive-card") {
+    if (!isSensitiveUnlocked(modal.deviceId)) {
+      closeModal(true);
+      return;
+    }
+
+    const { card } = findDeviceAndCardByIds(modal.deviceId, modal.cardId);
+    if (!card) {
+      closeModal(true);
+      return;
+    }
+
+    const unlockUntil = Number(state.sensitiveUnlockedUntilByDevice[modal.deviceId] || 0);
+    const unlockCountdown = formatCooldownCountdown(unlockUntil) || "00:00:00";
+    const cardNetwork = getCardNetwork(card.number);
+
+    modalRoot.innerHTML = `
+      <div class="modal-backdrop" data-modal-backdrop>
+        <div class="modal-card modal-card-sensitive" data-stop-modal>
+          <div class="modal-head">
+            <div>
+              <h3>${escapeHtml(modal.title)}</h3>
+            </div>
+            <button class="modal-close" type="button" data-action="close-modal">&times;</button>
+          </div>
+          <div class="sensitive-preview-card">
+            <div class="sensitive-preview-top">
+              <span class="card-face-brand">KIDSTORE SECURE</span>
+              <div class="card-network-slot">
+                ${renderCardNetworkMark(cardNetwork)}
+              </div>
+            </div>
+            <div class="sensitive-preview-number">${escapeHtml(String(card.number || ""))}</div>
+            <div class="sensitive-preview-grid">
+              <div class="sensitive-preview-item">
+                <span>MM/YY</span>
+                <strong>${escapeHtml(card.expiry || "--")}</strong>
+              </div>
+              <div class="sensitive-preview-item">
+                <span>CVV</span>
+                <strong>${escapeHtml(String(card.cvv || "--"))}</strong>
+              </div>
+              <div class="sensitive-preview-item">
+                <span>Creada</span>
+                <strong>${escapeHtml(formatDate(card.createdAt))}</strong>
+              </div>
+            </div>
+          </div>
+          <div class="modal-note sensitive-modal-note" data-countdown-label="Sesion visible" data-countdown-until="${escapeHtml(unlockUntil)}">Sesion visible ${escapeHtml(unlockCountdown)}</div>
+          <div class="modal-actions">
+            <button type="button" data-action="close-sensitive-view" data-device-id="${escapeHtml(modal.deviceId)}">Ocultar datos</button>
+            <button type="button" data-action="close-modal">Cerrar</button>
+          </div>
         </div>
       </div>
     `;
@@ -1813,6 +1953,16 @@ document.addEventListener("click", async (event) => {
     return;
   }
 
+  if (action === "view-sensitive-card") {
+    openSensitiveFlow(button.dataset.deviceId, button.dataset.cardId);
+    return;
+  }
+
+  if (action === "close-sensitive-view") {
+    closeSensitiveView(button.dataset.deviceId);
+    return;
+  }
+
   if (action === "edit-card") {
     const { device, card } = findDeviceAndCardFromDataset(button);
     if (device && card) {
@@ -1973,7 +2123,7 @@ document.addEventListener("submit", async (event) => {
       }
 
       saveSensitivePin(pin);
-      unlockSensitive(form.dataset.deviceId);
+      unlockSensitive(form.dataset.deviceId, state.modal.afterUnlock);
       return;
     }
 
@@ -1983,7 +2133,7 @@ document.addEventListener("submit", async (event) => {
       return;
     }
 
-    unlockSensitive(form.dataset.deviceId);
+    unlockSensitive(form.dataset.deviceId, state.modal.afterUnlock);
     return;
   }
 

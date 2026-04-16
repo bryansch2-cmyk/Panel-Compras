@@ -1502,8 +1502,8 @@ body.speeches-mode .sidebar {
   grid-template-rows: auto 1fr;
   border-color: rgba(201, 163, 92, 0.24);
   background:
-    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.34), transparent 26%),
-    linear-gradient(150deg, rgba(214, 221, 229, 0.98), rgba(168, 178, 189, 0.98) 48%, rgba(103, 114, 127, 0.98));
+    radial-gradient(circle at 86% 18%, rgba(255, 255, 255, 0.08), transparent 24%),
+    linear-gradient(160deg, rgba(56, 67, 83, 0.98), rgba(34, 43, 56, 0.98) 52%, rgba(18, 24, 34, 0.98));
 }
 
 .card-face-back::after {
@@ -1515,10 +1515,15 @@ body.speeches-mode .sidebar {
   gap: 8px;
 }
 
+.card-face-back .summary-kicker {
+  color: rgba(218, 228, 246, 0.7);
+}
+
 .card-activity-total {
   font-size: clamp(1.25rem, 1.8vw, 1.8rem);
   line-height: 1.02;
-  color: #202833;
+  color: #f6f9ff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.24);
 }
 
 .card-activity-grid {
@@ -1533,12 +1538,15 @@ body.speeches-mode .sidebar {
   gap: 6px;
   padding: 11px 12px;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.12);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(201, 163, 92, 0.12);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 12px 18px rgba(0, 0, 0, 0.12);
 }
 
 .card-activity-item span {
-  color: rgba(232, 238, 255, 0.74);
+  color: rgba(218, 228, 246, 0.74);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -3051,7 +3059,7 @@ body.speeches-mode .sidebar {
   display: grid;
   place-items: center;
   padding: 18px;
-  background: rgba(5, 9, 15, 0.38);
+  background: rgba(5, 9, 15, 0.46);
   backdrop-filter: blur(14px) saturate(1.08);
   animation: modal-fade 200ms ease;
 }
@@ -3064,13 +3072,15 @@ body.speeches-mode .sidebar {
   max-height: calc(100vh - 36px);
   overflow: auto;
   padding: 18px;
-  border: 1px solid color-mix(in srgb, var(--line) 76%, rgba(255, 255, 255, 0.12));
+  border: 1px solid rgba(201, 163, 92, 0.28);
   border-radius: 24px;
   background:
+    radial-gradient(circle at top left, rgba(201, 163, 92, 0.08), transparent 28%),
     linear-gradient(180deg, color-mix(in srgb, var(--surface) 96%, rgba(255, 255, 255, 0.04)), color-mix(in srgb, var(--surface-soft) 92%, transparent)),
     color-mix(in srgb, var(--surface) 92%, transparent);
   box-shadow:
     0 30px 70px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(201, 163, 92, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
   will-change: auto;
   transform: translateZ(0);
@@ -3081,14 +3091,37 @@ body.speeches-mode .sidebar {
 .modal-card::before {
   content: "";
   position: absolute;
-  inset: 0 0 auto 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.16), transparent);
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(235, 213, 156, 0.62), rgba(201, 163, 92, 0.1) 34%, rgba(255, 255, 255, 0.04) 58%, rgba(220, 193, 124, 0.42));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.modal-card::after {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border-radius: 18px;
+  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.08), transparent 52%);
+  opacity: 0.9;
   pointer-events: none;
 }
 
 .modal-card-wide {
   width: min(100%, 860px);
+}
+
+#modalRoot.is-closing .modal-backdrop {
+  animation: modal-fade-out 180ms ease forwards;
+}
+
+#modalRoot.is-closing .modal-card {
+  animation: modal-card-out 180ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .modal-head {
@@ -3159,6 +3192,28 @@ body.speeches-mode .sidebar {
   }
 }
 
+@keyframes modal-fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes modal-card-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+  }
+}
+
 .modal-field {
   display: grid;
   gap: 6px;
@@ -3189,6 +3244,67 @@ body.speeches-mode .sidebar {
   flex-wrap: wrap;
 }
 
+.modal-card-sensitive {
+  width: min(100%, 560px);
+}
+
+.sensitive-preview-card {
+  display: grid;
+  gap: 18px;
+  padding: 22px;
+  border: 1px solid rgba(201, 163, 92, 0.22);
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at 16% 14%, rgba(255, 255, 255, 0.26), transparent 22%),
+    linear-gradient(145deg, rgba(214, 221, 229, 0.98), rgba(168, 178, 189, 0.98) 48%, rgba(103, 114, 127, 0.98));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.44),
+    0 22px 34px rgba(0, 0, 0, 0.16);
+}
+
+.sensitive-preview-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sensitive-preview-number {
+  font-size: clamp(1.55rem, 2.2vw, 2rem);
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  color: #f8fbff;
+  text-shadow: 0 2px 10px rgba(18, 24, 32, 0.24);
+}
+
+.sensitive-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.sensitive-preview-item {
+  display: grid;
+  gap: 6px;
+}
+
+.sensitive-preview-item span {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(245, 249, 255, 0.68);
+}
+
+.sensitive-preview-item strong {
+  color: #f8fbff;
+  text-shadow: 0 1px 2px rgba(18, 24, 32, 0.18);
+}
+
+.sensitive-modal-note {
+  margin-top: 14px;
+}
+
 .modal-error {
   padding: 10px 12px;
   border: 1px solid rgba(255, 133, 143, 0.28);
@@ -3199,18 +3315,19 @@ body.speeches-mode .sidebar {
 }
 
 body.fintech-control-mode .modal-card {
-  border: 1px solid rgba(110, 125, 168, 0.16);
+  border: 1px solid rgba(201, 163, 92, 0.24);
   background:
-    radial-gradient(circle at top left, rgba(121, 130, 255, 0.18), transparent 28%),
+    radial-gradient(circle at top left, rgba(201, 163, 92, 0.1), transparent 28%),
     linear-gradient(180deg, rgba(30, 36, 50, 0.84), rgba(16, 21, 31, 0.76));
   box-shadow:
     0 28px 56px rgba(0, 0, 0, 0.34),
+    0 0 0 1px rgba(201, 163, 92, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(22px) saturate(1.18);
 }
 
 body.fintech-control-mode .modal-backdrop {
-  background: rgba(6, 10, 16, 0.52);
+  background: rgba(6, 10, 16, 0.6);
   backdrop-filter: blur(24px) saturate(1.12);
 }
 
@@ -3252,6 +3369,36 @@ body.fintech-control-mode .modal-field span {
 body.fintech-control-mode .modal-head h3,
 body.fintech-control-mode .modal-field strong {
   color: #f3f6ff;
+}
+
+body.fintech-control-mode .card-face-back {
+  background:
+    radial-gradient(circle at 86% 18%, rgba(255, 255, 255, 0.08), transparent 24%),
+    linear-gradient(160deg, rgba(56, 67, 83, 0.98), rgba(34, 43, 56, 0.98) 52%, rgba(18, 24, 34, 0.98));
+}
+
+body.fintech-control-mode .card-face-back .summary-kicker {
+  color: rgba(218, 228, 246, 0.7);
+}
+
+body.fintech-control-mode .card-activity-total,
+body.fintech-control-mode .card-activity-item strong {
+  color: #f6f9ff;
+}
+
+body.fintech-control-mode .card-activity-item {
+  border-color: rgba(201, 163, 92, 0.12);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+}
+
+body.fintech-control-mode .card-activity-item span {
+  color: rgba(218, 228, 246, 0.74);
+}
+
+body.fintech-control-mode .sensitive-preview-card {
+  background:
+    radial-gradient(circle at 16% 14%, rgba(255, 255, 255, 0.26), transparent 22%),
+    linear-gradient(145deg, rgba(214, 221, 229, 0.98), rgba(168, 178, 189, 0.98) 48%, rgba(103, 114, 127, 0.98));
 }
 
 body.fintech-control-mode .actions > button:hover,
