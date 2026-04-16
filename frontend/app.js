@@ -1087,6 +1087,42 @@ function renderCardActivityBack(activeCard, confirmedPurchaseLabel) {
   `;
 }
 
+function renderPurchaseSummary(activeCard) {
+  if (!activeCard) {
+    return "";
+  }
+
+  const confirmedPurchaseLabel = formatConfirmedPurchaseLabel(getCardConfirmedPurchaseCount(activeCard));
+  const activityItems = PRODUCT_ORDER.map((productKey) => {
+    const rule = getProductRule(productKey);
+    const displayMeta = getProductDisplayMeta(productKey, rule);
+    const count = getCardConfirmedCount(activeCard, productKey);
+    return `
+      <div class="card-activity-item">
+        <span>${escapeHtml(displayMeta.label)}</span>
+        <strong>${escapeHtml(count)}</strong>
+      </div>
+    `;
+  }).join("");
+
+  return `
+    <section class="cards-section purchase-summary-panel">
+      <div class="section-row">
+        <h3>Compras acumuladas</h3>
+      </div>
+      <div class="purchase-summary-card">
+        <div class="card-face-back-head">
+          <span class="summary-kicker">Actividad acumulada</span>
+          <strong class="card-activity-total">${escapeHtml(confirmedPurchaseLabel)}</strong>
+        </div>
+        <div class="card-activity-grid">
+          ${activityItems}
+        </div>
+      </div>
+    </section>
+  `;
+}
+
 function renderActiveProductStats(device, activeCard, isManualCooldown, isRejectedHold, rejectedUntil, manualCooldownUntil) {
   if (!activeCard) {
     return "";
@@ -1158,12 +1194,11 @@ function renderActiveCardDetail(device) {
     return `<div class="empty">Este dispositivo no tiene tarjetas activas.</div>`;
   }
 
-  const numberText = maskCardNumber(activeCard.number);
-  const cvvText = "***";
-  const sensitiveLabel = "Ver datos sensibles";
+  const sensitiveVisible = isSensitiveUnlocked(device.id);
+  const numberText = sensitiveVisible ? String(activeCard.number || "") : maskCardNumber(activeCard.number);
+  const cvvText = sensitiveVisible ? String(activeCard.cvv || "--") : "***";
+  const unlockLabel = sensitiveVisible ? "Ocultar datos" : "Desbloquear";
   const cooldownLabel = getCooldownLabel(activeCard);
-  const confirmedPurchaseCount = getCardConfirmedPurchaseCount(activeCard);
-  const confirmedPurchaseLabel = formatConfirmedPurchaseLabel(confirmedPurchaseCount);
   const isManualCooldown = isCooldownActive(activeCard);
   const isRejectedHold = isRejectedHoldActive(activeCard);
   const rejectedUntil = getCountdownTimestamp(activeCard.rejectedCooldownUntil);
@@ -1172,8 +1207,7 @@ function renderActiveCardDetail(device) {
   const hasNotes = hasMeaningfulNotes(activeCard.notes);
   const lowBalance = isLowBalance(device.availableBalance);
   const cardNetwork = getCardNetwork(activeCard.number);
-  const cardFlipped = isCardFlipped(device.id, activeCard.id);
-  const flipLabel = cardFlipped ? "Mostrar frente de la tarjeta" : "Mostrar actividad acumulada";
+  const sensitiveAction = sensitiveVisible ? "lock-sensitive" : "unlock-sensitive";
   return `
     <section class="cards-section cards-section-active">
       <h3>Tarjeta activa</h3>
@@ -1192,46 +1226,35 @@ function renderActiveCardDetail(device) {
           <div class="selected-card-primary">
             <div class="card-flip-stage">
               <div class="card-flip-frame">
-                <div class="card-flip-shell ${cardFlipped ? "is-flipped" : ""}">
-                  <div class="card-flip-inner">
-                    <div class="card-flip-face card-flip-face-front">
-                      <div class="card-face card-face-network-${escapeHtml(cardNetwork || "generic")}">
-                        <div class="card-face-wave" aria-hidden="true"></div>
-                        <div class="card-face-top">
-                          <span class="card-face-brand">KIDSTORE SECURE</span>
-                          <div class="card-network-slot">
-                            ${renderCardNetworkMark(cardNetwork)}
-                          </div>
-                        </div>
-                        <h3 class="card-number">${escapeHtml(numberText)}</h3>
-                        <div class="card-face-detail-grid">
-                          <div class="card-face-detail">
-                            <span>MM/YY</span>
-                            <strong>${escapeHtml(activeCard.expiry || "--")}</strong>
-                          </div>
-                          <div class="card-face-detail">
-                            <span>CVV</span>
-                            <strong>${escapeHtml(cvvText)}</strong>
-                          </div>
-                          <div class="card-face-detail">
-                            <span>Creada</span>
-                            <strong>${escapeHtml(formatDate(activeCard.createdAt))}</strong>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card-flip-face card-flip-face-back">
-                      ${renderCardActivityBack(activeCard, confirmedPurchaseLabel)}
+                <div class="card-face card-face-network-${escapeHtml(cardNetwork || "generic")}">
+                  <div class="card-face-wave" aria-hidden="true"></div>
+                  <div class="card-face-top">
+                    <span class="card-face-brand">KIDSTORE SECURE</span>
+                    <div class="card-network-slot">
+                      ${renderCardNetworkMark(cardNetwork)}
                     </div>
                   </div>
+                  <h3 class="card-number">${escapeHtml(numberText)}</h3>
+                  <div class="card-face-detail-grid">
+                    <div class="card-face-detail">
+                      <span>MM/YY</span>
+                      <strong>${escapeHtml(activeCard.expiry || "--")}</strong>
+                    </div>
+                    <div class="card-face-detail">
+                      <span>CVV</span>
+                      <strong>${escapeHtml(cvvText)}</strong>
+                    </div>
+                    <div class="card-face-detail">
+                      <span>Creada</span>
+                      <strong>${escapeHtml(formatDate(activeCard.createdAt))}</strong>
+                    </div>
+                  </div>
+                  <button class="card-visibility-button card-visibility-floating ${sensitiveVisible ? "is-open" : ""}" type="button" data-action="${escapeHtml(sensitiveAction)}" data-device-id="${escapeHtml(device.id)}" title="${escapeHtml(unlockLabel)}" aria-label="${escapeHtml(unlockLabel)}">&#128065;</button>
                 </div>
               </div>
-
-              <button class="card-flip-toggle ${cardFlipped ? "is-active-toggle" : ""}" type="button" data-action="toggle-card-flip" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="${escapeHtml(flipLabel)}" aria-label="${escapeHtml(flipLabel)}">&#8646;</button>
             </div>
 
             <div class="card-actions-under">
-              <button class="icon-action icon-only" type="button" data-action="view-sensitive-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="${escapeHtml(sensitiveLabel)}" aria-label="${escapeHtml(sensitiveLabel)}"><span class="icon-action-glyph" aria-hidden="true">&#128065;</span></button>
               <button class="icon-action icon-only" type="button" data-action="edit-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Editar" aria-label="Editar tarjeta"><span class="icon-action-glyph" aria-hidden="true">&#9998;</span></button>
               <button class="icon-action icon-only ${hasNotes ? "has-note" : ""}" type="button" data-action="notes-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Notas" aria-label="Editar notas de la tarjeta"><span class="icon-action-glyph" aria-hidden="true">&#128221;</span></button>
               <button class="icon-action icon-only" type="button" data-action="replace-card" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" title="Reemplazar" aria-label="Reemplazar tarjeta"><span class="icon-action-glyph" aria-hidden="true">&#8646;</span></button>
@@ -1344,6 +1367,7 @@ function renderControlTab() {
         <aside class="dashboard-side-column">
           ${renderCardCycle(device)}
           ${renderHistoryLaunchers(device)}
+          ${renderPurchaseSummary(activeCard)}
         </aside>
       </div>
     </div>

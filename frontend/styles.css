@@ -1414,7 +1414,7 @@ body.speeches-mode .sidebar {
 
 .card-flip-stage {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   gap: 12px;
   align-items: start;
 }
@@ -1787,6 +1787,25 @@ body.speeches-mode .sidebar {
 
 .purchase-summary-shell {
   width: min(100%, 520px);
+}
+
+.purchase-summary-panel {
+  display: grid;
+  gap: 10px;
+}
+
+.purchase-summary-card {
+  display: grid;
+  gap: 12px;
+  padding: 16px 18px;
+  border: 1px solid rgba(201, 163, 92, 0.18);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.08), transparent 24%),
+    linear-gradient(160deg, rgba(44, 54, 69, 0.96), rgba(27, 35, 46, 0.96) 54%, rgba(15, 21, 30, 0.98));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 16px 28px rgba(0, 0, 0, 0.14);
 }
 
 .card-actions-under {
@@ -4154,6 +4173,16 @@ body.fintech-control-mode .card-network-mastercard {
 body.fintech-control-mode .selected-card-compact-layout {
   grid-template-columns: minmax(0, 1fr);
   gap: 12px;
+}
+
+body.fintech-control-mode .purchase-summary-card {
+  border: 1px solid rgba(201, 163, 92, 0.18);
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.08), transparent 24%),
+    linear-gradient(160deg, rgba(44, 54, 69, 0.96), rgba(27, 35, 46, 0.96) 54%, rgba(15, 21, 30, 0.98));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 16px 28px rgba(0, 0, 0, 0.2);
 }
 
 body.fintech-control-mode .selected-card-aside,
