@@ -1335,7 +1335,7 @@ function renderCardCycle(device) {
         ${!inactiveCards.length ? '<div class="empty-inline">No hay tarjetas inactivas disponibles.</div>' : ""}
         ${inactiveCards.map((card, index) => {
           return `
-            <button class="cycle-card-preview card-mini is-cycle-inactive" type="button" data-action="open-cycle-card-modal" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(card.id)}" style="animation-delay:${index * 70}ms; --cycle-index:${index}; z-index:${Math.max(1, inactiveCards.length - index)};">
+            <button class="cycle-card-preview card-mini is-cycle-inactive" type="button" data-action="open-cycle-card-modal" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(card.id)}" style="animation-delay:${index * 70}ms;">
               <div class="cycle-card-preview-shell">
                 ${renderCycleCardFace(card, { className: "card-face-compact card-face-cycle-compact" })}
               </div>

@@ -1826,7 +1826,7 @@ body.speeches-mode .sidebar {
 .card-face-cycle-inactive .card-face-cycle-label,
 .card-face-cycle-inactive .card-face-cycle-created-label,
 .card-face-cycle-inactive .card-face-cycle-created-value {
-  color: rgba(233, 238, 244, 0.82);
+  color: rgba(211, 218, 227, 0.72);
   text-shadow: none;
 }
 
@@ -1854,7 +1854,7 @@ body.speeches-mode .sidebar {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(220, 228, 238, 0.56);
+  color: rgba(205, 213, 223, 0.46);
 }
 
 .card-face-cycle-created-value {
@@ -1874,7 +1874,7 @@ body.speeches-mode .sidebar {
   border-radius: 999px;
   border: 1px solid rgba(226, 232, 240, 0.14);
   background: rgba(255, 255, 255, 0.08);
-  color: rgba(229, 234, 241, 0.72);
+  color: rgba(214, 220, 229, 0.66);
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.04em;
@@ -3359,8 +3359,8 @@ body.speeches-mode .sidebar {
 .cards-mini-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0;
-  padding-top: 6px;
+  gap: 14px;
+  padding-top: 0;
 }
 
 @media (min-width: 1440px) {
@@ -3402,12 +3402,7 @@ body.speeches-mode .sidebar {
   align-items: stretch;
   gap: 0;
   cursor: pointer;
-  margin-top: calc(var(--cycle-index, 0) * -118px);
   transform-origin: top center;
-}
-
-.cycle-card-preview:first-of-type {
-  margin-top: 0;
 }
 
 .cycle-card-preview-shell {
