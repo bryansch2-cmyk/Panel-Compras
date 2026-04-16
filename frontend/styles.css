@@ -45,7 +45,7 @@
 
 :root[data-theme="light"] {
   color-scheme: light;
-  --bg: #050608;
+  --bg: #11141c;
   --panel: rgba(246, 248, 252, 0.92);
   --panel-soft: rgba(229, 234, 242, 0.84);
   --surface: rgba(245, 248, 252, 0.9);
@@ -98,10 +98,10 @@ body.is-loading {
 
 :root[data-theme="light"] body {
   background:
-    radial-gradient(circle at top left, rgba(84, 105, 160, 0.2), transparent 24%),
-    radial-gradient(circle at top right, rgba(98, 115, 168, 0.16), transparent 20%),
-    radial-gradient(circle at bottom right, rgba(76, 92, 145, 0.14), transparent 22%),
-    linear-gradient(180deg, rgba(16, 19, 27, 0.84), transparent 22%),
+    radial-gradient(circle at top left, rgba(92, 111, 168, 0.18), transparent 26%),
+    radial-gradient(circle at top right, rgba(104, 120, 172, 0.14), transparent 22%),
+    radial-gradient(circle at bottom right, rgba(82, 96, 146, 0.12), transparent 24%),
+    linear-gradient(180deg, rgba(24, 29, 40, 0.72), transparent 24%),
     var(--bg);
 }
 
@@ -3271,7 +3271,7 @@ body.is-busy button {
 
 body.fintech-control-mode {
   color-scheme: light;
-  --bg: #050608;
+  --bg: #11141c;
   --panel: rgba(244, 247, 253, 0.9);
   --panel-soft: rgba(231, 236, 247, 0.84);
   --surface: rgba(244, 247, 255, 0.88);
@@ -3299,10 +3299,10 @@ body.fintech-control-mode {
   --fintech-neutral-surface: rgba(242, 245, 252, 0.88);
   --fintech-neutral-shadow: rgba(0, 0, 0, 0.18);
   background:
-    radial-gradient(circle at top left, rgba(101, 113, 226, 0.22), transparent 28%),
-    radial-gradient(circle at top right, rgba(88, 98, 196, 0.16), transparent 24%),
-    radial-gradient(circle at bottom left, rgba(66, 122, 210, 0.16), transparent 22%),
-    linear-gradient(180deg, #0a0d15 0%, #050608 100%);
+    radial-gradient(circle at top left, rgba(103, 116, 210, 0.18), transparent 30%),
+    radial-gradient(circle at top right, rgba(89, 100, 188, 0.13), transparent 26%),
+    radial-gradient(circle at bottom left, rgba(70, 120, 196, 0.12), transparent 24%),
+    linear-gradient(180deg, #161b26 0%, #11141c 100%);
 }
 
 body.fintech-control-mode .app-shell {
