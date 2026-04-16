@@ -887,7 +887,6 @@ function renderHistoryLaunchers(device) {
       <div class="section-row">
         <div>
           <h3>Historiales</h3>
-          <p class="panel-head-sub">Se abren en ventana flotante, igual que en la app.</p>
         </div>
         <div class="history-icon-row">
           <button class="history-icon-button" type="button" data-action="open-history" data-device-id="${escapeHtml(device.id)}" data-history-type="recharges" title="Recargas" aria-label="Abrir historial de recargas">&#8635;</button>
@@ -913,16 +912,6 @@ function getDeviceProfile(device) {
   }
 
   return DEVICE_PROFILES[String(device.title).trim()] || null;
-}
-
-function renderActiveCardCounts(card) {
-  return PRODUCT_ORDER.map((productKey) => {
-    const rule = getProductRule(productKey);
-    if (!rule) {
-      return "";
-    }
-    return `${rule.label}: ${getCardDisplayedCount(card, productKey)}`;
-  }).filter(Boolean).join(" / ");
 }
 
 function getCardNetwork(number) {
@@ -1062,7 +1051,6 @@ function renderActiveCardDetail(device) {
   const cooldownLabel = getCooldownLabel(activeCard);
   const confirmedPurchaseCount = getCardConfirmedPurchaseCount(activeCard);
   const confirmedPurchaseLabel = formatConfirmedPurchaseLabel(confirmedPurchaseCount);
-  const purchaseSummary = renderActiveCardCounts(activeCard);
   const isManualCooldown = isCooldownActive(activeCard);
   const isRejectedHold = isRejectedHoldActive(activeCard);
   const rejectedUntil = getCountdownTimestamp(activeCard.rejectedCooldownUntil);
@@ -1127,11 +1115,9 @@ function renderActiveCardDetail(device) {
             <div class="purchase-summary-shell">
               <span class="summary-kicker">Actividad acumulada</span>
               <strong class="purchase-total">${escapeHtml(confirmedPurchaseLabel)}</strong>
-              <p class="purchase-summary">${escapeHtml(purchaseSummary)}</p>
             </div>
             <div class="info-tile info-tile-wide ${hasNotes ? "note-highlight" : ""}">
               <span>Notas</span>
-              ${hasNotes ? '<em class="note-emphasis">Importante</em>' : ""}
               <strong>${escapeHtml(activeCard.notes || "Sin notas")}</strong>
             </div>
           </div>
@@ -1152,7 +1138,6 @@ function renderCardCycle(device) {
     <section class="cards-section cards-section-cycle">
       <div class="section-row">
         <h3>Ciclo de tarjetas</h3>
-        <span class="readonly-chip">Solo la activa conserva acciones</span>
       </div>
       <div class="cards-mini-grid">
         ${cards.map((card, index) => {
@@ -1167,12 +1152,6 @@ function renderCardCycle(device) {
                 </div>
                 <strong class="card-mini-digits">${escapeHtml(last4)}</strong>
                 <span class="card-mini-date">${isActive ? `Creada ${escapeHtml(formatDate(card.createdAt))}` : `${escapeHtml(formatDate(card.createdAt))} - Solo lectura`}</span>
-              </div>
-              <div class="card-mini-meta">
-                ${isActive ? "<span>Lista para operar ahora.</span>" : "<span>Se activara cuando el ciclo vuelva a esta tarjeta.</span>"}
-              </div>
-              <div class="card-mini-hint">
-                ${isActive ? "<span>Acciones habilitadas en esta tarjeta.</span>" : "<span>4 digitos y fecha visibles hasta su turno.</span>"}
               </div>
             </article>
           `;
@@ -1219,7 +1198,6 @@ function renderControlTab() {
               <div class="finance-balance-center">
                 <span class="finance-balance-kicker">Saldo disponible</span>
                 <strong class="finance-balance-amount">${escapeHtml(formatMoney(device.availableBalance))}</strong>
-                <p class="finance-balance-note">Disponible para nuevas compras en este dispositivo.</p>
               </div>
 
               <button class="finance-balance-circle finance-used-circle ${hasPendingUsed ? "" : "is-empty"}" type="button" data-action="deduct-pending" data-device-id="${escapeHtml(device.id)}" title="Restar saldo usado" aria-label="Restar saldo usado" ${hasPendingUsed ? "" : "disabled"}>
@@ -1364,7 +1342,6 @@ function renderModal() {
           <div class="modal-head">
             <div>
               <h3>${escapeHtml(titleMap[modal.historyType] || "Historial")}</h3>
-              <p>${escapeHtml(device?.title || "")}</p>
             </div>
             <button class="modal-close" type="button" data-action="close-modal">&times;</button>
           </div>
@@ -1393,7 +1370,6 @@ function renderModal() {
           <div class="modal-head">
             <div>
               <h3>${escapeHtml(modal.needsCreate ? "Crear PIN sensible" : "Desbloquear datos sensibles")}</h3>
-              <p>${escapeHtml(modal.needsCreate ? "Crea un PIN local de 6 digitos para este navegador." : "Ingresa tu PIN de 6 digitos para ver numero y CVV por 30 segundos.")}</p>
             </div>
             <button class="modal-close" type="button" data-action="close-modal">&times;</button>
           </div>
@@ -1419,7 +1395,6 @@ function renderModal() {
           <div class="modal-head">
             <div>
               <h3>${escapeHtml(modal.title)}</h3>
-              <p>Ajusta los datos reales y las compras pendientes sin tocar el acumulado confirmado.</p>
             </div>
             <button class="modal-close" type="button" data-action="close-modal">&times;</button>
           </div>
@@ -1507,7 +1482,6 @@ function renderModal() {
           <div class="modal-head">
             <div>
               <h3>${escapeHtml(modal.title)}</h3>
-              <p>Fija manualmente el progreso previo del dispositivo.</p>
             </div>
             <button class="modal-close" type="button" data-action="close-modal">&times;</button>
           </div>
@@ -1549,7 +1523,6 @@ function renderModal() {
           <div class="modal-head">
             <div>
               <h3>${escapeHtml(modal.title)}</h3>
-              <p>Agrega una nueva recarga sin mover el resto del panel.</p>
             </div>
             <button class="modal-close" type="button" data-action="close-modal">&times;</button>
           </div>
@@ -1578,7 +1551,6 @@ function renderModal() {
           <div class="modal-head">
             <div>
               <h3>${escapeHtml(modal.title)}</h3>
-              <p>Actualiza los datos clave de la tarjeta.</p>
             </div>
             <button class="modal-close" type="button" data-action="close-modal">&times;</button>
           </div>
@@ -1606,7 +1578,6 @@ function renderModal() {
           <div class="modal-head">
             <div>
               <h3>${escapeHtml(modal.title)}</h3>
-              <p>Guarda observaciones internas para la tarjeta activa.</p>
             </div>
             <button class="modal-close" type="button" data-action="close-modal">&times;</button>
           </div>
