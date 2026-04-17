@@ -4665,24 +4665,24 @@ body.fintech-control-mode .card-face {
   min-height: 214px;
   align-content: space-between;
   background:
-    radial-gradient(circle at 16% 12%, rgba(255, 255, 255, 0.28), transparent 22%),
-    linear-gradient(145deg, rgba(196, 204, 212, 0.98), rgba(132, 145, 158, 0.98) 42%, rgba(79, 92, 107, 0.98) 78%, rgba(49, 60, 74, 0.98));
+    radial-gradient(circle at 18% 14%, rgba(255, 255, 255, 0.16), transparent 20%),
+    linear-gradient(145deg, rgba(58, 63, 70, 0.98), rgba(33, 37, 42, 0.99) 40%, rgba(21, 24, 28, 0.99) 76%, rgba(12, 14, 17, 1));
   box-shadow:
-    0 22px 34px rgba(0, 0, 0, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.32),
-    inset 0 -1px 0 rgba(20, 29, 39, 0.4);
+    0 22px 34px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -1px 0 rgba(8, 10, 12, 0.48);
 }
 
 body.fintech-control-mode .card-face-wave {
   background:
-    radial-gradient(110% 78% at 100% 100%, rgba(12, 28, 44, 0.44) 0%, rgba(12, 28, 44, 0.3) 30%, transparent 64%),
-    radial-gradient(96% 58% at 102% 96%, transparent 0 38%, rgba(233, 215, 177, 0.2) 39%, rgba(233, 215, 177, 0.08) 40%, transparent 41%, transparent 49%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0.03) 51%, transparent 52%, transparent 60%, rgba(255, 255, 255, 0.07) 61%, rgba(255, 255, 255, 0.02) 62%, transparent 63%),
-    linear-gradient(180deg, transparent 54%, rgba(10, 22, 36, 0.24) 100%);
+    radial-gradient(115% 82% at 100% 100%, rgba(0, 0, 0, 0.44) 0%, rgba(0, 0, 0, 0.22) 30%, transparent 64%),
+    radial-gradient(96% 58% at 102% 96%, transparent 0 38%, rgba(215, 187, 138, 0.18) 39%, rgba(215, 187, 138, 0.07) 40%, transparent 41%, transparent 49%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.025) 51%, transparent 52%, transparent 60%, rgba(255, 255, 255, 0.05) 61%, rgba(255, 255, 255, 0.015) 62%, transparent 63%),
+    linear-gradient(180deg, transparent 54%, rgba(4, 6, 9, 0.26) 100%);
 }
 
 body.fintech-control-mode .card-face-brand,
 body.fintech-control-mode .card-face-meta {
-  color: #111820;
+  color: rgba(243, 239, 232, 0.82);
 }
 
 body.fintech-control-mode .card-network-mastercard {
@@ -5055,12 +5055,12 @@ body.fintech-control-mode .cards-section-cycle .card-mini-hint {
 body.fintech-control-mode .card-mini.active,
 body.fintech-control-mode .card-mini.is-cycle-active {
   background:
-    radial-gradient(circle at top right, rgba(255, 255, 255, 0.12), transparent 22%),
-    linear-gradient(150deg, rgba(124, 117, 109, 0.98), rgba(87, 91, 97, 0.97) 50%, rgba(53, 57, 64, 0.98));
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.1), transparent 22%),
+    linear-gradient(150deg, rgba(56, 60, 66, 0.98), rgba(31, 35, 40, 0.99) 48%, rgba(15, 18, 22, 1));
   border-color: rgba(201, 163, 92, 0.28);
   box-shadow:
     0 18px 28px rgba(0, 0, 0, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.32);
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 
 body.fintech-control-mode .card-mini.active strong,
@@ -5078,7 +5078,7 @@ body.fintech-control-mode .card-mini.is-cycle-inactive {
   transform: none;
   border-style: solid;
   border-color: rgba(201, 163, 92, 0.18);
-  background: linear-gradient(180deg, rgba(45, 48, 53, 0.52), rgba(28, 31, 35, 0.46));
+  background: linear-gradient(180deg, rgba(34, 37, 42, 0.58), rgba(19, 22, 26, 0.52));
   backdrop-filter: blur(16px) saturate(1.14);
 }
 
