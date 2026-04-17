@@ -1,75 +1,75 @@
 :root {
   color-scheme: dark;
-  --bg: #12100f;
-  --panel: #191614;
-  --panel-soft: #211d1a;
-  --surface: rgba(25, 22, 20, 0.94);
-  --surface-soft: rgba(33, 29, 26, 0.9);
-  --surface-strong: #171412;
-  --surface-frost: rgba(21, 18, 17, 0.82);
-  --panel-tint: linear-gradient(180deg, rgba(214, 168, 95, 0.05), rgba(14, 15, 18, 0.98));
-  --line: rgba(203, 171, 120, 0.15);
-  --line-hot: rgba(134, 140, 108, 0.2);
-  --text: #f5eee2;
-  --muted: #b0a190;
-  --accent: #d0b180;
-  --green: #6a7058;
-  --red: #b97979;
-  --gold: #c9a56b;
-  --panel-info: rgba(31, 28, 26, 0.94);
-  --panel-highlight: rgba(38, 34, 31, 0.96);
-  --panel-active-device: rgba(56, 50, 46, 0.98);
-  --section-recharge: rgba(32, 28, 25, 0.95);
-  --section-recharge-soft: rgba(39, 34, 31, 0.9);
-  --section-card: rgba(29, 25, 23, 0.97);
-  --section-card-soft: rgba(37, 32, 29, 0.9);
-  --section-cycle: rgba(40, 35, 32, 0.95);
-  --section-cycle-soft: rgba(112, 86, 50, 0.24);
-  --shadow: 0 18px 40px rgba(0, 0, 0, 0.34);
-  --fintech-brand-1: #67594c;
-  --fintech-brand-2: #47403a;
-  --fintech-brand-3: #2b2927;
-  --fintech-brand-soft: rgba(201, 165, 107, 0.08);
-  --fintech-brand-soft-strong: rgba(201, 165, 107, 0.14);
-  --fintech-brand-text: #ceb588;
+  --bg: #151618;
+  --panel: #1c1f22;
+  --panel-soft: #25292d;
+  --surface: rgba(28, 31, 35, 0.94);
+  --surface-soft: rgba(36, 40, 45, 0.9);
+  --surface-strong: #1a1d21;
+  --surface-frost: rgba(24, 27, 31, 0.84);
+  --panel-tint: linear-gradient(180deg, rgba(199, 168, 109, 0.06), rgba(15, 17, 20, 0.98));
+  --line: rgba(199, 168, 109, 0.14);
+  --line-hot: rgba(199, 168, 109, 0.22);
+  --text: #f3efe8;
+  --muted: #a8a299;
+  --accent: #c7a86d;
+  --green: #728675;
+  --red: #ad706b;
+  --gold: #c7a86d;
+  --panel-info: rgba(31, 34, 38, 0.94);
+  --panel-highlight: rgba(40, 44, 49, 0.96);
+  --panel-active-device: rgba(58, 62, 68, 0.98);
+  --section-recharge: rgba(34, 37, 41, 0.95);
+  --section-recharge-soft: rgba(40, 44, 49, 0.9);
+  --section-card: rgba(30, 33, 37, 0.97);
+  --section-card-soft: rgba(38, 41, 46, 0.9);
+  --section-cycle: rgba(34, 37, 41, 0.95);
+  --section-cycle-soft: rgba(199, 168, 109, 0.16);
+  --shadow: 0 20px 44px rgba(0, 0, 0, 0.34);
+  --fintech-brand-1: #6d6254;
+  --fintech-brand-2: #4f4840;
+  --fintech-brand-3: #312d29;
+  --fintech-brand-soft: rgba(199, 168, 109, 0.08);
+  --fintech-brand-soft-strong: rgba(199, 168, 109, 0.14);
+  --fintech-brand-text: #d7bb8a;
   --fintech-brand-shadow: rgba(0, 0, 0, 0.28);
-  --fintech-note-1: #746552;
-  --fintech-note-2: #53483c;
-  --fintech-danger-text: #c06e76;
-  --fintech-danger-soft: rgba(192, 110, 118, 0.12);
-  --fintech-success-text: #8ea56a;
-  --fintech-success-soft: rgba(142, 165, 106, 0.12);
-  --fintech-neutral-surface: rgba(241, 244, 251, 0.98);
-  --fintech-neutral-shadow: rgba(98, 109, 145, 0.08);
+  --fintech-note-1: #7a6a55;
+  --fintech-note-2: #5a4f41;
+  --fintech-danger-text: #c7847d;
+  --fintech-danger-soft: rgba(173, 112, 107, 0.12);
+  --fintech-success-text: #90a185;
+  --fintech-success-soft: rgba(114, 134, 117, 0.14);
+  --fintech-neutral-surface: rgba(255, 255, 255, 0.06);
+  --fintech-neutral-shadow: rgba(0, 0, 0, 0.18);
 }
 
 :root[data-theme="light"] {
   color-scheme: light;
-  --bg: #efebe4;
-  --panel: rgba(251, 248, 243, 0.95);
-  --panel-soft: rgba(240, 235, 228, 0.92);
-  --surface: rgba(248, 244, 238, 0.95);
-  --surface-soft: rgba(238, 233, 226, 0.9);
+  --bg: #f1ece5;
+  --panel: rgba(252, 248, 242, 0.96);
+  --panel-soft: rgba(244, 238, 230, 0.92);
+  --surface: rgba(249, 245, 239, 0.95);
+  --surface-soft: rgba(240, 234, 227, 0.9);
   --surface-strong: rgba(255, 252, 247, 0.98);
-  --surface-frost: rgba(244, 239, 233, 0.94);
-  --panel-tint: linear-gradient(180deg, rgba(192, 176, 151, 0.14), rgba(249, 245, 239, 0.99));
-  --line: rgba(168, 137, 87, 0.22);
-  --line-hot: rgba(128, 146, 131, 0.22);
-  --text: #1f2f4f;
-  --muted: #5f6f8f;
-  --accent: #31456f;
-  --green: #647563;
-  --red: #8c5e63;
-  --gold: #a97b39;
-  --panel-info: rgba(245, 240, 233, 0.95);
-  --panel-highlight: rgba(238, 233, 226, 0.96);
-  --panel-active-device: rgba(225, 220, 213, 0.94);
-  --section-recharge: rgba(245, 240, 233, 0.96);
-  --section-recharge-soft: rgba(236, 230, 223, 0.93);
-  --section-card: rgba(244, 239, 233, 0.96);
-  --section-card-soft: rgba(233, 227, 220, 0.93);
-  --section-cycle: rgba(247, 242, 236, 0.96);
-  --section-cycle-soft: rgba(208, 188, 154, 0.32);
+  --surface-frost: rgba(246, 241, 234, 0.94);
+  --panel-tint: linear-gradient(180deg, rgba(199, 168, 109, 0.12), rgba(250, 246, 240, 0.99));
+  --line: rgba(167, 135, 84, 0.22);
+  --line-hot: rgba(161, 141, 105, 0.22);
+  --text: #2d3136;
+  --muted: #716960;
+  --accent: #8f6d3c;
+  --green: #70836f;
+  --red: #966760;
+  --gold: #b68b4b;
+  --panel-info: rgba(247, 242, 235, 0.95);
+  --panel-highlight: rgba(240, 234, 226, 0.96);
+  --panel-active-device: rgba(232, 225, 216, 0.94);
+  --section-recharge: rgba(247, 242, 235, 0.96);
+  --section-recharge-soft: rgba(239, 233, 225, 0.93);
+  --section-card: rgba(246, 241, 234, 0.96);
+  --section-card-soft: rgba(236, 230, 222, 0.93);
+  --section-cycle: rgba(248, 243, 236, 0.96);
+  --section-cycle-soft: rgba(208, 188, 154, 0.26);
   --shadow: 0 20px 40px rgba(92, 84, 74, 0.12);
 }
 
@@ -85,9 +85,9 @@ body {
   margin: 0;
   font-family: "Trebuchet MS", "Segoe UI", sans-serif;
   background:
-    radial-gradient(circle at top left, rgba(214, 168, 95, 0.08), transparent 24%),
-    radial-gradient(circle at top right, rgba(97, 104, 112, 0.12), transparent 20%),
-    radial-gradient(circle at bottom right, rgba(76, 84, 78, 0.1), transparent 22%),
+    radial-gradient(circle at top left, rgba(199, 168, 109, 0.12), transparent 24%),
+    radial-gradient(circle at top right, rgba(122, 126, 132, 0.1), transparent 22%),
+    radial-gradient(circle at bottom right, rgba(86, 92, 86, 0.08), transparent 22%),
     var(--bg);
   color: var(--text);
 }
@@ -98,9 +98,9 @@ body.is-loading {
 
 :root[data-theme="light"] body {
   background:
-    radial-gradient(circle at top left, rgba(218, 213, 205, 0.22), transparent 26%),
-    radial-gradient(circle at top right, rgba(214, 184, 124, 0.1), transparent 24%),
-    radial-gradient(circle at bottom right, rgba(208, 203, 197, 0.16), transparent 26%),
+    radial-gradient(circle at top left, rgba(214, 194, 160, 0.18), transparent 26%),
+    radial-gradient(circle at top right, rgba(199, 168, 109, 0.1), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(210, 203, 195, 0.16), transparent 26%),
     linear-gradient(180deg, rgba(255, 252, 248, 0.82), transparent 26%),
     var(--bg);
 }
@@ -145,7 +145,7 @@ body.is-loading {
   overflow: hidden;
   min-height: 148px;
   background:
-    linear-gradient(135deg, rgba(122, 141, 166, 0.04), transparent 42%),
+    linear-gradient(135deg, rgba(199, 168, 109, 0.06), transparent 42%),
     linear-gradient(180deg, color-mix(in srgb, var(--surface) 96%, transparent), color-mix(in srgb, var(--surface-soft) 92%, transparent));
 }
 
@@ -156,7 +156,7 @@ body.is-loading {
   width: 320px;
   height: 320px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(122, 141, 166, 0.11), transparent 62%);
+  background: radial-gradient(circle, rgba(199, 168, 109, 0.11), transparent 62%);
   pointer-events: none;
 }
 
@@ -168,7 +168,7 @@ body.is-loading {
   width: 240px;
   height: 240px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(128, 153, 137, 0.08), transparent 64%);
+  background: radial-gradient(circle, rgba(118, 125, 132, 0.12), transparent 64%);
   pointer-events: none;
 }
 
@@ -188,10 +188,10 @@ body.is-loading {
 .notice-strip {
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(122, 168, 196, 0.16);
+  border: 1px solid rgba(199, 168, 109, 0.14);
   border-radius: 18px;
   background:
-    linear-gradient(135deg, rgba(73, 124, 169, 0.12), transparent 42%),
+    linear-gradient(135deg, rgba(199, 168, 109, 0.08), transparent 42%),
     linear-gradient(180deg, color-mix(in srgb, var(--surface-soft) 96%, transparent), color-mix(in srgb, var(--surface) 94%, transparent));
   box-shadow:
     var(--shadow),
@@ -211,12 +211,12 @@ body.is-loading {
 
 .notice-strip::before {
   left: 0;
-  background: linear-gradient(90deg, rgba(11, 18, 32, 0.94), transparent);
+  background: linear-gradient(90deg, rgba(21, 23, 26, 0.94), transparent);
 }
 
 .notice-strip::after {
   right: 0;
-  background: linear-gradient(270deg, rgba(11, 18, 32, 0.94), transparent);
+  background: linear-gradient(270deg, rgba(21, 23, 26, 0.94), transparent);
 }
 
 .notice-strip-shell {
@@ -240,11 +240,11 @@ body.is-loading {
   min-height: 38px;
   padding: 6px 14px 6px 8px;
   border-radius: 999px;
-  border: 1px solid rgba(148, 191, 221, 0.16);
+  border: 1px solid rgba(199, 168, 109, 0.14);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent),
-    rgba(31, 48, 67, 0.84);
-  color: rgba(232, 242, 248, 0.88);
+    rgba(39, 43, 48, 0.86);
+  color: rgba(237, 232, 224, 0.9);
   font-size: 0.84rem;
   white-space: nowrap;
   box-shadow:
@@ -283,36 +283,36 @@ body.is-loading {
 }
 
 .notice-pill-recommendation {
-  border-color: rgba(99, 199, 178, 0.24);
+  border-color: rgba(114, 134, 117, 0.26);
 }
 
 .notice-pill-recommendation .notice-pill-icon {
-  background: linear-gradient(180deg, rgba(99, 199, 178, 0.94), rgba(46, 126, 110, 0.98));
+  background: linear-gradient(180deg, rgba(126, 150, 125, 0.96), rgba(83, 101, 83, 0.98));
   color: #effffb;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.18),
-    0 6px 12px rgba(13, 63, 56, 0.22);
+    0 6px 12px rgba(24, 41, 26, 0.22);
 }
 
 .notice-pill-recommendation .notice-pill-label {
-  color: #85ddcb;
+  color: #aec8aa;
 }
 
 .notice-pill-warning {
-  border-color: rgba(212, 116, 127, 0.24);
+  border-color: rgba(173, 112, 107, 0.26);
 }
 
 .notice-pill-warning .notice-pill-icon {
-  background: linear-gradient(180deg, rgba(209, 91, 105, 0.96), rgba(129, 43, 58, 0.98));
+  background: linear-gradient(180deg, rgba(182, 117, 110, 0.96), rgba(126, 73, 68, 0.98));
   color: #fff4f4;
   border-radius: 6px;
   clip-path: polygon(50% 6%, 94% 88%, 6% 88%);
   box-shadow:
-    0 6px 12px rgba(63, 14, 20, 0.22);
+    0 6px 12px rgba(56, 24, 22, 0.22);
 }
 
 .notice-pill-warning .notice-pill-label {
-  color: #f0a7af;
+  color: #e5b1ab;
 }
 
 .top-tab {
@@ -321,10 +321,10 @@ body.is-loading {
 }
 
 .top-tab.active {
-  border-color: rgba(122, 141, 166, 0.34);
-  background: rgba(122, 141, 166, 0.12);
+  border-color: rgba(199, 168, 109, 0.28);
+  background: rgba(199, 168, 109, 0.12);
   color: var(--accent);
-  box-shadow: 0 10px 18px rgba(44, 56, 72, 0.12);
+  box-shadow: 0 10px 18px rgba(30, 24, 16, 0.14);
 }
 
 .compact-panel {
@@ -416,10 +416,10 @@ p {
 .badge {
   padding: 11px 15px;
   border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--gold) 26%, rgba(122, 141, 166, 0.16));
+  border: 1px solid color-mix(in srgb, var(--gold) 30%, rgba(255, 255, 255, 0.06));
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent),
-    color-mix(in srgb, var(--accent) 12%, transparent);
+    rgba(199, 168, 109, 0.08);
   color: var(--accent);
   font-size: 0.88rem;
   font-weight: 700;
@@ -707,8 +707,8 @@ body.speeches-mode .sidebar {
 }
 
 .device-item:hover {
-  border-color: rgba(139, 194, 218, 0.24);
-  box-shadow: 0 14px 28px rgba(7, 18, 31, 0.12);
+  border-color: rgba(199, 168, 109, 0.24);
+  box-shadow: 0 14px 28px rgba(18, 15, 11, 0.16);
 }
 
 .device-item-select {
@@ -910,13 +910,13 @@ body.speeches-mode .sidebar {
 }
 
 .device-item.active {
-  border-color: rgba(126, 215, 197, 0.48);
+  border-color: rgba(199, 168, 109, 0.34);
   background:
-    linear-gradient(135deg, rgba(107, 166, 190, 0.34), rgba(52, 93, 114, 0.98)),
+    linear-gradient(145deg, rgba(121, 110, 95, 0.32), rgba(66, 71, 78, 0.98)),
     var(--panel-active-device);
   box-shadow:
-    0 0 0 1px rgba(126, 215, 197, 0.22),
-    0 22px 40px rgba(11, 31, 45, 0.24);
+    0 0 0 1px rgba(199, 168, 109, 0.16),
+    0 22px 40px rgba(14, 14, 15, 0.28);
 }
 
 .device-item.active::before {
@@ -927,24 +927,24 @@ body.speeches-mode .sidebar {
   bottom: 14px;
   width: 4px;
   border-radius: 999px;
-  background: linear-gradient(180deg, #8de0cf, #7dc6e3);
+  background: linear-gradient(180deg, #d7bb8a, #8f7b5e);
 }
 
 .device-item.active .device-item-badge {
-  border-color: rgba(200, 240, 229, 0.34);
-  background: rgba(214, 247, 239, 0.16);
-  color: #effffb;
+  border-color: rgba(228, 210, 177, 0.24);
+  background: rgba(215, 187, 138, 0.12);
+  color: #f4eadc;
 }
 
 .device-item.active .device-item-stats span,
 .device-item.active .device-item span,
 .device-item.active .device-profile-item span {
-  color: rgba(225, 241, 247, 0.82);
+  color: rgba(236, 229, 220, 0.78);
 }
 
 .device-item.active .device-profile-item {
-  border-color: rgba(174, 230, 217, 0.16);
-  background: rgba(25, 56, 70, 0.5);
+  border-color: rgba(216, 191, 146, 0.14);
+  background: rgba(35, 39, 44, 0.72);
 }
 
 @media (max-width: 760px) {
@@ -4515,7 +4515,7 @@ body.fintech-control-mode .finance-balance-card {
   background:
     radial-gradient(circle at 18% 28%, rgba(255, 255, 255, 0.16), transparent 16%),
     radial-gradient(circle at 82% 26%, rgba(255, 255, 255, 0.14), transparent 14%),
-    linear-gradient(145deg, rgba(203, 196, 188, 0.96), rgba(142, 138, 134, 0.94) 56%, rgba(109, 110, 114, 0.96));
+    linear-gradient(145deg, rgba(213, 206, 196, 0.96), rgba(152, 148, 142, 0.94) 54%, rgba(104, 107, 113, 0.96));
   box-shadow:
     0 22px 34px rgba(0, 0, 0, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.28);
@@ -4533,7 +4533,7 @@ body.fintech-control-mode .finance-balance-circle {
     rgba(255, 255, 255, 0.12);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.24),
-    0 12px 20px rgba(52, 66, 126, 0.14);
+    0 12px 20px rgba(42, 35, 26, 0.14);
 }
 
 body.fintech-control-mode .finance-used-circle.is-empty {
@@ -4592,16 +4592,16 @@ body.fintech-control-mode .used-summary-card {
   color: #ffffff;
   background:
     radial-gradient(circle at top right, rgba(255, 255, 255, 0.2), transparent 28%),
-    linear-gradient(145deg, #8e95ff, #6871ff 54%, #5749f2);
+    linear-gradient(145deg, rgba(124, 112, 96, 0.98), rgba(89, 82, 73, 0.98) 54%, rgba(57, 53, 49, 0.98));
   box-shadow:
-    0 24px 38px rgba(92, 99, 255, 0.22),
+    0 24px 38px rgba(20, 17, 13, 0.24),
     inset 0 1px 0 rgba(255, 255, 255, 0.22);
 }
 
 body.fintech-control-mode .used-summary-card {
   background:
     radial-gradient(circle at top right, rgba(255, 255, 255, 0.22), transparent 28%),
-    linear-gradient(145deg, #9d86ff, #7567ff 54%, #5d4ce8);
+    linear-gradient(145deg, rgba(139, 121, 95, 0.98), rgba(99, 86, 68, 0.98) 54%, rgba(64, 58, 50, 0.98));
 }
 
 body.fintech-control-mode .control-actions-grid .action-card h3,
@@ -4623,8 +4623,8 @@ body.fintech-control-mode .used-summary-card button {
 body.fintech-control-mode .history-launcher {
   padding: 16px 18px;
   background:
-    linear-gradient(135deg, rgba(120, 130, 140, 0.06), transparent 58%),
-    linear-gradient(180deg, rgba(45, 49, 55, 0.62), rgba(30, 33, 38, 0.58));
+    linear-gradient(135deg, rgba(199, 168, 109, 0.07), transparent 58%),
+    linear-gradient(180deg, rgba(49, 53, 59, 0.62), rgba(31, 34, 39, 0.58));
 }
 
 body.fintech-control-mode .history-icon-button {
@@ -4698,7 +4698,7 @@ body.fintech-control-mode .purchase-summary-card {
   border: 1px solid rgba(201, 163, 92, 0.18);
   background:
     radial-gradient(circle at top right, rgba(255, 255, 255, 0.08), transparent 24%),
-    linear-gradient(160deg, rgba(77, 83, 91, 0.58), rgba(50, 54, 60, 0.54) 54%, rgba(33, 36, 40, 0.58));
+    linear-gradient(160deg, rgba(84, 82, 78, 0.56), rgba(56, 59, 65, 0.54) 54%, rgba(35, 38, 42, 0.58));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
     0 12px 22px rgba(0, 0, 0, 0.16);
@@ -4711,7 +4711,7 @@ body.fintech-control-mode .info-tile,
 body.fintech-control-mode .product-stat,
 body.fintech-control-mode .card-mini {
   border: 1px solid rgba(205, 171, 113, 0.12);
-  background: rgba(48, 52, 58, 0.5);
+  background: rgba(45, 49, 54, 0.58);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
     inset 0 -1px 0 rgba(22, 24, 28, 0.24),
@@ -4777,7 +4777,7 @@ body.fintech-control-mode .product-stats-grid {
 
 body.fintech-control-mode .product-stat {
   min-height: 0;
-  background: rgba(55, 59, 65, 0.24);
+  background: rgba(56, 59, 64, 0.34);
   backdrop-filter: blur(16px) saturate(1.14);
 }
 
@@ -4810,8 +4810,8 @@ body.fintech-control-mode .product-stat-count,
 body.fintech-control-mode .product-counter button,
 body.fintech-control-mode .compact-icon-button {
   border: 1px solid color-mix(in srgb, var(--gold) 14%, rgba(110, 125, 168, 0.12));
-  color: #d7def7;
-  background: linear-gradient(180deg, rgba(41, 49, 55, 0.76), rgba(21, 27, 35, 0.68));
+  color: #ece6dd;
+  background: linear-gradient(180deg, rgba(52, 57, 63, 0.76), rgba(28, 31, 36, 0.68));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.05),
     0 8px 14px var(--fintech-neutral-shadow);
@@ -5056,7 +5056,7 @@ body.fintech-control-mode .card-mini.active,
 body.fintech-control-mode .card-mini.is-cycle-active {
   background:
     radial-gradient(circle at top right, rgba(255, 255, 255, 0.14), transparent 22%),
-    linear-gradient(150deg, rgba(144, 154, 168, 0.98), rgba(112, 123, 138, 0.96) 50%, rgba(78, 90, 107, 0.96));
+    linear-gradient(150deg, rgba(157, 149, 140, 0.98), rgba(112, 117, 123, 0.96) 50%, rgba(71, 76, 84, 0.96));
   border-color: rgba(201, 163, 92, 0.28);
   box-shadow:
     0 18px 28px rgba(0, 0, 0, 0.24),
@@ -5078,7 +5078,7 @@ body.fintech-control-mode .card-mini.is-cycle-inactive {
   transform: none;
   border-style: solid;
   border-color: rgba(201, 163, 92, 0.18);
-  background: linear-gradient(180deg, rgba(55, 59, 65, 0.46), rgba(38, 42, 48, 0.42));
+  background: linear-gradient(180deg, rgba(59, 62, 66, 0.46), rgba(38, 41, 46, 0.42));
   backdrop-filter: blur(16px) saturate(1.14);
 }
 
