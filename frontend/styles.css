@@ -1,13 +1,13 @@
 :root {
   color-scheme: dark;
-  --bg: #101113;
-  --panel: #17191c;
-  --panel-soft: #202328;
-  --surface: rgba(22, 24, 28, 0.95);
-  --surface-soft: rgba(31, 34, 39, 0.92);
-  --surface-strong: #15181b;
-  --surface-frost: rgba(20, 22, 26, 0.86);
-  --panel-tint: linear-gradient(180deg, rgba(199, 168, 109, 0.05), rgba(11, 13, 16, 0.985));
+  --bg: #090a0c;
+  --panel: #101114;
+  --panel-soft: #17191d;
+  --surface: rgba(16, 17, 20, 0.96);
+  --surface-soft: rgba(23, 25, 29, 0.94);
+  --surface-strong: #0f1013;
+  --surface-frost: rgba(14, 15, 18, 0.88);
+  --panel-tint: linear-gradient(180deg, rgba(199, 168, 109, 0.04), rgba(8, 9, 11, 0.99));
   --line: rgba(199, 168, 109, 0.14);
   --line-hot: rgba(199, 168, 109, 0.22);
   --text: #f3efe8;
@@ -16,31 +16,31 @@
   --green: #728675;
   --red: #ad706b;
   --gold: #c7a86d;
-  --panel-info: rgba(25, 28, 32, 0.94);
-  --panel-highlight: rgba(34, 37, 42, 0.96);
-  --panel-active-device: rgba(49, 53, 59, 0.98);
-  --section-recharge: rgba(28, 31, 35, 0.95);
-  --section-recharge-soft: rgba(35, 39, 44, 0.9);
-  --section-card: rgba(25, 28, 32, 0.97);
-  --section-card-soft: rgba(33, 36, 41, 0.9);
-  --section-cycle: rgba(29, 32, 36, 0.95);
+  --panel-info: rgba(18, 20, 24, 0.95);
+  --panel-highlight: rgba(24, 26, 31, 0.97);
+  --panel-active-device: rgba(35, 38, 43, 0.985);
+  --section-recharge: rgba(18, 20, 24, 0.96);
+  --section-recharge-soft: rgba(24, 27, 31, 0.92);
+  --section-card: rgba(17, 19, 23, 0.98);
+  --section-card-soft: rgba(23, 25, 29, 0.92);
+  --section-cycle: rgba(19, 21, 25, 0.96);
   --section-cycle-soft: rgba(199, 168, 109, 0.16);
   --shadow: 0 22px 48px rgba(0, 0, 0, 0.42);
-  --fintech-brand-1: #6d6254;
-  --fintech-brand-2: #4f4840;
-  --fintech-brand-3: #312d29;
+  --fintech-brand-1: #2a2c30;
+  --fintech-brand-2: #181a1e;
+  --fintech-brand-3: #0d0f12;
   --fintech-brand-soft: rgba(199, 168, 109, 0.08);
   --fintech-brand-soft-strong: rgba(199, 168, 109, 0.14);
   --fintech-brand-text: #d7bb8a;
   --fintech-brand-shadow: rgba(0, 0, 0, 0.28);
-  --fintech-note-1: #7a6a55;
-  --fintech-note-2: #5a4f41;
+  --fintech-note-1: #383127;
+  --fintech-note-2: #231f1a;
   --fintech-danger-text: #c7847d;
   --fintech-danger-soft: rgba(173, 112, 107, 0.12);
   --fintech-success-text: #90a185;
   --fintech-success-soft: rgba(114, 134, 117, 0.14);
-  --fintech-neutral-surface: rgba(255, 255, 255, 0.06);
-  --fintech-neutral-shadow: rgba(0, 0, 0, 0.18);
+  --fintech-neutral-surface: rgba(255, 255, 255, 0.035);
+  --fintech-neutral-shadow: rgba(0, 0, 0, 0.3);
 }
 
 :root[data-theme="light"] {
@@ -85,9 +85,9 @@ body {
   margin: 0;
   font-family: "Trebuchet MS", "Segoe UI", sans-serif;
   background:
-    radial-gradient(circle at top left, rgba(199, 168, 109, 0.09), transparent 24%),
-    radial-gradient(circle at top right, rgba(95, 99, 105, 0.08), transparent 22%),
-    radial-gradient(circle at bottom right, rgba(74, 78, 74, 0.06), transparent 22%),
+    radial-gradient(circle at top left, rgba(199, 168, 109, 0.06), transparent 24%),
+    radial-gradient(circle at top right, rgba(58, 61, 66, 0.05), transparent 22%),
+    radial-gradient(circle at bottom right, rgba(52, 56, 52, 0.04), transparent 22%),
     var(--bg);
   color: var(--text);
 }
@@ -145,7 +145,7 @@ body.is-loading {
   overflow: hidden;
   min-height: 148px;
   background:
-    linear-gradient(135deg, rgba(199, 168, 109, 0.045), transparent 42%),
+    linear-gradient(135deg, rgba(199, 168, 109, 0.03), transparent 42%),
     linear-gradient(180deg, color-mix(in srgb, var(--surface) 96%, transparent), color-mix(in srgb, var(--surface-soft) 92%, transparent));
 }
 
@@ -168,7 +168,7 @@ body.is-loading {
   width: 240px;
   height: 240px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(118, 125, 132, 0.12), transparent 64%);
+  background: radial-gradient(circle, rgba(49, 53, 58, 0.1), transparent 64%);
   pointer-events: none;
 }
 
@@ -191,7 +191,7 @@ body.is-loading {
   border: 1px solid rgba(199, 168, 109, 0.14);
   border-radius: 18px;
   background:
-    linear-gradient(135deg, rgba(199, 168, 109, 0.06), transparent 42%),
+    linear-gradient(135deg, rgba(199, 168, 109, 0.04), transparent 42%),
     linear-gradient(180deg, color-mix(in srgb, var(--surface-soft) 96%, transparent), color-mix(in srgb, var(--surface) 94%, transparent));
   box-shadow:
     var(--shadow),
@@ -242,8 +242,8 @@ body.is-loading {
   border-radius: 999px;
   border: 1px solid rgba(199, 168, 109, 0.14);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent),
-    rgba(31, 34, 39, 0.9);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent),
+    rgba(21, 23, 27, 0.92);
   color: rgba(237, 232, 224, 0.9);
   font-size: 0.84rem;
   white-space: nowrap;
@@ -418,8 +418,8 @@ p {
   border-radius: 999px;
   border: 1px solid color-mix(in srgb, var(--gold) 30%, rgba(255, 255, 255, 0.06));
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent),
-    rgba(199, 168, 109, 0.08);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent),
+    rgba(18, 19, 22, 0.92);
   color: var(--accent);
   font-size: 0.88rem;
   font-weight: 700;
@@ -561,8 +561,8 @@ button {
   border: 1px solid var(--line);
   border-radius: 14px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02) 44%, transparent),
-    color-mix(in srgb, var(--panel-soft) 88%, transparent);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015) 44%, transparent),
+    color-mix(in srgb, var(--panel-soft) 92%, transparent);
   color: var(--text);
   cursor: pointer;
   box-shadow:
@@ -4485,7 +4485,7 @@ body.fintech-control-mode .control-dashboard .selected-card,
 body.fintech-control-mode .control-dashboard .cards-section-products {
   border: 1px solid color-mix(in srgb, var(--gold) 12%, var(--fintech-green-border));
   border-radius: 32px;
-  background: linear-gradient(180deg, rgba(31, 28, 26, 0.76), rgba(18, 16, 15, 0.72));
+  background: linear-gradient(180deg, rgba(18, 18, 20, 0.84), rgba(9, 10, 12, 0.8));
   box-shadow:
     0 18px 30px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 248, 234, 0.05);
@@ -4511,14 +4511,14 @@ body.fintech-control-mode .detail-title-block h2 {
 }
 
 body.fintech-control-mode .finance-balance-card {
-  border: 0;
+  border: 1px solid rgba(199, 168, 109, 0.16);
   background:
-    radial-gradient(circle at 18% 28%, rgba(255, 255, 255, 0.12), transparent 16%),
-    radial-gradient(circle at 82% 26%, rgba(255, 255, 255, 0.1), transparent 14%),
-    linear-gradient(145deg, rgba(166, 160, 152, 0.94), rgba(113, 111, 107, 0.94) 54%, rgba(71, 75, 81, 0.98));
+    radial-gradient(circle at 18% 28%, rgba(255, 255, 255, 0.08), transparent 16%),
+    radial-gradient(circle at 82% 26%, rgba(255, 255, 255, 0.06), transparent 14%),
+    linear-gradient(145deg, rgba(46, 49, 54, 0.98), rgba(24, 27, 31, 0.99) 52%, rgba(10, 12, 15, 1));
   box-shadow:
-    0 22px 34px rgba(0, 0, 0, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    0 22px 34px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 body.fintech-control-mode .finance-balance-kicker,
@@ -4562,15 +4562,15 @@ body.fintech-control-mode .finance-meta-action {
 
 body.fintech-control-mode .meta-edit-button {
   background: linear-gradient(135deg, var(--fintech-brand-1), var(--fintech-brand-2) 58%, var(--fintech-brand-3));
-  color: #ffffff;
+  color: var(--fintech-brand-text);
 }
 
 body.fintech-control-mode .finance-meta-action {
   color: #f3f6f9;
   background:
-    linear-gradient(180deg, rgba(78, 84, 92, 0.58), rgba(40, 44, 50, 0.54));
+    linear-gradient(180deg, rgba(38, 42, 47, 0.72), rgba(15, 17, 21, 0.76));
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
     inset 0 -1px 0 rgba(24, 27, 31, 0.3),
     0 10px 18px rgba(0, 0, 0, 0.22);
 }
@@ -4591,8 +4591,8 @@ body.fintech-control-mode .used-summary-card {
   padding: 22px;
   color: #ffffff;
   background:
-    radial-gradient(circle at top right, rgba(255, 255, 255, 0.14), transparent 28%),
-    linear-gradient(145deg, rgba(97, 88, 76, 0.98), rgba(68, 63, 56, 0.98) 54%, rgba(41, 38, 36, 0.98));
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.08), transparent 28%),
+    linear-gradient(145deg, rgba(34, 37, 41, 0.98), rgba(18, 20, 24, 0.99) 54%, rgba(8, 10, 12, 1));
   box-shadow:
     0 24px 38px rgba(12, 11, 9, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.18);
@@ -4600,8 +4600,8 @@ body.fintech-control-mode .used-summary-card {
 
 body.fintech-control-mode .used-summary-card {
   background:
-    radial-gradient(circle at top right, rgba(255, 255, 255, 0.16), transparent 28%),
-    linear-gradient(145deg, rgba(112, 97, 77, 0.98), rgba(79, 69, 56, 0.98) 54%, rgba(48, 43, 38, 0.98));
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.08), transparent 28%),
+    linear-gradient(145deg, rgba(42, 38, 33, 0.98), rgba(21, 19, 17, 0.99) 54%, rgba(10, 9, 8, 1));
 }
 
 body.fintech-control-mode .control-actions-grid .action-card h3,
@@ -4623,16 +4623,16 @@ body.fintech-control-mode .used-summary-card button {
 body.fintech-control-mode .history-launcher {
   padding: 16px 18px;
   background:
-    linear-gradient(135deg, rgba(199, 168, 109, 0.05), transparent 58%),
-    linear-gradient(180deg, rgba(39, 43, 48, 0.68), rgba(24, 27, 31, 0.64));
+    linear-gradient(135deg, rgba(199, 168, 109, 0.035), transparent 58%),
+    linear-gradient(180deg, rgba(20, 22, 26, 0.78), rgba(9, 10, 13, 0.76));
 }
 
 body.fintech-control-mode .history-icon-button {
   color: #edf1f6;
   border-color: color-mix(in srgb, var(--gold) 16%, var(--fintech-green-border));
-  background: linear-gradient(180deg, rgba(82, 88, 96, 0.46), rgba(47, 51, 57, 0.42));
+  background: linear-gradient(180deg, rgba(34, 38, 43, 0.78), rgba(13, 15, 18, 0.82));
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
     inset 0 -1px 0 rgba(24, 27, 31, 0.24),
     0 8px 14px rgba(0, 0, 0, 0.16);
   backdrop-filter: blur(18px) saturate(1.04);
@@ -4697,8 +4697,8 @@ body.fintech-control-mode .selected-card-compact-layout {
 body.fintech-control-mode .purchase-summary-card {
   border: 1px solid rgba(201, 163, 92, 0.18);
   background:
-    radial-gradient(circle at top right, rgba(255, 255, 255, 0.06), transparent 24%),
-    linear-gradient(160deg, rgba(67, 65, 61, 0.62), rgba(44, 47, 52, 0.62) 54%, rgba(26, 29, 33, 0.66));
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.04), transparent 24%),
+    linear-gradient(160deg, rgba(28, 30, 34, 0.78), rgba(16, 18, 22, 0.8) 54%, rgba(7, 9, 11, 0.84));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
     0 12px 22px rgba(0, 0, 0, 0.22);
@@ -4711,7 +4711,7 @@ body.fintech-control-mode .info-tile,
 body.fintech-control-mode .product-stat,
 body.fintech-control-mode .card-mini {
   border: 1px solid rgba(205, 171, 113, 0.12);
-  background: rgba(36, 39, 44, 0.66);
+  background: rgba(21, 23, 27, 0.78);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
     inset 0 -1px 0 rgba(22, 24, 28, 0.24),
@@ -4734,9 +4734,9 @@ body.fintech-control-mode .card-actions-under .icon-action,
 body.fintech-control-mode .card-actions-under .card-action-toggle {
   border: 1px solid rgba(205, 171, 113, 0.14);
   color: #edf1f6;
-  background: linear-gradient(180deg, rgba(82, 88, 96, 0.46), rgba(47, 51, 57, 0.42));
+  background: linear-gradient(180deg, rgba(34, 38, 43, 0.78), rgba(13, 15, 18, 0.82));
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
     inset 0 -1px 0 rgba(24, 27, 31, 0.24),
     0 6px 12px var(--fintech-neutral-shadow);
   backdrop-filter: blur(18px) saturate(1.04);
@@ -4777,7 +4777,7 @@ body.fintech-control-mode .product-stats-grid {
 
 body.fintech-control-mode .product-stat {
   min-height: 0;
-  background: rgba(42, 45, 49, 0.44);
+  background: rgba(19, 21, 25, 0.68);
   backdrop-filter: blur(16px) saturate(1.14);
 }
 
@@ -4811,7 +4811,7 @@ body.fintech-control-mode .product-counter button,
 body.fintech-control-mode .compact-icon-button {
   border: 1px solid color-mix(in srgb, var(--gold) 14%, rgba(110, 125, 168, 0.12));
   color: #ece6dd;
-  background: linear-gradient(180deg, rgba(43, 47, 52, 0.8), rgba(22, 25, 29, 0.74));
+  background: linear-gradient(180deg, rgba(28, 31, 36, 0.84), rgba(11, 13, 16, 0.8));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.05),
     0 8px 14px var(--fintech-neutral-shadow);
