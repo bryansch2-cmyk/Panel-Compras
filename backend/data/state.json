@@ -1,7 +1,7 @@
 {
   "meta": {
-    "updatedAt": "2026-03-27T02:38:39.561Z",
-    "revision": 53,
+    "updatedAt": "2026-05-28T16:54:01.826Z",
+    "revision": 54,
     "seedVersion": "keep-import-2026-03-27-v2"
   },
   "devices": [
@@ -1293,120 +1293,6 @@
           "orderLabel": "Tarjeta 3",
           "number": "5383990269880280",
           "createdAt": "2026-02-26",
-          "expiry": "",
-          "cvv": "",
-          "archived": false,
-          "resetAt": "",
-          "counts": {
-            "epic": 0,
-            "xbox": 0,
-            "nitro": 0,
-            "nitroYear": 0,
-            "crunchy": 0
-          },
-          "baseCounts": {
-            "epic": 0,
-            "xbox": 0,
-            "nitro": 0,
-            "nitroYear": 0,
-            "crunchy": 0
-          },
-          "cooldownUntil": "",
-          "rejectedAt": "",
-          "notes": ""
-        }
-      ]
-    },
-    {
-      "id": "4a30g806",
-      "title": "HONOR MAMA - HADI",
-      "note": "",
-      "createdAt": "2026-01-22",
-      "availableBalance": 51,
-      "pendingUsed": 0,
-      "extraUsed": 0,
-      "lastCustomAmount": 0,
-      "lastDeducted": 0,
-      "carryoverBalance": 0,
-      "balanceLimitCurrent": 2699,
-      "limitCycleMonth": "2026-03",
-      "activeCardOrder": 2,
-      "lastRechargeAt": "2026-02-15",
-      "lastRechargeAmount": 1000,
-      "rechargeHistory": [
-        {
-          "id": "lfo05t1j",
-          "amount": 1000,
-          "date": "2026-02-15",
-          "balanceAfter": 51,
-          "limitAfter": 2699
-        }
-      ],
-      "purchaseHistory": [],
-      "pendingLedger": [],
-      "cards": [
-        {
-          "id": "i8a6ryb8",
-          "order": 1,
-          "orderLabel": "Tarjeta 1",
-          "number": "5383990287614042",
-          "createdAt": "2026-02-22",
-          "expiry": "",
-          "cvv": "",
-          "archived": false,
-          "resetAt": "",
-          "counts": {
-            "epic": 0,
-            "xbox": 0,
-            "nitro": 0,
-            "nitroYear": 0,
-            "crunchy": 0
-          },
-          "baseCounts": {
-            "epic": 0,
-            "xbox": 0,
-            "nitro": 0,
-            "nitroYear": 0,
-            "crunchy": 0
-          },
-          "cooldownUntil": "",
-          "rejectedAt": "",
-          "notes": ""
-        },
-        {
-          "id": "fj8wgnc1",
-          "order": 2,
-          "orderLabel": "Tarjeta 2",
-          "number": "5383990254191255",
-          "createdAt": "2026-03-13",
-          "expiry": "03/31",
-          "cvv": "042",
-          "archived": false,
-          "resetAt": "",
-          "counts": {
-            "epic": 0,
-            "xbox": 0,
-            "nitro": 0,
-            "nitroYear": 0,
-            "crunchy": 0
-          },
-          "baseCounts": {
-            "epic": 0,
-            "xbox": 0,
-            "nitro": 0,
-            "nitroYear": 0,
-            "crunchy": 0
-          },
-          "cooldownUntil": "",
-          "rejectedAt": "",
-          "notes": ""
-        },
-        {
-          "id": "f88fo7jt",
-          "order": 3,
-          "orderLabel": "Tarjeta 3",
-          "number": "5383990296661588",
-          "createdAt": "2026-02-15",
           "expiry": "",
           "cvv": "",
           "archived": false,

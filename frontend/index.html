@@ -27,10 +27,16 @@
 
       <section id="noticeStrip" class="notice-strip" aria-label="Recomendaciones del panel"></section>
 
+      <section id="overviewStrip" class="overview-strip" aria-label="Resumen del panel"></section>
+
       <section class="layout">
         <aside class="panel sidebar">
           <div class="panel-head">
             <h2 id="sidebarTitle">Dispositivos</h2>
+            <label class="device-search">
+              <span>Buscar dispositivo</span>
+              <input id="deviceSearchInput" type="search" autocomplete="off" placeholder="Nombre, saldo, tarjeta o nota">
+            </label>
           </div>
           <div id="deviceList" class="device-list"></div>
         </aside>

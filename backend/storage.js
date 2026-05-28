@@ -10,10 +10,12 @@ const BUNDLED_STATE_PATH = path.join(LOCAL_DATA_DIR, "state.json");
 const DEVICE_BALANCE_CAP = 2750;
 const CARD_CYCLE_ORDERS = [1, 2, 3];
 const CARD_BLOCK_DURATION_MS = 24 * 60 * 60 * 1000;
+const NITRO_WINDOW_LIMIT = 3;
+const NITRO_WINDOW_DURATION_MS = 30 * 24 * 60 * 60 * 1000;
 const PRODUCT_RULES = [
   { key: "epic", label: "Epic", amount: 79, maxCount: 0 },
   { key: "xbox", label: "Xbox", amount: 79, maxCount: 2 },
-  { key: "nitro", label: "Nitro", amount: 104.99, maxCount: 3 },
+  { key: "nitro", label: "Nitro", amount: 104.99, maxCount: 0 },
   { key: "nitroYear", label: "Nitro 1y", amount: 1049.99, maxCount: 2 },
   { key: "crunchy", label: "Crunchy", amount: 89.9, maxCount: 0 },
 ];
@@ -94,6 +96,7 @@ function createCard(order, number) {
     cooldownUntil: "",
     rejectedAt: "",
     rejectedCooldownUntil: "",
+    nitroWindow: normalizeNitroWindow(),
     notes: "",
   };
 }
@@ -211,6 +214,44 @@ function normalizeCounts(raw) {
   return base;
 }
 
+function getNitroWindowCooldownUntil(windowState) {
+  const lastPurchaseAt = String(windowState?.lastPurchaseAt || "");
+  const count = Math.max(0, Math.trunc(Number(windowState?.count || 0)));
+  const lastTime = lastPurchaseAt ? new Date(lastPurchaseAt).getTime() : 0;
+  if (count < NITRO_WINDOW_LIMIT || !lastTime) {
+    return "";
+  }
+
+  const until = lastTime + NITRO_WINDOW_DURATION_MS;
+  return until > Date.now() ? new Date(until).toISOString() : "";
+}
+
+function normalizeNitroWindow(raw = {}) {
+  const windowState = {
+    count: Math.max(0, Math.trunc(Number(raw?.count || 0))),
+    lastPurchaseAt: String(raw?.lastPurchaseAt || ""),
+    cooldownUntil: "",
+  };
+  windowState.cooldownUntil = getNitroWindowCooldownUntil(windowState);
+  if (!windowState.cooldownUntil && windowState.count >= NITRO_WINDOW_LIMIT) {
+    windowState.count = 0;
+    windowState.lastPurchaseAt = "";
+  }
+  return windowState;
+}
+
+function refreshNitroWindow(card) {
+  const nextWindow = normalizeNitroWindow(card?.nitroWindow);
+  const previous = card?.nitroWindow || {};
+  const changed =
+    Number(previous.count || 0) !== nextWindow.count ||
+    String(previous.lastPurchaseAt || "") !== nextWindow.lastPurchaseAt ||
+    String(previous.cooldownUntil || "") !== nextWindow.cooldownUntil;
+
+  card.nitroWindow = nextWindow;
+  return changed;
+}
+
 function calculatePendingUsed(device) {
   const cardPending = (Array.isArray(device?.cards) ? device.cards : [])
     .filter((card) => !card.archived)
@@ -246,6 +287,7 @@ function normalizeCard(raw, index) {
     cooldownUntil: rawManualCooldownUntil,
     rejectedAt: rawRejectedAt,
     rejectedCooldownUntil: rawRejectedCooldownUntil,
+    nitroWindow: normalizeNitroWindow(raw?.nitroWindow),
     notes: typeof raw?.notes === "string" ? raw.notes : "",
   };
 }
@@ -365,6 +407,10 @@ function refreshAutomaticCardStates(state) {
       if (card.rejectedCooldownUntil && new Date(card.rejectedCooldownUntil).getTime() <= Date.now()) {
         card.rejectedCooldownUntil = "";
         card.rejectedAt = "";
+        deviceChanged = true;
+      }
+
+      if (refreshNitroWindow(card)) {
         deviceChanged = true;
       }
     });
@@ -754,6 +800,7 @@ async function replaceCard(deviceId, cardId, payload) {
     targetCard.cooldownUntil = "";
     targetCard.rejectedAt = "";
     targetCard.rejectedCooldownUntil = "";
+    targetCard.nitroWindow = normalizeNitroWindow();
     targetCard.notes = "";
   } else {
     device.cards.push({
@@ -771,6 +818,7 @@ async function replaceCard(deviceId, cardId, payload) {
       cooldownUntil: "",
       rejectedAt: "",
       rejectedCooldownUntil: "",
+      nitroWindow: normalizeNitroWindow(),
       notes: "",
     });
   }
@@ -811,6 +859,16 @@ async function updateProductCount(deviceId, cardId, productKey, delta) {
   let nextPending = currentPending;
   let nextBase = currentBase;
 
+  if (productKey === "nitro") {
+    refreshNitroWindow(card);
+    if (delta > 0 && card.nitroWindow.cooldownUntil) {
+      throw new Error("nitro-window-active");
+    }
+    if (delta > 0 && Number(card.nitroWindow?.count || 0) + delta > NITRO_WINDOW_LIMIT) {
+      throw new Error("nitro-window-active");
+    }
+  }
+
   if (delta > 0) {
     nextPending += delta;
   } else if (currentPending > 0) {
@@ -824,6 +882,20 @@ async function updateProductCount(deviceId, cardId, productKey, delta) {
 
   card.counts[productKey] = nextPending;
   card.baseCounts[productKey] = nextBase;
+  if (productKey === "nitro") {
+    if (delta > 0) {
+      const nextWindowCount = Math.max(0, Number(card.nitroWindow?.count || 0)) + delta;
+      card.nitroWindow = normalizeNitroWindow({
+        count: nextWindowCount,
+        lastPurchaseAt: nowIso(),
+      });
+    } else if (currentPending > 0 && nextPending < currentPending) {
+      card.nitroWindow = normalizeNitroWindow({
+        ...card.nitroWindow,
+        count: Math.max(0, Number(card.nitroWindow?.count || 0) - (currentPending - nextPending)),
+      });
+    }
+  }
   device.pendingUsed = calculatePendingUsed(device);
 
   return writeState(state);

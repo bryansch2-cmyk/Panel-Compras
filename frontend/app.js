@@ -4,6 +4,8 @@ const reloadButton = document.querySelector("#reloadButton");
 const tabControl = document.querySelector("#tabControl");
 const tabSpeeches = document.querySelector("#tabSpeeches");
 const noticeStrip = document.querySelector("#noticeStrip");
+const overviewStrip = document.querySelector("#overviewStrip");
+const deviceSearchInput = document.querySelector("#deviceSearchInput");
 const deviceList = document.querySelector("#deviceList");
 const detailView = document.querySelector("#detailView");
 const modalRoot = document.querySelector("#modalRoot");
@@ -168,6 +170,7 @@ const state = {
   },
   selectedTab: "control",
   selectedDeviceId: "",
+  deviceSearchQuery: "",
   sensitiveUnlockedUntilByDevice: {},
   flippedCardByDevice: {},
   modal: null,
@@ -343,6 +346,67 @@ function renderNoticeStrip() {
   `;
 }
 
+function renderOverviewStrip() {
+  if (!overviewStrip) {
+    return;
+  }
+
+  if (state.selectedTab !== "control") {
+    overviewStrip.hidden = true;
+    overviewStrip.innerHTML = "";
+    return;
+  }
+
+  const devices = getDevices();
+  const totals = devices.reduce((summary, device) => {
+    const activeCard = getActiveCard(device);
+    summary.available += Number(device.availableBalance || 0);
+    summary.pending += Number(device.pendingUsed || 0);
+    summary.lowBalance += isLowBalance(device.availableBalance) ? 1 : 0;
+    summary.rejected += isRejectedHoldActive(activeCard) ? 1 : 0;
+    summary.cooldown += isCooldownActive(activeCard) ? 1 : 0;
+    summary.notes += hasMeaningfulNotes(activeCard?.notes) ? 1 : 0;
+    return summary;
+  }, {
+    available: 0,
+    pending: 0,
+    lowBalance: 0,
+    rejected: 0,
+    cooldown: 0,
+    notes: 0,
+  });
+
+  const filteredCount = getFilteredDevices().length;
+  const hasFilter = Boolean(state.deviceSearchQuery.trim());
+  overviewStrip.hidden = false;
+  overviewStrip.innerHTML = `
+    <article class="overview-card overview-card-strong">
+      <span>Saldo total</span>
+      <strong>${escapeHtml(formatMoney(totals.available))}</strong>
+    </article>
+    <article class="overview-card ${totals.pending > 0 ? "overview-card-warning" : ""}">
+      <span>Usado pendiente</span>
+      <strong>${escapeHtml(formatMoney(totals.pending))}</strong>
+    </article>
+    <article class="overview-card">
+      <span>Dispositivos</span>
+      <strong>${escapeHtml(hasFilter ? `${filteredCount}/${devices.length}` : String(devices.length))}</strong>
+    </article>
+    <article class="overview-card ${totals.lowBalance > 0 ? "overview-card-warning" : ""}">
+      <span>Saldo bajo</span>
+      <strong>${escapeHtml(String(totals.lowBalance))}</strong>
+    </article>
+    <article class="overview-card ${totals.rejected > 0 ? "overview-card-danger" : ""}">
+      <span>Rechazadas</span>
+      <strong>${escapeHtml(String(totals.rejected))}</strong>
+    </article>
+    <article class="overview-card">
+      <span>24h / notas</span>
+      <strong>${escapeHtml(`${totals.cooldown}/${totals.notes}`)}</strong>
+    </article>
+  `;
+}
+
 function setLoadingOverlay(visible, message = "") {
   if (!loadingOverlay) {
     return;
@@ -452,6 +516,31 @@ function getDevices() {
   return Array.isArray(state.data?.devices) ? state.data.devices : [];
 }
 
+function getDeviceSearchText(device) {
+  const activeCard = getActiveCard(device);
+  return [
+    device?.title,
+    formatMoney(device?.availableBalance),
+    formatMoney(device?.pendingUsed),
+    formatMoney(device?.balanceLimitCurrent),
+    activeCard?.orderLabel,
+    activeCard?.notes,
+    last4(activeCard?.number),
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+}
+
+function getFilteredDevices() {
+  const query = state.deviceSearchQuery.trim().toLowerCase();
+  if (!query) {
+    return getDevices();
+  }
+
+  return getDevices().filter((device) => getDeviceSearchText(device).includes(query));
+}
+
 function getSelectedDevice() {
   const devices = getDevices();
   if (!devices.length) {
@@ -504,6 +593,10 @@ function isCooldownActive(card) {
 
 function isRejectedHoldActive(card) {
   return Boolean(card?.rejectedCooldownUntil) && new Date(card.rejectedCooldownUntil).getTime() > Date.now();
+}
+
+function isNitroWindowActive(card) {
+  return Boolean(card?.nitroWindow?.cooldownUntil) && new Date(card.nitroWindow.cooldownUntil).getTime() > Date.now();
 }
 
 function getCountdownTimestamp(value) {
@@ -657,6 +750,7 @@ function getErrorMessage(code) {
     "epic-cooldown-active": "Epic esta bloqueado mientras la tarjeta esta en 24h.",
     "epic-rejection-hold": "Epic esta bloqueado por una tarjeta rechazada en observacion 24h.",
     "epic-max-reached": "Epic ya llego al maximo permitido.",
+    "nitro-window-active": "Nitro llego a 3 compras. Espera a que termine el contador de 30 dias.",
     "product-max-reached": "Ese producto ya llego a su limite.",
     "invalid-pin": "El PIN debe tener 6 digitos.",
     "wrong-pin": "El PIN no coincide.",
@@ -738,6 +832,10 @@ function openSensitiveCardModal(deviceId, card) {
     cardId: card.id,
     title: "Datos sensibles de la tarjeta",
   });
+}
+
+function getNitroWindowUntil(card) {
+  return getCountdownTimestamp(card?.nitroWindow?.cooldownUntil);
 }
 
 function openCycleCardModal(deviceId, card) {
@@ -913,9 +1011,12 @@ function renderProfileItem({ icon, label, value, wide = false, bank = false }) {
 }
 
 function renderDeviceList() {
-  const devices = getDevices();
+  const devices = getFilteredDevices();
   if (!devices.length) {
-    deviceList.innerHTML = `<div class="empty">No hay dispositivos disponibles.</div>`;
+    const emptyMessage = state.deviceSearchQuery.trim()
+      ? "No hay dispositivos que coincidan con la busqueda."
+      : "No hay dispositivos disponibles.";
+    deviceList.innerHTML = `<div class="empty">${escapeHtml(emptyMessage)}</div>`;
     return;
   }
 
@@ -1213,12 +1314,15 @@ function renderActiveProductStats(device, activeCard, isManualCooldown, isReject
 
     const count = getCardDisplayedCount(activeCard, productKey);
     const isEpicBlocked = productKey === "epic" && (isManualCooldown || isRejectedHold);
+    const isNitroBlocked = productKey === "nitro" && isNitroWindowActive(activeCard);
+    const isProductBlocked = isEpicBlocked || isNitroBlocked;
     const productLockUntil = isRejectedHold ? rejectedUntil : manualCooldownUntil;
+    const nitroLockUntil = getNitroWindowUntil(activeCard);
     const productLockClass = isRejectedHold ? "is-danger" : "is-cooldown";
     const displayMeta = getProductDisplayMeta(productKey, rule);
 
     return `
-      <div class="product-stat product-stat-${escapeHtml(productKey)} ${isEpicBlocked ? "is-disabled" : ""}">
+      <div class="product-stat product-stat-${escapeHtml(productKey)} ${isProductBlocked ? "is-disabled" : ""}">
         <div class="product-stat-body">
           <span class="product-badge" aria-hidden="true">${escapeHtml(displayMeta.badge)}</span>
           <div class="product-copy">
@@ -1227,12 +1331,13 @@ function renderActiveProductStats(device, activeCard, isManualCooldown, isReject
               <span class="product-price">${escapeHtml(formatProductTryLabel(rule.amount))}</span>
             </div>
             ${isEpicBlocked ? `<span class="product-lock ${productLockClass}" data-countdown-label="" data-countdown-until="${escapeHtml(productLockUntil)}">${escapeHtml(formatCooldownCountdown(productLockUntil))}</span>` : ""}
+            ${isNitroBlocked ? `<span class="product-lock is-cooldown" data-countdown-label="Nitro" data-countdown-until="${escapeHtml(nitroLockUntil)}">${escapeHtml(`Nitro ${formatCooldownCountdown(nitroLockUntil)}`)}</span>` : ""}
           </div>
         </div>
         <div class="product-counter">
           <button type="button" data-action="update-product" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-product-key="${escapeHtml(productKey)}" data-delta="-1">-</button>
           <div class="product-stat-count">${escapeHtml(count)}</div>
-          <button type="button" data-action="update-product" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-product-key="${escapeHtml(productKey)}" data-delta="1" ${isEpicBlocked ? "disabled" : ""}>+</button>
+          <button type="button" data-action="update-product" data-device-id="${escapeHtml(device.id)}" data-card-id="${escapeHtml(activeCard.id)}" data-product-key="${escapeHtml(productKey)}" data-delta="1" ${isProductBlocked ? "disabled" : ""}>+</button>
         </div>
       </div>
     `;
@@ -1877,6 +1982,11 @@ function render() {
   document.body.classList.toggle("speeches-mode", state.selectedTab === "speeches");
   document.body.classList.toggle("fintech-control-mode", state.selectedTab === "control");
   renderNoticeStrip();
+  renderOverviewStrip();
+
+  if (deviceSearchInput && deviceSearchInput.value !== state.deviceSearchQuery) {
+    deviceSearchInput.value = state.deviceSearchQuery;
+  }
 
   if (state.selectedTab === "speeches") {
     deviceList.innerHTML = "";
@@ -1958,7 +2068,7 @@ function isTypingTarget(target) {
 }
 
 function moveDeviceSelection(direction) {
-  const devices = getDevices();
+  const devices = getFilteredDevices();
   if (!devices.length || state.selectedTab !== "control") {
     return;
   }
@@ -2335,6 +2445,11 @@ tabSpeeches.addEventListener("click", () => {
 
 themeToggle.addEventListener("click", toggleTheme);
 reloadButton.addEventListener("click", loadState);
+
+deviceSearchInput?.addEventListener("input", (event) => {
+  state.deviceSearchQuery = String(event.target.value || "");
+  render();
+});
 
 initTheme();
 renderNoticeStrip();

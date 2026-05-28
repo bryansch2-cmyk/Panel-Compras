@@ -282,6 +282,66 @@ body.is-loading {
   opacity: 0.94;
 }
 
+.overview-strip {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.overview-card {
+  min-height: 76px;
+  padding: 13px 15px;
+  border: 1px solid rgba(199, 168, 109, 0.14);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent),
+    color-mix(in srgb, var(--surface-soft) 88%, transparent);
+  box-shadow:
+    0 12px 22px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  display: grid;
+  align-content: center;
+  gap: 5px;
+}
+
+.overview-card span {
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.overview-card strong {
+  color: var(--text);
+  font-size: clamp(1rem, 1.55vw, 1.32rem);
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+
+.overview-card-strong {
+  border-color: rgba(199, 168, 109, 0.24);
+  background:
+    linear-gradient(135deg, rgba(199, 168, 109, 0.12), transparent 58%),
+    color-mix(in srgb, var(--surface-soft) 92%, transparent);
+}
+
+.overview-card-warning {
+  border-color: rgba(199, 168, 109, 0.26);
+}
+
+.overview-card-warning strong {
+  color: #d7b16a;
+}
+
+.overview-card-danger {
+  border-color: rgba(180, 126, 112, 0.3);
+}
+
+.overview-card-danger strong {
+  color: #d39c8f;
+}
+
 .notice-pill-recommendation {
   border-color: rgba(114, 134, 117, 0.26);
 }
@@ -665,6 +725,36 @@ body.speeches-mode .sidebar {
 
 .panel-head-sub {
   margin-top: 8px;
+}
+
+.device-search {
+  display: grid;
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.device-search span {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.device-search input {
+  width: 100%;
+  min-height: 40px;
+  padding: 0 13px;
+  border: 1px solid rgba(199, 168, 109, 0.14);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface-soft) 86%, transparent);
+  color: var(--text);
+  font: inherit;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.device-search input::placeholder {
+  color: color-mix(in srgb, var(--muted) 70%, transparent);
 }
 
 .sidebar .panel-head {
@@ -5349,6 +5439,10 @@ body.fintech-control-mode .product-lock.is-danger {
     font-size: 0.92rem;
   }
 
+  .overview-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .layout {
     grid-template-columns: 300px minmax(0, 1fr);
     gap: 14px;
@@ -5498,6 +5592,10 @@ body.fintech-control-mode .product-lock.is-danger {
 }
 
 @media (max-width: 860px) {
+  .overview-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .sidebar {
     position: static;
     max-height: none;
@@ -5665,5 +5763,11 @@ body.fintech-control-mode .product-lock.is-danger {
 
   .account-card > .account-field > span {
     display: inline;
+  }
+}
+
+@media (max-width: 560px) {
+  .overview-strip {
+    grid-template-columns: 1fr;
   }
 }
